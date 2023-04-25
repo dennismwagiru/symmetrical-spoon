@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tuntigi/databases/app_preferences.dart';
 
 import 'package:tuntigi/utils/colors.dart';
 
@@ -6,9 +7,9 @@ import 'app_routes.dart';
 
 class App extends StatelessWidget {
 
-  static final App _instance = App._internal();
+  static const App _instance = App._internal();
 
-  App._internal();
+  const App._internal();
 
   factory App() => _instance;
 
@@ -27,5 +28,9 @@ class App extends StatelessWidget {
 
   AppRoutes getAppRoutes() {
     return AppRoutes();
+  }
+
+  AppPreferences getAppPreferences() {
+    return AppPreferences();
   }
 }
