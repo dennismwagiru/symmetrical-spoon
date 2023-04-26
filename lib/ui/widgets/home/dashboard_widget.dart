@@ -31,9 +31,9 @@ class DashboardWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ProfileHeaderWidget(),
-                SizedBox(height: 20,),
+                SizedBox(height: 44,),
                 const BalanceWidget(),
-                DashboardGridView(),
+                // DashboardGridView(),
               ]
           ),
         )

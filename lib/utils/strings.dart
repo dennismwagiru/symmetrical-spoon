@@ -22,6 +22,7 @@ class Strings {
   static String username = 'Username';
   static String fullName = 'Full Name';
   static String confirmPin = 'Confirm Pin';
+  static String view = 'View';
 
   // Registration Success Screen
   static String signupSuccessful = 'Sign up successful';

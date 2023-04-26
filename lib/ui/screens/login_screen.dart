@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tuntigi/app/app_routes.dart';
+import 'package:tuntigi/ui/widgets/common/logo_widget.dart';
+import 'package:tuntigi/ui/widgets/form/password_input_widget.dart';
+import 'package:tuntigi/ui/widgets/form/text_input_widget.dart';
 import 'package:tuntigi/ui/widgets/loadable_widget.dart';
 import 'package:tuntigi/utils/colors.dart';
 import 'package:tuntigi/utils/custom_style.dart';
@@ -29,6 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
+        child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -36,122 +40,73 @@ class _LoginScreenState extends State<LoginScreen> {
               loginWidget(context)
             ],
           ),
+        ),
       ),
     );
   }
 
   Widget loginWidget(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(left: Dimensions.defaultPaddingSize, right: Dimensions.defaultPaddingSize),
+        padding: const EdgeInsets.only(
+            left: Dimensions.defaultPaddingSize,
+            right: Dimensions.defaultPaddingSize
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            const LogoWidget(),
+            const SizedBox(height: 33),
             Text(
                 Strings.welcomeBack,
                 style: CustomStyle.titleStyle
             ),
-            const SizedBox(height: Dimensions.heightSize * 2,),
+            const SizedBox(height: 11,),
             Text(
                 Strings.signInToYourAccount,
                 style: CustomStyle.subTitleStyle
             ),
-            const SizedBox(height: Dimensions.heightSize * 2,),
+            const SizedBox(height: 105),
             Form(
                 key: formKey,
                 child: Column(
                   children: [
-                    TextFormField(
-                      style: CustomStyle.textStyle,
-                      controller: emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      // validator: (String value){
-                      //   if(value.isEmpty){
-                      //     return Strings.pleaseFillOutTheField;
-                      //   }else{
-                      //     return null;
-                      //   }
-                      // },
-                      decoration: InputDecoration(
-                        labelText: Strings.phoneNumber,
-                        contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                        labelStyle: CustomStyle.textStyle,
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        filled: true,
-                        fillColor: Colors.white,
-                        hintStyle: CustomStyle.textStyle,
-                        border: CustomStyle.focusBorder,
-                        focusedBorder: CustomStyle.focusBorder,
-                        enabledBorder: CustomStyle.focusErrorBorder,
-                        focusedErrorBorder: CustomStyle.focusErrorBorder,
-                        errorBorder: CustomStyle.focusErrorBorder,
-                      ),
+                    TextInputWidget(
+                        label: Strings.phoneNumber,
+                        suffix: Icon(
+                          Icons.check_circle,
+                          color: CustomColor.blueColor,
+                          size: 34,
+                        )
                     ),
-                    SizedBox(height: Dimensions.heightSize,),
-                    TextFormField(
-                      style: CustomStyle.textStyle,
-                      controller: passwordController,
-                      // validator: (String value){
-                      //   if(value.isEmpty){
-                      //     return Strings.pleaseFillOutTheField;
-                      //   }else{
-                      //     return null;
-                      //   }
-                      // },
-                      decoration: InputDecoration(
-                        labelText: Strings.pin,
-                        contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                        labelStyle: CustomStyle.textStyle,
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        focusedBorder: CustomStyle.focusBorder,
-                        enabledBorder: CustomStyle.focusErrorBorder,
-                        focusedErrorBorder: CustomStyle.focusErrorBorder,
-                        errorBorder: CustomStyle.focusErrorBorder,
-                        prefixIcon: const Icon(Icons.lock),
-                        filled: true,
-                        fillColor: Colors.white,
-                        hintStyle: CustomStyle.textStyle,
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              _toggleVisibility = !_toggleVisibility;
-                            });
-                          },
-                          icon: _toggleVisibility
-                              ? Icon(
-                            Icons.visibility_off,
-                            color: Colors.black,
-                          )
-                              : Icon(
-                            Icons.visibility,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                      obscureText: _toggleVisibility,
-                    ),
+                    const SizedBox(height: 23),
+                    PasswordInputWidget(label: Strings.pin),
                     SizedBox(height: Dimensions.heightSize),
                   ],
                 )
             ),
-            SizedBox(height: Dimensions.heightSize),
-            Container(
+            const SizedBox(height: 14),
+            SizedBox(
               width: MediaQuery.of(context).size.width,
               child: Text(
                 Strings.forgotPin,
-                style: CustomStyle.textStyle,
+                style: TextStyle(
+                  color: CustomColor.greyColor,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                ),
                 textAlign: TextAlign.end,
               ),
             ),
-            SizedBox(height: Dimensions.heightSize * 3),
+            SizedBox(height: 39),
             LoadableWidget(
                 loading: _loading,
                 widget: GestureDetector(
                   child: Container(
-                    height: 50.0,
+                    height: 54.0,
                     width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        color: CustomColor.primaryColor,
+                    decoration: const BoxDecoration(
+                        color: CustomColor.accentColor,
                         borderRadius: BorderRadius.all(Radius.circular(Dimensions.radius))
                     ),
                     child: Center(
@@ -169,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                 )
             ),
-            SizedBox(height: Dimensions.heightSize * 3),
+            SizedBox(height: 41),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -184,7 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Strings.signUp,
                     style: TextStyle(
                         fontSize: Dimensions.defaultTextSize,
-                        color: CustomColor.primaryColor,
+                        color: CustomColor.accentColor,
                         fontWeight: FontWeight.bold
                     ),
                   ),

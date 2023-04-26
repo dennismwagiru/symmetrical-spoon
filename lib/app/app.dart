@@ -18,9 +18,9 @@ class App extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: CustomColor.primaryColor,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        fontFamily: 'Ubuntu'
+          primaryColor: CustomColor.primaryColor,
+        // visualDensity: VisualDensity.adaptivePlatformDensity,
+        fontFamily: 'SFUIText',
       ),
       onGenerateRoute: getAppRoutes().getRoutes,
     );

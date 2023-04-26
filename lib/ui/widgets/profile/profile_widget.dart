@@ -12,20 +12,30 @@ class ProfileWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        GestureDetector(
-          child: const Icon(
-            Icons.account_circle,
-            color: CustomColor.primaryColor,
-            size: 40.0,
+        Container(
+          height: 45,
+          width: 45,
+          decoration: const BoxDecoration(
+              color: CustomColor.accentColor,
+              borderRadius: BorderRadius.all(Radius.circular(50))
           ),
         ),
+        // GestureDetector(
+        //   child: const Icon(
+        //     Icons.account_circle,
+        //     color: CustomColor.primaryColor,
+        //     size: 40.0,
+        //   ),
+        // ),
+        const SizedBox(height: 23),
         Text(
           Strings.greeting,
-          style: CustomStyle.titleStyle,
+          style: CustomStyle.greetingStyle,
         ),
+        const SizedBox(height: 5),
         Text(
           Strings.designation,
-          style: CustomStyle.subTitleStyle,
+          style: CustomStyle.designationStyle,
         ),
       ],
     );

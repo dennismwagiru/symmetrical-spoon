@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tuntigi/utils/colors.dart';
 import 'package:tuntigi/utils/custom_style.dart';
 import 'package:tuntigi/utils/dimensions.dart';
 import 'package:tuntigi/utils/strings.dart';
@@ -15,34 +16,60 @@ class WalletWidget extends StatelessWidget {
             children: [
               Text(
                 Strings.earn,
-              ),
-              const Padding(
-                padding: EdgeInsets.only(
-                    right: Dimensions.marginSize / 2
+                style: const TextStyle(
+                    fontFamily: 'Circular',
+                    fontWeight: FontWeight.w400,
+                    fontSize: 10
                 ),
               ),
-              GestureDetector(
+              const SizedBox(
+                width: 11,
+              ),
+              Container(
+                height: 45,
+                width: 45,
+                decoration: const BoxDecoration(
+                    color: CustomColor.walletGreyColor,
+                    borderRadius: BorderRadius.all(Radius.circular(50))
+                ),
                 child: const Icon(
                   Icons.card_giftcard,
                   size: 20.0,
+                  color: Colors.black,
                 ),
-              ),
+              )
             ],
           ),
-          ElevatedButton(
-            onPressed: () {},
-
-            style: const ButtonStyle(
-              backgroundColor: MaterialStatePropertyAll<Color>(Colors.grey),
+          const SizedBox(height: 32),
+          Container(
+            decoration: const BoxDecoration(
+                color: Color(0xFFD9D9D9),
+                borderRadius: BorderRadius.all(Radius.circular(5))
             ),
-            child: Row(
-              children: [
-                Text(Strings.hideBalance, style: const TextStyle(
-                    fontSize: 12
-                )),
-                const SizedBox(width: 5),
-                const Icon(Icons.remove_red_eye_outlined, size: 16,),
-              ],
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                  vertical: 3,
+                  horizontal: 9
+              ),
+              child: Row(
+                children: [
+                  Text(
+                      Strings.hideBalance,
+                      style: const TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: 'Circular',
+                          color: Color(0xFFAEAEAE)
+                      )
+                  ),
+                  const SizedBox(width: 5),
+                  const Icon(
+                      Icons.remove_red_eye_outlined,
+                      size: 16,
+                      color: Color(0xFFAEAEAE)
+                  ),
+                ],
+              ),
             ),
           ),
         ]
