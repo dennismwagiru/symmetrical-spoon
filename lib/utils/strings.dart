@@ -26,4 +26,24 @@ class Strings {
   // Registration Success Screen
   static String signupSuccessful = 'Sign up successful';
   static String signupSuccessfulDesc = 'You have successfully signup to Tuntigi Gaming Community.';
+
+  // Dashboard Widget
+  static String earn = 'Earn KES. 50';
+  static String greeting = 'Hi, Juma Ali';
+  static String designation = 'Admiral 2nd Class';
+  static String showBalance = 'Show balance';
+  static String hideBalance = 'Hide balance';
+  static String currency = 'Kes.';
+  static String balanceAmount = '13,430';
+  static String accountBalance = 'Account Balance';
+
+  static String wallet = 'Wallet';
+  static String walletDesc = 'Deposit, transfer and withdraw money';
+  static String statement = 'Statement';
+  static String statementDesc = 'View transactional history';
+  static String leaderboard = 'Leaderboard';
+  static String leaderboardDesc = 'View the latest table';
+  static String referral = 'Referral';
+  static String referralDesc = 'Refer a player and earn Kes. 50';
+
 }

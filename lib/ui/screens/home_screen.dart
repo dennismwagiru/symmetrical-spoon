@@ -38,9 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: CustomColor.secondaryColor,
-      body: Center(
-        child: widgetOptions.elementAt(selectedIndex),
-      ),
+      body: widgetOptions.elementAt(selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(

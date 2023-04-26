@@ -4,6 +4,24 @@ import 'colors.dart';
 import 'dimensions.dart';
 
 class CustomStyle {
+
+  static var balanceAmountStyle = TextStyle(
+    color: Colors.black,
+    fontSize: 50,
+    fontWeight: FontWeight.w700,
+  );
+
+  static var currencyStyle = TextStyle(
+    color: Colors.black,
+    fontSize: 18,
+    fontWeight: FontWeight.w700,
+  );
+
+  static var walletAccountBalanceStyle = TextStyle(
+    color: Colors.grey,
+    fontSize: 18
+  );
+
   static var titleStyle = TextStyle(
       color: Colors.black,
       fontSize: Dimensions.extraLargeTextSize
