@@ -1,18 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:tuntigi/app/app_routes.dart';
 import 'package:tuntigi/ui/widgets/common/balance_widget.dart';
-import 'package:tuntigi/ui/widgets/dashboard_card.dart';
 import 'package:tuntigi/ui/widgets/dashboard_grid_view.dart';
 import 'package:tuntigi/ui/widgets/profile/profile_header_widget.dart';
-import 'package:tuntigi/ui/widgets/profile/wallet_widget.dart';
-import 'package:tuntigi/ui/widgets/profile/profile_widget.dart';
-import 'package:tuntigi/utils/colors.dart';
-import 'package:tuntigi/utils/custom_style.dart';
-import 'package:tuntigi/utils/dimensions.dart';
-import 'package:tuntigi/utils/strings.dart';
 
-class DashboardWidget extends StatelessWidget {
-  const DashboardWidget({super.key});
+
+class DashboardHome extends StatelessWidget {
+  const DashboardHome({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +22,10 @@ class DashboardWidget extends StatelessWidget {
           child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: const [
                 ProfileHeaderWidget(),
                 SizedBox(height: 44,),
-                const BalanceWidget(),
+                BalanceWidget(),
                 DashboardGridView(),
               ]
           ),

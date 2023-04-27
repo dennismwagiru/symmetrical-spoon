@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:tuntigi/app/app_routes.dart';
 import 'package:tuntigi/ui/widgets/common/logo_widget.dart';
@@ -121,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   onTap: () {
                     Navigator.pushReplacementNamed(context, AppRoutes.appRouteHome);
-                  },
+                    },
                 )
             ),
             SizedBox(height: 41),
@@ -144,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   onTap: () {
-                    Navigator.of(context).pushReplacementNamed(AppRoutes.appRouteRegister);
+                    Navigator.pushReplacementNamed(context, AppRoutes.appRouteRegister);
                   },
                 ),
               ],

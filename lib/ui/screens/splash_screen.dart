@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:tuntigi/app/app_routes.dart';
+import 'package:tuntigi/ui/widgets/common/logo_widget.dart';
 import 'package:tuntigi/utils/colors.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -27,16 +29,14 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: CustomColor.secondaryColor,
+      backgroundColor: Colors.white,
       body: SizedBox(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: const <Widget>[
-            Text(
-              'Splash Screen',
-            ),
+            LogoWidget(),
           ],
         ),
       ),

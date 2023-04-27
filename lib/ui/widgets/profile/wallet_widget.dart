@@ -1,4 +1,6 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:tuntigi/app/app_routes.dart';
 import 'package:tuntigi/utils/colors.dart';
 import 'package:tuntigi/utils/custom_style.dart';
 import 'package:tuntigi/utils/dimensions.dart';
@@ -12,33 +14,39 @@ class WalletWidget extends StatelessWidget {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Row(
-            children: [
-              Text(
-                Strings.earn,
-                style: const TextStyle(
-                    fontFamily: 'Circular',
-                    fontWeight: FontWeight.w400,
-                    fontSize: 10
+          GestureDetector(
+            onTap: () {
+              Navigator.pushReplacementNamed(context, AppRoutes.appRouteReferralCode);
+            },
+            child: Row(
+              children: [
+                Text(
+                  Strings.earn,
+                  style: const TextStyle(
+                      fontFamily: 'Circular',
+                      fontWeight: FontWeight.w400,
+                      fontSize: 10
+                  ),
                 ),
-              ),
-              const SizedBox(
-                width: 11,
-              ),
-              Container(
-                height: 45,
-                width: 45,
-                decoration: const BoxDecoration(
-                    color: CustomColor.walletGreyColor,
-                    borderRadius: BorderRadius.all(Radius.circular(50))
+                const SizedBox(
+                  width: 11,
                 ),
-                child: const Icon(
-                  Icons.card_giftcard,
-                  size: 20.0,
-                  color: Colors.black,
-                ),
-              )
-            ],
+                Container(
+                  height: 45,
+                  width: 45,
+                  decoration: const BoxDecoration(
+                      color: CustomColor.walletGreyColor,
+                      borderRadius: BorderRadius.all(Radius.circular(50))
+                  ),
+                  child: const Icon(
+                    Icons.card_giftcard,
+                    size: 20.0,
+                    color: Colors.black,
+                  ),
+                )
+              ],
+            ),
+
           ),
           const SizedBox(height: 32),
           Container(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tuntigi/app/app_routes.dart';
 import 'package:tuntigi/ui/widgets/dashboard_card.dart';
 import 'package:tuntigi/utils/colors.dart';
 import 'package:tuntigi/utils/strings.dart';
@@ -11,31 +12,35 @@ class DashboardGridView extends StatelessWidget {
     return Expanded(
         child: GridView.count(
             crossAxisCount: 2,
-            crossAxisSpacing: 15,
+            crossAxisSpacing: 5,
             children: [
               DashboardCard(
-                  color: Colors.red,
+                  color: const Color(0xFFA72E18),
                   icon: Icons.account_balance_wallet_outlined,
                   title: Strings.wallet,
-                  subTitle: Strings.walletDesc
+                  subTitle: Strings.walletDesc,
+                  routeName: AppRoutes.appRouteWallet
               ),
               DashboardCard(
-                  color: Colors.green,
-                  icon: Icons.account_balance_wallet_outlined,
+                  color: const Color(0xFF4F7F57),
+                  icon: Icons.list_alt,
                   title: Strings.statement,
-                  subTitle: Strings.statementDesc
+                  subTitle: Strings.statementDesc,
+                  routeName: AppRoutes.appRouteStatement
               ),
               DashboardCard(
-                  color: Colors.purple,
-                  icon: Icons.account_balance_wallet_outlined,
+                  color: const Color(0xFF3D316D),
+                  icon: Icons.leaderboard,
                   title: Strings.leaderboard,
-                  subTitle: Strings.leaderboardDesc
+                  subTitle: Strings.leaderboardDesc,
+                  routeName: AppRoutes.appRouteLeaderboard
               ),
               DashboardCard(
-                  color: Colors.purple,
-                  icon: Icons.account_balance_wallet_outlined,
+                  color: const Color(0xFF462878),
+                  icon: Icons.wallet_giftcard,
                   title: Strings.referral,
-                  subTitle: Strings.referralDesc
+                  subTitle: Strings.referralDesc,
+                  routeName: AppRoutes.appRouteReferral
               ),
             ]
         )

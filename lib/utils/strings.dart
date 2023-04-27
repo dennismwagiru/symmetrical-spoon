@@ -47,4 +47,13 @@ class Strings {
   static String referral = 'Referral';
   static String referralDesc = 'Refer a player and earn Kes. 50';
 
+  // Referral Code
+  static String earnOnReferrals = 'Earn on referrals!';
+  static String referFriends = 'Refer your friends and get KES. 50 fo every'
+      'successful sign up!';
+  static String validUntil = 'Valid until: May 5, 2023';
+  static String tapToCopyCode = 'Tap to copy code';
+  static String referralCode = 'JUMAKGL';
+  static String shareCode = 'Share Code';
+
 }

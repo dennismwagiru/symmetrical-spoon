@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:tuntigi/app/app_routes.dart';
+import 'package:tuntigi/ui/navigators/dashboard/home.dart';
 import 'package:tuntigi/ui/widgets/home/challenges_widget.dart';
 import 'package:tuntigi/ui/widgets/home/dashboard_widget.dart';
 import 'package:tuntigi/ui/widgets/home/news_widget.dart';
@@ -17,63 +19,80 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int selectedIndex = 0;
+  final routes = ['dashboard', 'news', 'challenges', 'settings'];
+  int _currentIndex = 0;
 
   final widgetOptions = [
-    const DashboardWidget(),
+    const DashboardHome(),
     const NewsWidget(),
     const ChallengesWidget(),
     const SettingsWidget()
   ];
 
-  void onItemTapped(int index) {
-    setState(() {
-      selectedIndex = index;
-    });
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _currentIndex = widget.initialIndex;
+  // }
 
-  final widgetTitle = ['Dashboard', 'News', 'Challenges', 'Settings'];
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: widgetOptions.elementAt(selectedIndex),
+      body: SafeArea(
+        top: true,
+        child: IndexedStack(
+          index: _currentIndex,
+          children: widgetOptions,
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.home,
-                color: selectedIndex == 0 ? Colors.blue : Colors.grey,
+                color: _currentIndex == 0 ? Colors.blue : Colors.grey,
               ),
               label: "Dashboard"
           ),
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.auto_graph,
-                color: selectedIndex == 1 ? Colors.blue : Colors.grey,
+                color: _currentIndex == 1 ? Colors.blue : Colors.grey,
               ),
               label: "News"
           ),
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.rule_folder_outlined,
-                color: selectedIndex == 2 ? Colors.blue : Colors.grey,
+                color: _currentIndex == 2 ? Colors.blue : Colors.grey,
               ),
               label: "Challenges"
           ),
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.settings,
-                color: selectedIndex == 3 ? Colors.blue : Colors.grey,
+                color: _currentIndex == 3 ? Colors.blue : Colors.grey,
               ),
               label: "Settings"
           ),
         ],
-        currentIndex: selectedIndex,
+        currentIndex: _currentIndex,
         // fixedColor: Colors.red,
 
-        onTap: onItemTapped,
+        onTap: (index) {
+          // Navigator.pushNamed(context, AppRoutes.appRouteRegister);
+          //
+          // Beamer.of(context).update(
+          //   configuration: RouteInformation(
+          //     location: '/?tab=${routes[index]}',
+          //   ),
+          //   rebuild: false,
+          // );
+          setState(()  => _currentIndex = index);
+        },
         showSelectedLabels: true,
         showUnselectedLabels: true,
         selectedItemColor: Colors.blue,

@@ -26,6 +26,20 @@ class CustomStyle {
       fontWeight: FontWeight.w400
   );
 
+  static var subHeadersStyle = const TextStyle(
+      color: Colors.black,
+      fontSize: 16,
+      fontFamily: 'Circular',
+      fontWeight: FontWeight.w700
+  );
+
+  static var subDescriptionStyle = const TextStyle(
+      color: Colors.black,
+      fontSize: 11,
+      fontFamily: 'Circular',
+      fontWeight: FontWeight.w400
+  );
+
   static var titleStyle = const TextStyle(
       color: Colors.black,
       fontSize: 22,
@@ -48,7 +62,7 @@ class CustomStyle {
   static var subTitleStyle = const TextStyle(
       color: CustomColor.subTitleGreyColor,
       fontSize: 12,
-      fontWeight: FontWeight.w400
+      fontWeight: FontWeight.w400,
   );
 
   static var inputFieldStyle = TextStyle(

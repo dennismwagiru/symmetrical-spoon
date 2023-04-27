@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:tuntigi/app/app_routes.dart';
 import 'package:tuntigi/ui/widgets/loadable_widget.dart';
