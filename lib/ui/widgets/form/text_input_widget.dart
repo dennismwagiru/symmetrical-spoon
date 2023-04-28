@@ -5,7 +5,8 @@ import 'package:tuntigi/utils/custom_style.dart';
 class TextInputWidget extends StatelessWidget {
   final String label;
   final Widget? suffix;
-  const TextInputWidget({Key? key, required this.label, required this.suffix}) : super(key: key);
+  final Widget? prefix;
+  const TextInputWidget({Key? key, required this.label, this.suffix, this.prefix}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,14 +25,13 @@ class TextInputWidget extends StatelessWidget {
           floatingLabelAlignment: FloatingLabelAlignment.start,
           floatingLabelBehavior: FloatingLabelBehavior.always,
           floatingLabelStyle: CustomStyle.labelTextStyle,
-          filled: true,
-          fillColor: Colors.white,
           border: CustomStyle.focusBorder,
           focusedBorder: CustomStyle.focusBorder,
           enabledBorder: CustomStyle.focusErrorBorder,
           focusedErrorBorder: CustomStyle.focusErrorBorder,
           errorBorder: CustomStyle.focusErrorBorder,
-          suffixIcon: suffix
+          suffixIcon: suffix,
+          prefixIcon: prefix
       ),
     );
   }

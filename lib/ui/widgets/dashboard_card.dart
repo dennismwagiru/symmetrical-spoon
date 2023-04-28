@@ -72,7 +72,7 @@ class DashboardCard extends StatelessWidget {
           )
       ),
       onTap: () {
-        Navigator.pushReplacementNamed(context, routeName);
+        Navigator.pushNamed(context, routeName);
       },
     );
   }

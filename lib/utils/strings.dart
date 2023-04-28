@@ -5,6 +5,7 @@ class Strings {
 
   // common
   static String next = 'Next';
+  static String confirm = 'Confirm';
 
   //login in screen
   static String welcomeBack = 'Welcome back!';
@@ -55,5 +56,12 @@ class Strings {
   static String tapToCopyCode = 'Tap to copy code';
   static String referralCode = 'JUMAKGL';
   static String shareCode = 'Share Code';
+
+  static String topupAmount = 'Top Up amount';
+  static String minimumDeposit = 'Minimum deposit of KES. 30';
+  static String topUpSuccessful = 'Top up successful';
+  static String topUpSuccessDesc = 'You have successfully topped up KES. 650 on'
+      ' your wallet, new Tuntigi balance is KES 1,35o';
+
 
 }

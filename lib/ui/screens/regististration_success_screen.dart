@@ -76,7 +76,7 @@ class _RegistrationSuccessScreenState extends State<RegistrationSuccessScreen> {
                           ),
                         ),
                         onTap: () {
-                          Navigator.pushReplacementNamed(context, AppRoutes.appRouteHome);
+                          Navigator.pushReplacementNamed(context, AppRoutes.appRouteDashboard);
                         },
                       ),
                       const SizedBox(height: 56),

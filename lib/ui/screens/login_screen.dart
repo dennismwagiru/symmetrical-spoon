@@ -121,7 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   onTap: () {
-                    Navigator.pushReplacementNamed(context, AppRoutes.appRouteHome);
+                    Navigator.pushReplacementNamed(context, AppRoutes.appRouteDashboard);
                     },
                 )
             ),

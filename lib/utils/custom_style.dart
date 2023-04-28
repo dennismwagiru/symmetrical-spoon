@@ -11,12 +11,48 @@ class CustomStyle {
     fontWeight: FontWeight.w700,
     fontFamily: 'Circular',
   );
+  static var transactionTitleStyle = const TextStyle(
+      fontFamily: 'Circular',
+      fontWeight: FontWeight.w500,
+      fontSize: 14,
+  );
+
+  static var transactionDateStyle = const TextStyle(
+      fontFamily: 'Circular',
+      fontWeight: FontWeight.w400,
+      fontSize: 11,
+      color: Color(0xFFAEAEAE)
+  );
+
+  static var tabTitleStyle = const TextStyle(
+      fontWeight: FontWeight.w400,
+      fontSize: 9,
+      fontFamily: 'Circular'
+  );
 
   static var currencyStyle = const TextStyle(
     color: Colors.black,
     fontSize: 18,
     fontWeight: FontWeight.w700,
     fontFamily: 'Circular',
+  );
+
+  static var tableHeaderStyle = const TextStyle(
+    color: Color(0xFF3E4237),
+    fontSize: 9,
+    fontWeight: FontWeight.w600,
+  );
+
+  static var tableDataSelectedStyle = const TextStyle(
+    color: Colors.white,
+    fontSize: 9,
+    fontWeight: FontWeight.w600,
+  );
+
+  static var tableDataStyle = const TextStyle(
+    color: Color(0xFF3E4237),
+    fontSize: 9,
+    fontWeight: FontWeight.w600,
   );
 
   static var walletAccountBalanceStyle = const TextStyle(
@@ -60,9 +96,9 @@ class CustomStyle {
   );
 
   static var subTitleStyle = const TextStyle(
-      color: CustomColor.subTitleGreyColor,
-      fontSize: 12,
-      fontWeight: FontWeight.w400,
+    color: CustomColor.subTitleGreyColor,
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
   );
 
   static var inputFieldStyle = TextStyle(
