@@ -17,35 +17,76 @@ class BottomNavBar extends StatelessWidget {
     return BottomNavigationBar(
       items: [
         BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
-              color: index == 0 ? Colors.blue : Colors.grey,
-              size: 26,
+            icon: Image.asset(
+              'assets/images/home-idle.png',
+              height: 21.69,
+              width: 21.69,
             ),
+            activeIcon: Image.asset(
+              'assets/images/home-selected.png',
+              height: 21.69,
+              width: 21.69,
+            ),
+            // icon: Icon(
+            //   Icons.home,
+            //   color: index == 0 ? Colors.blue : Colors.grey,
+            //   size: 26,
+            // ),
+
             label: "Dashboard"
         ),
         BottomNavigationBarItem(
-            icon: Icon(
-              Icons.auto_graph,
-              color: index == 1 ? Colors.blue : Colors.grey,
-              size: 26,
+            icon: Image.asset(
+              'assets/images/news-idle.png',
+              height: 21.69,
+              width: 21.69,
             ),
+            activeIcon: Image.asset(
+              'assets/images/news-selected.png',
+              height: 21.69,
+              width: 21.69,
+            ),
+            // icon: Icon(
+            //   Icons.auto_graph,
+            //   color: index == 1 ? Colors.blue : Colors.grey,
+            //   size: 26,
+            // ),
             label: "News"
         ),
         BottomNavigationBarItem(
-            icon: Icon(
-              Icons.rule_folder_outlined,
-              color: index == 2 ? Colors.blue : Colors.grey,
-              size: 26,
+            icon: Image.asset(
+              'assets/images/challenge-idle.png',
+              height: 21.69,
+              width: 21.69,
             ),
+            activeIcon: Image.asset(
+              'assets/images/challenge-selected.png',
+              height: 21.69,
+              width: 21.69,
+            ),
+            // icon: Icon(
+            //   Icons.rule_folder_outlined,
+            //   color: index == 2 ? Colors.blue : Colors.grey,
+            //   size: 26,
+            // ),
             label: "Challenges"
         ),
         BottomNavigationBarItem(
-            icon: Icon(
-              Icons.settings,
-              color: index == 3 ? Colors.blue : Colors.grey,
-              size: 26,
+            icon: Image.asset(
+              'assets/images/profile-idle.png',
+              height: 21.69,
+              width: 21.69,
             ),
+            activeIcon: Image.asset(
+              'assets/images/profile-selected.png',
+              height: 21.69,
+              width: 21.69,
+            ),
+            // icon: Icon(
+            //   Icons.settings_sharp,
+            //   color: index == 3 ? Colors.blue : Colors.grey,
+            //   size: 35,
+            // ),
             label: "Settings"
         ),
       ],
@@ -57,13 +98,13 @@ class BottomNavBar extends StatelessWidget {
       },
       showSelectedLabels: true,
       showUnselectedLabels: true,
-      selectedItemColor: Colors.blue,
-      unselectedItemColor: Colors.grey,
+      selectedItemColor: const Color(0xFF156CF7),
+      unselectedItemColor: const Color(0xFFAEAEAE),
       selectedIconTheme: const IconThemeData(
-          color: Colors.blue
+          color: Color(0xFF156CF7)
       ),
-      // selectedLabelStyle: TextStyle(color: Colors.red, fontSize: 20),
-      // unselectedFontSize: 16,
+      selectedLabelStyle: const TextStyle(fontSize: 10, fontWeight: FontWeight.w400),
+      unselectedLabelStyle: const TextStyle(fontSize: 10, fontWeight: FontWeight.w400),
       // selectedIconTheme:
       // const IconThemeData(color: Colors.blue, opacity: 1.0, size: 30.0),
       // unselectedItemColor: Colors.grey,

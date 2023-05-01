@@ -44,7 +44,6 @@ class LeaderboardScreen extends StatelessWidget {
                             Text(
                               Strings.earn,
                               style: const TextStyle(
-                                  fontFamily: 'Circular',
                                   fontWeight: FontWeight.w400,
                                   fontSize: 10
                               ),

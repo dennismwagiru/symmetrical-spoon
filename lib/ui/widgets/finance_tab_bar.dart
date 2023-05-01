@@ -27,8 +27,8 @@ class FinanceTabBar extends StatelessWidget {
                     dividerColor: Colors.white,
                     indicatorColor: Colors.black,
                     labelStyle: CustomStyle.tabTitleStyle,
-                    unselectedLabelColor: Color(0xFFAEAEAE),
-                    tabs: [
+                    unselectedLabelColor: const Color(0xFFAEAEAE),
+                    tabs: const [
                       Tab(
                           child: Text('Account'),
                       ),

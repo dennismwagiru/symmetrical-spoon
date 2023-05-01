@@ -12,7 +12,6 @@ class SearchInputWidget extends StatelessWidget {
       style: const TextStyle(
           fontSize: 11,
           fontWeight: FontWeight.w400,
-          fontFamily: 'Circular'
       ),
       // validator: (String value){
       //   if(value.isEmpty){

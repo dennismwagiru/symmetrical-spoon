@@ -23,7 +23,6 @@ class WalletWidget extends StatelessWidget {
                 Text(
                   Strings.earn,
                   style: const TextStyle(
-                      fontFamily: 'Circular',
                       fontWeight: FontWeight.w400,
                       fontSize: 10
                   ),
@@ -66,7 +65,6 @@ class WalletWidget extends StatelessWidget {
                       style: const TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.w400,
-                          fontFamily: 'Circular',
                           color: Color(0xFFAEAEAE)
                       )
                   ),

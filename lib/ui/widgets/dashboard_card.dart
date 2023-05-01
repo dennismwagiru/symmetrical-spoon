@@ -5,11 +5,12 @@ import 'package:tuntigi/utils/custom_style.dart';
 
 class DashboardCard extends StatelessWidget {
   final Color color;
-  final IconData icon;
+  final Color txtColor;
+  final String icon;
   final String title;
   final String subTitle;
   final String routeName;
-  const DashboardCard({Key? key, required this.color, required this.icon, required this.title, required this.subTitle, required this.routeName, }) : super(key: key);
+  const DashboardCard({Key? key, required this.color, required this.icon, required this.title, required this.subTitle, required this.routeName, required this.txtColor, }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +20,10 @@ class DashboardCard extends StatelessWidget {
           // margin: const EdgeInsets.all(2.0),
           child: Container(
             decoration: BoxDecoration(
-                color: Color((color.value * .3).round()),
+                color: color,
                 borderRadius: BorderRadius.circular(5)
             ),
-            constraints: BoxConstraints.expand(),
+            constraints: const BoxConstraints.expand(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               verticalDirection: VerticalDirection.down,
@@ -38,11 +39,16 @@ class DashboardCard extends StatelessWidget {
                           color: CustomColor.walletGreyColor,
                           borderRadius: BorderRadius.all(Radius.circular(50))
                       ),
-                      child: Icon(
+                      child: Image.asset(
                         icon,
-                        size: 30.0,
-                        color: Colors.black,
+                        // size: 30.0,
+                        // color: Colors.black,
                       ),
+                      // child: Icon(
+                      //   icon,
+                      //   size: 30.0,
+                      //   color: Colors.black,
+                      // ),
                     ),
                   ),
                 ),
@@ -59,9 +65,8 @@ class DashboardCard extends StatelessWidget {
                     child: Text(
                         subTitle,
                         style: TextStyle(
-                            color: color,
+                            color: txtColor,
                             fontSize: 11,
-                            fontFamily: 'Circular',
                             fontWeight: FontWeight.w400
 
                         )
