@@ -140,7 +140,7 @@ class AppRoutes {
 
       case appRouteTopup: {
         return MaterialPageRoute(
-            builder: (BuildContext context) => const TopupScreen(),
+            builder: (BuildContext context) => const TopUpScreen(),
             fullscreenDialog: true,
             settings: routeSettings
         );

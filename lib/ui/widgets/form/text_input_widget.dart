@@ -4,14 +4,25 @@ import 'package:tuntigi/utils/custom_style.dart';
 
 class TextInputWidget extends StatelessWidget {
   final String label;
+  final TextEditingController controller;
+  final TextInputType? textInputType;
   final Widget? suffix;
   final Widget? prefix;
-  const TextInputWidget({Key? key, required this.label, this.suffix, this.prefix}) : super(key: key);
+  const TextInputWidget({
+    Key? key,
+    required this.label,
+    required this.controller,
+    this.textInputType,
+    this.suffix,
+    this.prefix
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       style: CustomStyle.inputFieldStyle,
+      controller: controller,
+      keyboardType: textInputType ?? TextInputType.text,
       // validator: (String value){
       //   if(value.isEmpty){
       //     return Strings.pleaseFillOutTheField;

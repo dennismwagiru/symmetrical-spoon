@@ -130,4 +130,5 @@ class AppPreferences {
   /// @param -> @required prefName -> String
   /// @usage -> Returns Preference-Value for given Preference-Name
   Future<dynamic> _getPreference({required prefName}) async => _preferences.get(prefName);
+
 }

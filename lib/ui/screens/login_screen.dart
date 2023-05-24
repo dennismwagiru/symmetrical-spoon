@@ -1,6 +1,8 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:tuntigi/app/app.dart';
 import 'package:tuntigi/app/app_routes.dart';
+import 'package:tuntigi/network/entities/response.dart';
 import 'package:tuntigi/ui/widgets/common/logo_widget.dart';
 import 'package:tuntigi/ui/widgets/form/password_input_widget.dart';
 import 'package:tuntigi/ui/widgets/form/text_input_widget.dart';
@@ -9,6 +11,7 @@ import 'package:tuntigi/utils/colors.dart';
 import 'package:tuntigi/utils/custom_style.dart';
 import 'package:tuntigi/utils/dimensions.dart';
 import 'package:tuntigi/utils/strings.dart';
+import 'package:tuntigi/viewmodels/user_viewmodel.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -26,7 +29,16 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  bool _toggleVisibility = true;
+  late UserViewModel _viewModel;
+
+  @override
+  void initState() {
+    _viewModel = UserViewModel(const App());
+
+    super.initState();
+
+    subscribeToViewModel();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,16 +85,18 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   children: [
                     TextInputWidget(
-                        label: Strings.phoneNumber,
-                        suffix: Icon(
+                        label: Strings.email,
+                        controller: emailController,
+                        textInputType: TextInputType.emailAddress,
+                        suffix: const Icon(
                           Icons.check_circle,
                           color: CustomColor.blueColor,
                           size: 34,
                         )
                     ),
                     const SizedBox(height: 23),
-                    PasswordInputWidget(label: Strings.pin),
-                    SizedBox(height: Dimensions.heightSize),
+                    PasswordInputWidget(label: Strings.pin, controller: passwordController,),
+                    const SizedBox(height: Dimensions.heightSize),
                   ],
                 )
             ),
@@ -91,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
               width: MediaQuery.of(context).size.width,
               child: Text(
                 Strings.forgotPin,
-                style: TextStyle(
+                style: const TextStyle(
                   color: CustomColor.greyColor,
                   fontSize: 13,
                   fontWeight: FontWeight.w500,
@@ -99,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 textAlign: TextAlign.end,
               ),
             ),
-            SizedBox(height: 39),
+            const SizedBox(height: 39),
             LoadableWidget(
                 loading: _loading,
                 widget: GestureDetector(
@@ -121,11 +135,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   onTap: () {
-                    Navigator.pushReplacementNamed(context, AppRoutes.appRouteDashboard);
-                    },
+                    setState(() => _loading = true );
+                    _viewModel.isAuthentic(email: emailController.text, password: passwordController.text);
+                    // Navigator.pushReplacementNamed(context, AppRoutes.appRouteDashboard);
+                  },
                 )
             ),
-            SizedBox(height: 41),
+            const SizedBox(height: 41),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -147,12 +163,25 @@ class _LoginScreenState extends State<LoginScreen> {
                   onTap: () {
                     Navigator.pushReplacementNamed(context, AppRoutes.appRouteRegister);
                   },
-                ),
+                )
               ],
             )
           ],
         )
     );
+  }
+
+  void subscribeToViewModel() {
+    _viewModel.getLoginResponse()
+        .listen((NetworkResponse response) {
+      setState(() => _loading = false);
+      if(response.isSuccessful) {
+        Fluttertoast.showToast(msg: response.data.toString());
+      } else {
+        // TODO Show Error Message
+        Fluttertoast.showToast(msg: "Failed to log in: ${response.error}");
+      }
+    });
   }
 
 }

@@ -23,7 +23,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _loading = false;
 
   TextEditingController emailController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController fullNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController passwordConfirmationController = TextEditingController();
 
   bool _toggleVisibility = true;
 
@@ -59,24 +62,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             TextInputWidget(
                               label: Strings.username,
                               suffix: null,
+                              controller: usernameController,
                             ),
                             const SizedBox(height: 26),
                             TextInputWidget(
                               label: Strings.fullName,
                               suffix: null,
+                              controller: fullNameController,
                             ),
                             const SizedBox(height: 26),
                             TextInputWidget(
-                                label: Strings.phoneNumber,
-                                suffix: Icon(
-                                  Icons.check_circle,
-                                  color: CustomColor.blueColor,
-                                  size: 34,
-                                )),
+                              label: Strings.email,
+                              controller: emailController,
+                              textInputType: TextInputType.emailAddress,
+                              suffix: const Icon(
+                                Icons.check_circle,
+                                color: CustomColor.blueColor,
+                                size: 34,
+                              ),
+                            ),
                             const SizedBox(height: 26),
-                            PasswordInputWidget(label: Strings.pin),
+                            PasswordInputWidget(label: Strings.pin, controller: passwordController,),
                             const SizedBox(height: 26),
-                            PasswordInputWidget(label: Strings.confirmPin),
+                            PasswordInputWidget(label: Strings.confirmPin, controller: passwordConfirmationController,),
                             const SizedBox(height: 95),
                           ],
                         )

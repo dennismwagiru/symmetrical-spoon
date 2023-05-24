@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.opirth.tuntigi">
    <application
-        android:label="tuntigi"
+        android:label="Tuntigi"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity

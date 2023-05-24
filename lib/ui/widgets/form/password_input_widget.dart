@@ -5,8 +5,10 @@ import 'package:tuntigi/utils/strings.dart';
 
 class PasswordInputWidget extends StatefulWidget {
   final String label;
-  const PasswordInputWidget({Key? key, required this.label}) : super(key: key);
+  final TextEditingController controller;
+  const PasswordInputWidget({Key? key, required this.label, required this.controller}) : super(key: key);
 
+  @override
   State<StatefulWidget> createState() => _PasswordInputState();
 }
 
@@ -17,6 +19,7 @@ class _PasswordInputState extends State<PasswordInputWidget> {
   Widget build(BuildContext context) {
     return TextFormField(
       style: CustomStyle.inputFieldStyle,
+      controller: widget.controller,
       // validator: (String value){
       //   if(value.isEmpty){
       //     return Strings.pleaseFillOutTheField;
@@ -44,19 +47,23 @@ class _PasswordInputState extends State<PasswordInputWidget> {
                 bottom: 4
             ),
             child: OutlinedButton(
-              onPressed: () {},
+              onPressed: () {
+                setState(() {
+                  _toggleVisibility = !_toggleVisibility;
+                });
+              },
               style: OutlinedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 27),
                 backgroundColor: CustomColor.lightBlueColor,
                 side: const BorderSide(width: 1.0, color: CustomColor.accentColor),
-                textStyle: TextStyle(
+                textStyle: const TextStyle(
                   color: CustomColor.accentColor,
                   fontWeight: FontWeight.w500,
                   fontSize: 12,
                   fontFamily: 'Inter'
                 )
               ),
-              child: Text(Strings.view),
+              child: Text(_toggleVisibility ? Strings.view : Strings.hide),
             ), // myIcon is a 48px-wide widget.
           )
         // suffixIcon: IconButton(

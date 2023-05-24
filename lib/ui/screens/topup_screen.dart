@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:tuntigi/app/app_routes.dart';
-import 'package:tuntigi/ui/widgets/common/balance_widget.dart';
 import 'package:tuntigi/ui/widgets/form/text_input_widget.dart';
 import 'package:tuntigi/utils/colors.dart';
 import 'package:tuntigi/utils/custom_style.dart';
 import 'package:tuntigi/utils/dimensions.dart';
 import 'package:tuntigi/utils/strings.dart';
 
-class TopupScreen extends StatelessWidget {
-  const TopupScreen({Key? key}) : super(key: key);
+class TopUpScreen extends StatefulWidget {
+  const TopUpScreen({Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _TopUpScreen();
+}
+
+class _TopUpScreen extends State<TopUpScreen> {
+  TextEditingController topUpController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -55,8 +61,8 @@ class TopupScreen extends StatelessWidget {
                             ],
                           )
                       ),
-                      SizedBox(height: 97),
-                      Align(
+                      const SizedBox(height: 97),
+                      const Align(
                         alignment: Alignment.centerLeft,
                         child: Text('My Balance'),
                       ),
@@ -80,6 +86,8 @@ class TopupScreen extends StatelessWidget {
                       const SizedBox(height: 97),
                       TextInputWidget(
                         label: Strings.topupAmount,
+                        controller: topUpController,
+                        textInputType: TextInputType.number,
                         prefix: Padding(
                             padding: const EdgeInsets.only(
                                 left: 21,

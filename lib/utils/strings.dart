@@ -11,6 +11,7 @@ class Strings {
   static String welcomeBack = 'Welcome back!';
   static String signInToYourAccount = 'Sign In To Your Account';
   static String phoneNumber = 'Phone number';
+  static String email = 'Email Address';
   static String pin = 'Pin';
   static String forgotPin = 'Forgot PIN?';
   static String signIn = 'Sign in';
@@ -24,6 +25,7 @@ class Strings {
   static String fullName = 'Full Name';
   static String confirmPin = 'Confirm Pin';
   static String view = 'View';
+  static String hide = 'Hide';
 
   // Registration Success Screen
   static String signupSuccessful = 'Sign up successful';

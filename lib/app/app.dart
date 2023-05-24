@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tuntigi/databases/app_database.dart';
 import 'package:tuntigi/databases/app_preferences.dart';
+import 'package:tuntigi/repository/user_repository.dart';
 
 import 'package:tuntigi/utils/colors.dart';
 
@@ -27,5 +29,13 @@ class App extends StatelessWidget {
 
   AppPreferences getAppPreferences() {
     return AppPreferences();
+  }
+
+  AppDatabase getAppDatabase() {
+    return AppDatabase();
+  }
+
+  getUserRepository({required AppPreferences appPreferences, required AppDatabase appDatabase}) {
+    return UserRepository(appPreferences: appPreferences, appDatabase: appDatabase);
   }
 }
