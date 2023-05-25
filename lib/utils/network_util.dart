@@ -123,6 +123,21 @@ class NetworkUtil {
     return url;
   }
 
+  String _getErrorMessage (String body) {
+    try {
+      final Map res = _decoder.convert(body);
+      String error = '';
+      if (res.containsKey('error')) {
+        error = res['error'];
+      } else {
+        error = res[res.keys.first];
+      }
+      return error;
+    } on Exception catch(e) {
+      return body.toString();
+    }
+  }
+
   dynamic _returnResponse(http.Response response) {
     switch (response.statusCode) {
       case 200:
@@ -130,10 +145,10 @@ class NetworkUtil {
         final String res = response.body;
         return _decoder.convert(res);
       case 400:
-        throw BadRequestException(response.body.toString());
+        throw BadRequestException(_getErrorMessage(response.body));
       case 401:
       case 403:
-        throw UnauthorisedException(response.body.toString());
+        throw UnauthorisedException(_getErrorMessage(response.body));
       case 500:
       default:
         throw FetchDataException(

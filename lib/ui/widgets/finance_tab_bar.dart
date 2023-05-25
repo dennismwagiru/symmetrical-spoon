@@ -10,6 +10,7 @@ class FinanceTabBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
     return DefaultTabController(
         length: 3,
         initialIndex: 0,
@@ -25,12 +26,12 @@ class FinanceTabBar extends StatelessWidget {
                 ),
                 child: TabBar(
                     dividerColor: Colors.white,
-                    indicatorColor: Colors.black,
+                    indicatorColor: Colors.transparent,
                     labelStyle: CustomStyle.tabTitleStyle,
                     unselectedLabelColor: const Color(0xFFAEAEAE),
                     tabs: const [
                       Tab(
-                          child: Text('Account'),
+                        child: Text('Account'),
                       ),
                       Tab(
                         child: Text('Deposit'),

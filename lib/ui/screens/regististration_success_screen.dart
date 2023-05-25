@@ -67,7 +67,7 @@ class _RegistrationSuccessScreenState extends State<RegistrationSuccessScreen> {
                           ),
                           child: Center(
                             child: Text(
-                              Strings.next,
+                              Strings.signIn,
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: Dimensions.largeTextSize
@@ -76,7 +76,7 @@ class _RegistrationSuccessScreenState extends State<RegistrationSuccessScreen> {
                           ),
                         ),
                         onTap: () {
-                          Navigator.pushReplacementNamed(context, AppRoutes.appRouteDashboard);
+                          Navigator.pushReplacementNamed(context, AppRoutes.appRouteLogin);
                         },
                       ),
                       const SizedBox(height: 56),

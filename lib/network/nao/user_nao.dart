@@ -14,6 +14,9 @@ class UserNAO {
           .then((dynamic response) { // On response received
         return NetworkResponse(isSuccessful: true, data: response);
       }).onError((error, stackTrace) {
+        print({
+          'Error': error,
+        });
         return NetworkResponse(
             isSocketException: (error is SocketException || error is TimeoutException),
             isSuccessful: false,  error: error.toString()

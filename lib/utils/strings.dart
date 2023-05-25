@@ -23,6 +23,8 @@ class Strings {
       'to Tuntigi\'s Terms and Service and acknowledge the Privacy Policy';
   static String username = 'Username';
   static String fullName = 'Full Name';
+  static String firstName = 'First Name';
+  static String lastName = 'Last Name';
   static String confirmPin = 'Confirm Pin';
   static String view = 'View';
   static String hide = 'Hide';

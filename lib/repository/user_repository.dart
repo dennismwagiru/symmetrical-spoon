@@ -9,6 +9,7 @@ import 'dart:developer' as developer;
 
 class UserRepository {
 
+  final _isShowingBalance = StreamController<bool>.broadcast();
   final _loggedInUser = StreamController<NetworkResponse>.broadcast();
   final _loginResponse = StreamController<NetworkResponse>.broadcast();
   final _registrationResponse = StreamController<NetworkResponse>.broadcast();
@@ -41,17 +42,32 @@ class UserRepository {
   void create({required Map<String, dynamic> body}) {
     UserNAO.register(body: body)
         .then((NetworkResponse response) {
-      if(response.isSuccessful) {
-        User user = User.fromMap(response.data['user']);
-        // _appDatabase.cacheLoggedInUser(user: user);
-        // _appPreferences.setAccessToken(accessToken: response.data['access_token']);
-        // _appPreferences.setLoggedIn(isLoggedIn: true);
-
-      } else {
-        _appPreferences.setLoggedIn(isLoggedIn: false);
-      }
+      developer.log(
+          'register response',
+          name: 'register',
+          error: response.data
+      );
+      // if(response.isSuccessful) {
+      //   User user = User.fromMap(response.data['user']);
+      //   // _appDatabase.cacheLoggedInUser(user: user);
+      //   // _appPreferences.setAccessToken(accessToken: response.data['access_token']);
+      //   // _appPreferences.setLoggedIn(isLoggedIn: true);
+      //
+      // } else {
+      //   _appPreferences.setLoggedIn(isLoggedIn: false);
+      // }
       _registrationResponse.add(response);
     });
+  }
+
+  void isShowingBalance() async {
+    _appPreferences.isPreferenceReady;
+    _appPreferences.getShowBalance()
+        .then((value) => _isShowingBalance.add(value));
+  }
+
+  void setIsShowingBalance(bool showBalance) async {
+    _appPreferences.setShowBalance(showBalance: showBalance);
   }
 
   Future<User?> getUser() async {
@@ -69,6 +85,17 @@ class UserRepository {
   /// @usage -> Stream of type bool for streaming login response
   Stream<NetworkResponse> getLoginResponse() {
     return _loginResponse.stream;
+  }
+
+  /// Get Login Response Method -> Stream<bool>
+  /// @param -> _
+  /// @usage -> Stream of type bool for streaming login response
+  Stream<NetworkResponse> getRegistrationResponse() {
+    return _registrationResponse.stream;
+  }
+
+  Stream<bool> getIsShowingBalance() {
+    return _isShowingBalance.stream;
   }
 
 }

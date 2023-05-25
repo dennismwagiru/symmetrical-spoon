@@ -15,6 +15,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        // useMaterial3: true,
         primaryColor: Colors.white,
         // visualDensity: VisualDensity.adaptivePlatformDensity,
         fontFamily: 'SFUIText',

@@ -14,7 +14,7 @@ class UserViewModel extends ChangeNotifier {
 
   final _loginResponse = StreamController<NetworkResponse>.broadcast();
   final _currentUserController = StreamController<NetworkResponse>.broadcast();
-  final _isInitialLaunch = StreamController<bool>.broadcast();
+  final _showBalance = StreamController<bool>.broadcast();
   final _registeredUserResponse = StreamController<NetworkResponse>.broadcast();
 
   factory UserViewModel(App app) {
@@ -29,10 +29,20 @@ class UserViewModel extends ChangeNotifier {
   }
 
   void _init() {
+    _userRepository.getIsShowingBalance().listen((event) => _showBalance.add(event));
+
     _userRepository.getLoginResponse().listen((event) => _loginResponse.add(event));
     // _userRepository.getUserResponse().listen((NetworkResponse response) => _currentUserController.add(response));
     // _userRepository.getUserUpdatedResponse().listen((event) => _updatedUserResponse.add(event));
-    // _userRepository.getRegistrationResponse().listen((event) => _registeredUserResponse.add(event));
+    _userRepository.getRegistrationResponse().listen((event) => _registeredUserResponse.add(event));
+  }
+
+  void isShowingBalance() {
+    _userRepository.isShowingBalance();
+  }
+
+  void setIsShowingBalance(bool showBalance) {
+    _userRepository.setIsShowingBalance(showBalance);
   }
 
 
@@ -47,7 +57,7 @@ class UserViewModel extends ChangeNotifier {
 
 
   Stream<NetworkResponse> getCurrentUserResponse() => _currentUserController.stream;
-  Stream<bool> getIsInitialLaunch() => _isInitialLaunch.stream;
+  Stream<bool> getShowBalance() => _showBalance.stream;
   Stream<NetworkResponse> getLoginResponse() => _loginResponse.stream;
   Stream<NetworkResponse> getRegisteredUser() => _registeredUserResponse.stream;
 }

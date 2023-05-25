@@ -4,6 +4,7 @@ import 'package:tuntigi/app/app.dart';
 import 'package:tuntigi/app/app_routes.dart';
 import 'package:tuntigi/network/entities/response.dart';
 import 'package:tuntigi/ui/widgets/common/logo_widget.dart';
+import 'package:tuntigi/ui/widgets/form/message_widget.dart';
 import 'package:tuntigi/ui/widgets/form/password_input_widget.dart';
 import 'package:tuntigi/ui/widgets/form/text_input_widget.dart';
 import 'package:tuntigi/ui/widgets/loadable_widget.dart';
@@ -25,6 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   bool _loading = false;
+  String? _message;
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -69,6 +71,8 @@ class _LoginScreenState extends State<LoginScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const LogoWidget(),
+            const SizedBox(height: 33),
+            MessageWidget(message: _message),
             const SizedBox(height: 33),
             Text(
                 Strings.welcomeBack,
@@ -135,9 +139,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   onTap: () {
-                    setState(() => _loading = true );
-                    _viewModel.isAuthentic(email: emailController.text, password: passwordController.text);
-                    // Navigator.pushReplacementNamed(context, AppRoutes.appRouteDashboard);
+                    // setState(() => _loading = true );
+                    // _viewModel.isAuthentic(email: emailController.text, password: passwordController.text);
+                    Navigator.pushReplacementNamed(context, AppRoutes.appRouteDashboard);
                   },
                 )
             ),
@@ -174,12 +178,14 @@ class _LoginScreenState extends State<LoginScreen> {
   void subscribeToViewModel() {
     _viewModel.getLoginResponse()
         .listen((NetworkResponse response) {
-      setState(() => _loading = false);
+      setState(() => {
+        _loading = false,
+        _message = null
+      });
       if(response.isSuccessful) {
         Fluttertoast.showToast(msg: response.data.toString());
       } else {
-        // TODO Show Error Message
-        Fluttertoast.showToast(msg: "Failed to log in: ${response.error}");
+        setState(() => _message = response.error);
       }
     });
   }

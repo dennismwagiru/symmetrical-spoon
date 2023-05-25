@@ -86,7 +86,7 @@ class LeaderboardScreen extends StatelessWidget {
                         fontSize: 12
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Table(
                     columnWidths: const {
                       0: FlexColumnWidth(4),
@@ -166,7 +166,8 @@ class LeaderboardScreen extends StatelessWidget {
                       TableRow(
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(4),
-                              color: const Color(0xFF156CF7)
+                              color: const Color(0xFFFAFAF8)
+                            // color: const Color(0xFF156CF7)
                           ),
                           children: [
                             TableCell(

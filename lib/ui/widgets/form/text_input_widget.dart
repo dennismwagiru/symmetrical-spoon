@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tuntigi/utils/colors.dart';
 import 'package:tuntigi/utils/custom_style.dart';
 
-class TextInputWidget extends StatelessWidget {
+class TextInputWidget extends StatefulWidget {
   final String label;
   final TextEditingController controller;
   final TextInputType? textInputType;
@@ -18,20 +18,26 @@ class TextInputWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<StatefulWidget> createState() => _TextInputWidget();
+}
+
+class _TextInputWidget extends State<TextInputWidget> {
+
+
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
       style: CustomStyle.inputFieldStyle,
-      controller: controller,
-      keyboardType: textInputType ?? TextInputType.text,
-      // validator: (String value){
-      //   if(value.isEmpty){
-      //     return Strings.pleaseFillOutTheField;
-      //   }else{
-      //     return null;
-      //   }
-      // },
+      controller: widget.controller,
+      keyboardType: widget.textInputType ?? TextInputType.text,
+      validator: (value) {
+        if(value == null || value.isEmpty){
+          return "Please fill this field";
+        }
+        return null;
+      },
       decoration: InputDecoration(
-          labelText: label,
+          labelText: widget.label,
           // contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
           floatingLabelAlignment: FloatingLabelAlignment.start,
           floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -41,8 +47,8 @@ class TextInputWidget extends StatelessWidget {
           enabledBorder: CustomStyle.focusErrorBorder,
           focusedErrorBorder: CustomStyle.focusErrorBorder,
           errorBorder: CustomStyle.focusErrorBorder,
-          suffixIcon: suffix,
-          prefixIcon: prefix
+          suffixIcon: widget.suffix,
+          prefixIcon: widget.prefix
       ),
     );
   }

@@ -1,15 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:tuntigi/app/app.dart';
 import 'package:tuntigi/app/app_routes.dart';
 import 'package:tuntigi/utils/custom_style.dart';
 import 'package:tuntigi/utils/dimensions.dart';
 import 'package:tuntigi/utils/strings.dart';
+import 'package:tuntigi/viewmodels/user_viewmodel.dart';
 
-class BalanceWidget extends StatelessWidget {
+class BalanceWidget extends StatefulWidget {
   const BalanceWidget({Key? key}) : super(key: key);
 
   @override
+  State<StatefulWidget> createState() =>  _BalanceWidget();
+}
+
+class _BalanceWidget extends State<BalanceWidget> {
+
+  late UserViewModel _viewModel;
+  late bool _isShowingBalance = false;
+
+  @override
+  void initState() {
+    _viewModel = UserViewModel(const App());
+
+    Future.delayed(Duration(milliseconds: 1000), () async {
+      _viewModel.isShowingBalance();
+    });
+
+    super.initState();
+    subscribeToViewModel();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return _isShowingBalance ? GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, AppRoutes.appRouteTopup);
       },
@@ -39,6 +62,15 @@ class BalanceWidget extends StatelessWidget {
           )
         ],
       ),
-    );
+    ) : Container();
+  }
+
+  void subscribeToViewModel() {
+
+      _viewModel.getShowBalance()
+          .listen((event) {
+        print({'show Balance: ', event});
+        setState(() => _isShowingBalance = event);
+      });
   }
 }

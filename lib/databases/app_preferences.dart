@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 
-class AppPreferences {
+class AppPreferences with ChangeNotifier {
 
   //----------------------- Preference Constants -----------------------//
   // Constants for Preference-Value's data-type
@@ -11,7 +12,7 @@ class AppPreferences {
   static const String prefTypeString  = 'STRING';
 
   // Constants for Preference-Name
-  static const String prefIsInitial  = 'IS_INITIAL_LAUNCH';
+  static const String prefShowBalance  = 'SHOW_BALANCE';
   static const String prefIsLoggedIn  = 'IS_LOGGED_IN';
   static const String prefUserId  = 'USER_ID';
   static const String prefAccessToken = 'ACCESS_TOKEN';
@@ -56,7 +57,7 @@ class AppPreferences {
   /// Set Logged-In Method -> void
   /// @param -> @required isLoggedIn -> bool
   /// @usage -> Set value of IS_LOGGED_IN in preferences
-  void setInitial({required bool isInitial}) => _setPreference(prefName: prefIsInitial, prefValue: isInitial, prefType: prefTypeBool);
+  void setShowBalance({required bool showBalance}) => _setPreference(prefName: prefShowBalance, prefValue: showBalance, prefType: prefTypeBool);
   void setLoggedIn({required bool isLoggedIn}) => _setPreference(prefName: prefIsLoggedIn, prefValue: isLoggedIn, prefType: prefTypeBool);
   void setUserId({required String userId}) => _setPreference(prefName: prefUserId, prefValue: userId, prefType: prefTypeString);
   void setStartTime({required String? startTime}) => _setPreference(prefName: prefStartTime, prefValue: startTime, prefType: prefTypeString);
@@ -69,7 +70,7 @@ class AppPreferences {
   /// Get Logged-In Method -> Future<bool>
   /// @param -> _
   /// @usage -> Get value of IS_LOGGED_IN from preferences
-  Future<bool> getInitialLaunch() async => await _getPreference(prefName: prefIsInitial) ?? true; // Check value for Null. If Null  provide default value as True.
+  Future<bool> getShowBalance() async => await _getPreference(prefName: prefShowBalance) ?? true; // Check value for Null. If Null  provide default value as True.
   Future<bool> getLoggedIn() async => await _getPreference(prefName: prefIsLoggedIn) ?? false; // Check value for Null. If Null  provide default value as False.
   Future<String?> getUserId() async => await _getPreference(prefName: prefUserId); // Check value for Null. If Null  provide default value as False.
   Future<String?> getStartTime() async => await _getPreference(prefName: prefStartTime);

@@ -51,7 +51,7 @@ class BottomNavBar extends StatelessWidget {
             //   color: index == 1 ? Colors.blue : Colors.grey,
             //   size: 26,
             // ),
-            label: "News"
+            label: "Wallet"
         ),
         BottomNavigationBarItem(
             icon: Image.asset(
