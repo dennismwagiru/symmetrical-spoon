@@ -22,7 +22,7 @@ class _BalanceWidget extends State<BalanceWidget> {
   void initState() {
     _viewModel = UserViewModel(const App());
 
-    Future.delayed(Duration(milliseconds: 1000), () async {
+    Future.delayed(const Duration(milliseconds: 1000), () async {
       _viewModel.isShowingBalance();
     });
 
@@ -32,7 +32,7 @@ class _BalanceWidget extends State<BalanceWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return _isShowingBalance ? GestureDetector(
+    return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, AppRoutes.appRouteTopup);
       },
@@ -62,7 +62,7 @@ class _BalanceWidget extends State<BalanceWidget> {
           )
         ],
       ),
-    ) : Container();
+    );
   }
 
   void subscribeToViewModel() {

@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tuntigi/app/app.dart';
 import 'package:tuntigi/app/app_routes.dart';
 import 'package:tuntigi/network/entities/response.dart';
+import 'package:tuntigi/ui/widgets/form/message_widget.dart';
 import 'package:tuntigi/ui/widgets/form/password_input_widget.dart';
 import 'package:tuntigi/ui/widgets/form/text_input_widget.dart';
 import 'package:tuntigi/ui/widgets/loadable_widget.dart';
@@ -23,8 +26,10 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final JsonDecoder _decoder = const JsonDecoder();
 
   bool _loading = false;
+  String? _message;
 
   TextEditingController emailController = TextEditingController();
   TextEditingController mobileController = TextEditingController();
@@ -35,6 +40,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController passwordConfirmationController = TextEditingController();
 
   late UserViewModel _viewModel;
+  late Map<String, dynamic> _errors = {};
 
   @override
   void initState() {
@@ -73,6 +79,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           style: CustomStyle.subTitleStyle
                       ),
                       const SizedBox(height: 34),
+                      MessageWidget(message: _message),
+                      const SizedBox(height: 34),
                       Form(
                           key: formKey,
                           child: Column(
@@ -81,45 +89,59 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 label: Strings.username,
                                 suffix: null,
                                 controller: usernameController,
+                                errorText: _errors.containsKey('username') ? _errors['username'][0] : null,
                               ),
                               const SizedBox(height: 26),
                               TextInputWidget(
                                 label: Strings.firstName,
                                 suffix: null,
                                 controller: firstNameController,
+                                errorText: _errors.containsKey('first_name') ? _errors['first_name'][0] : null,
                               ),
                               const SizedBox(height: 26),
                               TextInputWidget(
                                 label: Strings.lastName,
                                 suffix: null,
                                 controller: lastNameController,
+                                errorText: _errors.containsKey('last_name') ? _errors['last_name'][0] : null,
                               ),
                               const SizedBox(height: 26),
                               TextInputWidget(
                                 label: Strings.email,
+                                errorText: _errors.containsKey('email') ? _errors['email'][0] : null,
                                 controller: emailController,
                                 textInputType: TextInputType.emailAddress,
-                                suffix: const Icon(
+                                suffix: emailController.value.text.isNotEmpty && !_errors.containsKey('email')  ? const Icon(
                                   Icons.check_circle,
                                   color: CustomColor.blueColor,
                                   size: 34,
-                                ),
+                                ) : null,
                               ),
                               const SizedBox(height: 26),
                               TextInputWidget(
                                 label: Strings.phoneNumber,
                                 controller: mobileController,
                                 textInputType: TextInputType.phone,
-                                suffix: const Icon(
+                                suffix: mobileController.value.text.isNotEmpty && !_errors.containsKey('mobile_no') ? const Icon(
                                   Icons.check_circle,
                                   color: CustomColor.blueColor,
                                   size: 34,
-                                ),
+                                ) : null,
+                                errorText: _errors.containsKey('mobile_no') ? _errors['mobile_no'][0] : null,
+
                               ),
                               const SizedBox(height: 26),
-                              PasswordInputWidget(label: Strings.pin, controller: passwordController,),
+                              PasswordInputWidget(
+                                label: Strings.pin,
+                                controller: passwordController,
+                                errorText: _errors.containsKey('password') ? _errors['password'][0] : null,
+                              ),
                               const SizedBox(height: 26),
-                              PasswordInputWidget(label: Strings.confirmPin, controller: passwordConfirmationController,),
+                              PasswordInputWidget(
+                                label: Strings.confirmPin,
+                                controller: passwordConfirmationController,
+                                errorText: _errors.containsKey('password') ? _errors['password'][0] : null,
+                              ),
                               const SizedBox(height: 45),
                             ],
                           )
@@ -163,6 +185,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void _registerUser() {
     setState(() {
       _loading = true;
+      _message = null;
     });
     _viewModel.create(body: {
       'email': emailController.text,
@@ -178,14 +201,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void subscribeToViewModel() {
     _viewModel.getRegisteredUser()
         .listen((NetworkResponse response) {
-      setState(() => _loading = false);
+      setState(() => {
+        _loading = false,
+      });
       if(response.isSuccessful) {
         Fluttertoast.showToast(msg: 'Registration successful.');
         Navigator.pushReplacementNamed(context, AppRoutes.appRouteRegistrationSuccessful);
       } else {
-        // TODO Show Error Message
-        Fluttertoast.showToast(msg: "Registration failed: ${response.error}");
+        const JsonDecoder decoder = JsonDecoder();
+        try {
+          final Map<String, dynamic> res = decoder.convert(
+              response.error ?? '');
+          setState(() => _errors = res);
+        } on Exception catch (e) {
+          setState(() => _message = response.error);
+        }
       }
+
+      // setState(() => _loading = false);
+
+      //
+      //   print({ 'e': response.error});
+      //   // try {
+      //   //   final Map<String, dynamic> res = _decoder.convert(response.error ?? '');
+      //   //   print(res);
+      //   //   setState(() => _errors = res);
+      //   // } on Exception catch(e) {
+      //   //   setState(() => _message = response.error);
+      //   // }
+      //
+      // }
     });
   }
 

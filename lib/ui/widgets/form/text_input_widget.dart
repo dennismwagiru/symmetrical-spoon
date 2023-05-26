@@ -4,17 +4,19 @@ import 'package:tuntigi/utils/custom_style.dart';
 
 class TextInputWidget extends StatefulWidget {
   final String label;
+  final String? errorText;
   final TextEditingController controller;
   final TextInputType? textInputType;
   final Widget? suffix;
   final Widget? prefix;
+  final String? Function(String?)? validator;
   const TextInputWidget({
     Key? key,
     required this.label,
     required this.controller,
     this.textInputType,
     this.suffix,
-    this.prefix
+    this.prefix, this.validator, this.errorText
   }) : super(key: key);
 
   @override
@@ -30,12 +32,7 @@ class _TextInputWidget extends State<TextInputWidget> {
       style: CustomStyle.inputFieldStyle,
       controller: widget.controller,
       keyboardType: widget.textInputType ?? TextInputType.text,
-      validator: (value) {
-        if(value == null || value.isEmpty){
-          return "Please fill this field";
-        }
-        return null;
-      },
+      validator: widget.validator,
       decoration: InputDecoration(
           labelText: widget.label,
           // contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
@@ -48,7 +45,8 @@ class _TextInputWidget extends State<TextInputWidget> {
           focusedErrorBorder: CustomStyle.focusErrorBorder,
           errorBorder: CustomStyle.focusErrorBorder,
           suffixIcon: widget.suffix,
-          prefixIcon: widget.prefix
+          prefixIcon: widget.prefix,
+          errorText: widget.errorText
       ),
     );
   }

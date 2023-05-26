@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tuntigi/app/app.dart';
@@ -139,9 +141,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   onTap: () {
-                    // setState(() => _loading = true );
-                    // _viewModel.isAuthentic(email: emailController.text, password: passwordController.text);
-                    Navigator.pushReplacementNamed(context, AppRoutes.appRouteDashboard);
+                    setState(() => {
+                      _loading = true,
+                      _message = null
+                    });
+                    _viewModel.isAuthentic(email: emailController.text, password: passwordController.text);
+                    // Navigator.pushReplacementNamed(context, AppRoutes.appRouteDashboard);
                   },
                 )
             ),
@@ -183,9 +188,16 @@ class _LoginScreenState extends State<LoginScreen> {
         _message = null
       });
       if(response.isSuccessful) {
-        Fluttertoast.showToast(msg: response.data.toString());
+        Fluttertoast.showToast(msg: "Login Successful");
+        Navigator.pushReplacementNamed(context, AppRoutes.appRouteDashboard);
       } else {
-        setState(() => _message = response.error);
+        const JsonDecoder decoder = JsonDecoder();
+        try {
+            final Map<String, dynamic> res = decoder.convert(response.error ?? '');
+            setState(() => _message = res[res.keys.first]);
+          } on Exception catch(e) {
+            setState(() => _message = response.error);
+          }
       }
     });
   }

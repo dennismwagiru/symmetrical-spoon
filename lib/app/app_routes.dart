@@ -156,9 +156,9 @@ class AppRoutes {
 
       default:
         return MaterialPageRoute<void>(
-            settings: routeSettings,
-            builder: (BuildContext context) => const LoginScreen(),
-            fullscreenDialog: true
+          builder: (BuildContext context) => const SplashScreen(),
+          fullscreenDialog: true,
+          settings: routeSettings,
         );
     }
   }

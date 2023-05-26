@@ -125,12 +125,13 @@ class NetworkUtil {
 
   String _getErrorMessage (String body) {
     try {
-      final Map res = _decoder.convert(body);
+      final Map<String, dynamic> res = _decoder.convert(body);
       String error = '';
       if (res.containsKey('error')) {
         error = res['error'];
       } else {
-        error = res[res.keys.first];
+        print({'keys', res.keys});
+        error = res[res.keys.first][0];
       }
       return error;
     } on Exception catch(e) {
@@ -144,11 +145,12 @@ class NetworkUtil {
       case 201:
         final String res = response.body;
         return _decoder.convert(res);
+      case 422:
       case 400:
-        throw BadRequestException(_getErrorMessage(response.body));
+        throw BadRequestException(response.body);
       case 401:
       case 403:
-        throw UnauthorisedException(_getErrorMessage(response.body));
+        throw UnauthorisedException(response.body);
       case 500:
       default:
         throw FetchDataException(

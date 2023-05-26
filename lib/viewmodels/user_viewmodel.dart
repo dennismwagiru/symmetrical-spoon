@@ -12,6 +12,7 @@ class UserViewModel extends ChangeNotifier {
 
   static late UserViewModel _instance;
 
+  final _isLoggedIn = StreamController<bool>.broadcast();
   final _loginResponse = StreamController<NetworkResponse>.broadcast();
   final _currentUserController = StreamController<NetworkResponse>.broadcast();
   final _showBalance = StreamController<bool>.broadcast();
@@ -29,6 +30,7 @@ class UserViewModel extends ChangeNotifier {
   }
 
   void _init() {
+    _userRepository.getIsLoggedIn().listen((event) => _isLoggedIn.add(event));
     _userRepository.getIsShowingBalance().listen((event) => _showBalance.add(event));
 
     _userRepository.getLoginResponse().listen((event) => _loginResponse.add(event));
@@ -45,6 +47,10 @@ class UserViewModel extends ChangeNotifier {
     _userRepository.setIsShowingBalance(showBalance);
   }
 
+  void isUserLoggedIn() {
+    _userRepository.isUserLoggedIn();
+  }
+
 
   Future<User?> getUser() => _userRepository.getUser();
 
@@ -56,6 +62,7 @@ class UserViewModel extends ChangeNotifier {
 
 
 
+  Stream<bool> getIsLoggedIn() => _isLoggedIn.stream;
   Stream<NetworkResponse> getCurrentUserResponse() => _currentUserController.stream;
   Stream<bool> getShowBalance() => _showBalance.stream;
   Stream<NetworkResponse> getLoginResponse() => _loginResponse.stream;

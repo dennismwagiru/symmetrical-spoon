@@ -5,8 +5,9 @@ import 'package:tuntigi/utils/strings.dart';
 
 class PasswordInputWidget extends StatefulWidget {
   final String label;
+  final String? errorText;
   final TextEditingController controller;
-  const PasswordInputWidget({Key? key, required this.label, required this.controller}) : super(key: key);
+  const PasswordInputWidget({Key? key, required this.label, required this.controller, this.errorText}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _PasswordInputState();
@@ -38,6 +39,7 @@ class _PasswordInputState extends State<PasswordInputWidget> {
           focusedErrorBorder: CustomStyle.focusErrorBorder,
           errorBorder: CustomStyle.focusErrorBorder,
           prefixIcon: const Icon(Icons.lock),
+          errorText: widget.errorText,
           filled: true,
           fillColor: Colors.white,
           suffixIcon: Padding(

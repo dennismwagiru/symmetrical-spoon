@@ -10,6 +10,7 @@ import 'dart:developer' as developer;
 class UserRepository {
 
   final _isShowingBalance = StreamController<bool>.broadcast();
+  final _isLoggedIn = StreamController<bool>.broadcast();
   final _loggedInUser = StreamController<NetworkResponse>.broadcast();
   final _loginResponse = StreamController<NetworkResponse>.broadcast();
   final _registrationResponse = StreamController<NetworkResponse>.broadcast();
@@ -21,6 +22,12 @@ class UserRepository {
   /// @dependency -> @required appPreferences -> AppPreferences
   /// @usage -> Returns UserRepository instance by injecting dependencies for private constructor.
   factory UserRepository({required AppPreferences appPreferences, required AppDatabase appDatabase}) => UserRepository._internal(appPreferences, appDatabase);
+
+  /// User Repository Private Constructor -> UserRepository
+  /// @param -> @required appPreference -> AppPreferences
+  /// @usage -> Create Instance of UserRepository and initialize variables
+  UserRepository._internal(this._appPreferences, this._appDatabase);
+
   //----------------------- Methods -----------------------//
   /// Is Authentic User Method -> void
   /// @param -> @required username -> String
@@ -31,6 +38,9 @@ class UserRepository {
     UserNAO.login(email: email, password: password)
         .then((NetworkResponse response) { // On Response
       _loginResponse.add(response);
+      if(response.isSuccessful) {
+        _appPreferences.setLoggedIn(isLoggedIn: true);
+      }
       developer.log(
         'login response',
         name: 'login',
@@ -66,6 +76,12 @@ class UserRepository {
         .then((value) => _isShowingBalance.add(value));
   }
 
+  void isUserLoggedIn() async {
+    await _appPreferences.isPreferenceReady;
+    _appPreferences.getLoggedIn()
+        .then((value) => _isLoggedIn.add(value));
+  }
+
   void setIsShowingBalance(bool showBalance) async {
     _appPreferences.setShowBalance(showBalance: showBalance);
   }
@@ -75,10 +91,6 @@ class UserRepository {
     return user;
   }
 
-  /// User Repository Private Constructor -> UserRepository
-  /// @param -> @required appPreference -> AppPreferences
-  /// @usage -> Create Instance of UserRepository and initialize variables
-  UserRepository._internal(this._appPreferences, this._appDatabase);
 
   /// Get Login Response Method -> Stream<bool>
   /// @param -> _
@@ -96,6 +108,10 @@ class UserRepository {
 
   Stream<bool> getIsShowingBalance() {
     return _isShowingBalance.stream;
+  }
+
+  Stream<bool> getIsLoggedIn() {
+    return _isLoggedIn.stream;
   }
 
 }
