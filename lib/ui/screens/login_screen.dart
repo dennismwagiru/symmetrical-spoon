@@ -29,8 +29,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool _loading = false;
   String? _message;
+  late Map<String, dynamic> _errors = {};
 
-  TextEditingController emailController = TextEditingController();
+  TextEditingController mobileController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   late UserViewModel _viewModel;
@@ -91,17 +92,23 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   children: [
                     TextInputWidget(
-                        label: Strings.email,
-                        controller: emailController,
-                        textInputType: TextInputType.emailAddress,
-                        suffix: const Icon(
-                          Icons.check_circle,
-                          color: CustomColor.blueColor,
-                          size: 34,
-                        )
+                        label: Strings.phoneNumber,
+                        controller: mobileController,
+                        textInputType: TextInputType.phone,
+                      suffix: mobileController.value.text.isNotEmpty && !_errors.containsKey('mobileno') ? const Icon(
+                        Icons.check_circle,
+                        color: CustomColor.blueColor,
+                        size: 34,
+                      ) : null,
+                      errorText: _errors.containsKey('mobileno') ? _errors['mobileno'][0] : null,
+
                     ),
                     const SizedBox(height: 23),
-                    PasswordInputWidget(label: Strings.pin, controller: passwordController,),
+                    PasswordInputWidget(
+                      label: Strings.pin,
+                      controller: passwordController,
+                      errorText: _errors.containsKey('pin') ? _errors['pin'][0] : null,
+                    ),
                     const SizedBox(height: Dimensions.heightSize),
                   ],
                 )
@@ -145,7 +152,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       _loading = true,
                       _message = null
                     });
-                    _viewModel.isAuthentic(email: emailController.text, password: passwordController.text);
+                    _viewModel.isAuthentic(mobileno: mobileController.text, pin: passwordController.text);
                     // Navigator.pushReplacementNamed(context, AppRoutes.appRouteDashboard);
                   },
                 )
@@ -193,11 +200,21 @@ class _LoginScreenState extends State<LoginScreen> {
       } else {
         const JsonDecoder decoder = JsonDecoder();
         try {
-            final Map<String, dynamic> res = decoder.convert(response.error ?? '');
-            setState(() => _message = res[res.keys.first]);
-          } on Exception catch(e) {
-            setState(() => _message = response.error);
+          final Map<String, dynamic> res = decoder.convert(
+              response.error ?? '');
+          if(res.containsKey('error')) {
+            setState(() {
+              _errors = {
+                'mobileno': [res['error']],
+                'pin': [res['error']]
+              };
+            });
+          } else {
+            setState(() => _errors = res);
           }
+        } on Exception catch (e) {
+          setState(() => _message = response.error);
+        }
       }
     });
   }

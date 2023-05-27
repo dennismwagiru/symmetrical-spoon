@@ -56,8 +56,8 @@ class UserViewModel extends ChangeNotifier {
 
   void create({required Map<String, dynamic> body}) => _userRepository.create(body: body);
 
-  void isAuthentic({required String email, required String password}) {
-    _userRepository.isAuthenticUser(email: email, password: password);
+  void isAuthentic({required String mobileno, required String pin}) {
+    _userRepository.isAuthenticUser(mobileno: mobileno, pin: pin);
   }
 
 

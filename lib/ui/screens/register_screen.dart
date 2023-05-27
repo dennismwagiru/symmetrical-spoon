@@ -38,6 +38,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController lastNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController passwordConfirmationController = TextEditingController();
+  TextEditingController pinController = TextEditingController();
 
   late UserViewModel _viewModel;
   late Map<String, dynamic> _errors = {};
@@ -89,7 +90,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 label: Strings.username,
                                 suffix: null,
                                 controller: usernameController,
-                                errorText: _errors.containsKey('username') ? _errors['username'][0] : null,
+                                errorText: _errors.containsKey('alias') ? _errors['alias'][0] : null,
                               ),
                               const SizedBox(height: 26),
                               TextInputWidget(
@@ -122,27 +123,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 label: Strings.phoneNumber,
                                 controller: mobileController,
                                 textInputType: TextInputType.phone,
-                                suffix: mobileController.value.text.isNotEmpty && !_errors.containsKey('mobile_no') ? const Icon(
+                                suffix: mobileController.value.text.isNotEmpty && !_errors.containsKey('mobileno') ? const Icon(
                                   Icons.check_circle,
                                   color: CustomColor.blueColor,
                                   size: 34,
                                 ) : null,
-                                errorText: _errors.containsKey('mobile_no') ? _errors['mobile_no'][0] : null,
+                                errorText: _errors.containsKey('mobileno') ? _errors['mobileno'][0] : null,
 
                               ),
                               const SizedBox(height: 26),
                               PasswordInputWidget(
                                 label: Strings.pin,
-                                controller: passwordController,
-                                errorText: _errors.containsKey('password') ? _errors['password'][0] : null,
+                                controller: pinController,
+                                errorText: _errors.containsKey('pin') ? _errors['pin'][0] : null,
                               ),
                               const SizedBox(height: 26),
                               PasswordInputWidget(
                                 label: Strings.confirmPin,
                                 controller: passwordConfirmationController,
-                                errorText: _errors.containsKey('password') ? _errors['password'][0] : null,
+                                errorText: _errors.containsKey('confirmPin') ? _errors['confirmPin'][0] : null,
                               ),
                               const SizedBox(height: 45),
+
                             ],
                           )
                       ),
@@ -192,9 +194,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
       'first_name': firstNameController.text,
       'last_name': lastNameController.text,
       'alias': usernameController.text,
-      'mobile_no': mobileController.text,
-      'password': passwordController.text,
-      'password_confirmation': passwordConfirmationController.text,
+      'mobileno': mobileController.text,
+      'pin': pinController.text,
+      'confirmPin': passwordConfirmationController.text,
     });
   }
 
@@ -212,7 +214,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
         try {
           final Map<String, dynamic> res = decoder.convert(
               response.error ?? '');
-          setState(() => _errors = res);
+          if(res.containsKey('error')) {
+            setState(() => _message = res['error']);
+          } else {
+            setState(() => _errors = res);
+          }
         } on Exception catch (e) {
           setState(() => _message = response.error);
         }

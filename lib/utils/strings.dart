@@ -10,8 +10,9 @@ class Strings {
   //login in screen
   static String welcomeBack = 'Welcome back!';
   static String signInToYourAccount = 'Sign In To Your Account';
-  static String phoneNumber = 'Phone number';
+  static String phoneNumber = 'Mobile number';
   static String email = 'Email Address';
+  static String password = 'Password';
   static String pin = 'Pin';
   static String forgotPin = 'Forgot PIN?';
   static String signIn = 'Sign in';
@@ -40,7 +41,7 @@ class Strings {
   static String showBalance = 'Show balance';
   static String hideBalance = 'Hide balance';
   static String currency = 'Kes.';
-  static String balanceAmount = '13,430';
+  static String balanceAmount = '0';
   static String accountBalance = 'Account Balance';
 
   static String wallet = 'Wallet';

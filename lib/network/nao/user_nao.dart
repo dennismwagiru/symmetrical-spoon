@@ -28,12 +28,12 @@ class UserNAO {
   ///        -> @required password -> String
   /// @usage -> Makes a HTTP-POST request to REST api on server.
   static Future<NetworkResponse> login(
-      {required String email, required String password}) {
+      {required String mobileno, required String pin}) {
     return NetworkUtil().post( // HTTP-POST request
         url: NetworkConstants.login, // REST api URL
         body: { // Request body
-          'email': email,
-          'password': password,
+          'mobileno': mobileno,
+          'pin': pin,
         })
         .then((dynamic response) { // On response received
       return NetworkResponse(isSuccessful: true, data: response);

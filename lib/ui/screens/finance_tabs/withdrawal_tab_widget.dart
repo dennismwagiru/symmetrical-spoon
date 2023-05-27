@@ -12,9 +12,9 @@ class WithdrawalTabWidget extends StatelessWidget {
         children: const [
           SearchInputWidget(label: 'Search for a Reference ID, amount',),
           SizedBox(height: 20,),
-          TransactionItemWidget(title: 'M-PESA: RD1223SD4', date: 'April 20, 3:34 PM', amount: '-1,500',),
-          TransactionItemWidget(title: 'M-PESA: RD7283239', date: 'April 13, 4:45 PM', amount: '-900',),
-          TransactionItemWidget(title: 'M-PESA: TD2385222', date: 'April 09, 7:20 AM', amount: '-900',),
+          // TransactionItemWidget(title: 'M-PESA: RD1223SD4', date: 'April 20, 3:34 PM', amount: '-1,500',),
+          // TransactionItemWidget(title: 'M-PESA: RD7283239', date: 'April 13, 4:45 PM', amount: '-900',),
+          // TransactionItemWidget(title: 'M-PESA: TD2385222', date: 'April 09, 7:20 AM', amount: '-900',),
         ],
       ),
     );

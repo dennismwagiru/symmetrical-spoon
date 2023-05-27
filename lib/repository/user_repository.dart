@@ -34,8 +34,8 @@ class UserRepository {
   ///        -> @required password -> String
   /// @usage -> Initiate authentication process and listen to response of authentication, therefore notify authentication result to all listeners
   void isAuthenticUser(
-      {required String email, required String password}) {
-    UserNAO.login(email: email, password: password)
+      {required String mobileno, required String pin}) {
+    UserNAO.login(mobileno: mobileno, pin: pin)
         .then((NetworkResponse response) { // On Response
       _loginResponse.add(response);
       if(response.isSuccessful) {
