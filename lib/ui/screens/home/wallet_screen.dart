@@ -13,7 +13,7 @@ class WalletScreen extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: Scaffold(
-          bottomNavigationBar: const BottomNavBar(index: 0),
+          bottomNavigationBar: const BottomNavBar(index: 1),
           backgroundColor: Colors.white,
           body: Padding(
             padding: const EdgeInsets.only(

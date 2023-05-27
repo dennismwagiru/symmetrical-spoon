@@ -3,7 +3,7 @@ import 'package:tuntigi/app/app_routes.dart';
 
 final routes = [
   AppRoutes.appRouteDashboard,
-  AppRoutes.appRouteNews,
+  AppRoutes.appRouteWallet,
   AppRoutes.appRouteChallenges,
   AppRoutes.appRouteSettings
 ];

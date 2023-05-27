@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tuntigi/app/app.dart';
 import 'package:tuntigi/app/app_routes.dart';
+import 'package:tuntigi/models/profile.dart';
 import 'package:tuntigi/utils/custom_style.dart';
 import 'package:tuntigi/utils/dimensions.dart';
 import 'package:tuntigi/utils/strings.dart';
@@ -17,13 +18,16 @@ class _BalanceWidget extends State<BalanceWidget> {
 
   late UserViewModel _viewModel;
   late bool _isShowingBalance = false;
+  late Profile? _profile = null;
 
   @override
   void initState() {
     _viewModel = UserViewModel(const App());
 
-    Future.delayed(const Duration(milliseconds: 1000), () async {
-      _viewModel.isShowingBalance();
+    _viewModel.isShowingBalance();
+    _viewModel.getPlayerProfile()
+        .then((Profile? profile) {
+      setState(() => _profile = profile);
     });
 
     super.initState();
@@ -51,7 +55,7 @@ class _BalanceWidget extends State<BalanceWidget> {
                   ),
                 ),
                 Text(
-                  Strings.balanceAmount,
+                  _profile?.balance ?? "-",
                   style: CustomStyle.balanceAmountStyle,
                 )
               ]
@@ -67,10 +71,10 @@ class _BalanceWidget extends State<BalanceWidget> {
 
   void subscribeToViewModel() {
 
-      _viewModel.getShowBalance()
-          .listen((event) {
-        print({'show Balance: ', event});
-        setState(() => _isShowingBalance = event);
-      });
+    _viewModel.getShowBalance()
+        .listen((event) {
+      print({'show Balance: ', event});
+      setState(() => _isShowingBalance = event);
+    });
   }
 }

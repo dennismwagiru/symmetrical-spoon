@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:tuntigi/app/app.dart';
+import 'package:tuntigi/models/profile.dart';
 import 'package:tuntigi/models/user.dart';
 import 'package:tuntigi/network/entities/response.dart';
 import 'package:tuntigi/repository/user_repository.dart';
@@ -53,12 +54,15 @@ class UserViewModel extends ChangeNotifier {
 
 
   Future<User?> getUser() => _userRepository.getUser();
+  Future<Profile?> getPlayerProfile() => _userRepository.getPlayerProfile();
 
   void create({required Map<String, dynamic> body}) => _userRepository.create(body: body);
 
   void isAuthentic({required String mobileno, required String pin}) {
     _userRepository.isAuthenticUser(mobileno: mobileno, pin: pin);
   }
+
+  void fetchUser() => _userRepository.fetchUserInfo();
 
 
 

@@ -36,7 +36,7 @@ class Strings {
 
   // Dashboard Widget
   static String earn = 'Earn KES. 50';
-  static String greeting = 'Hi, Juma Ali';
+  static String greeting = 'Hi,';
   static String designation = 'Admiral 2nd Class';
   static String showBalance = 'Show balance';
   static String hideBalance = 'Hide balance';

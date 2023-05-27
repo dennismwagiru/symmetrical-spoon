@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:tuntigi/ui/screens/dashboard/leaderboard_screen.dart';
 import 'package:tuntigi/ui/screens/dashboard/referral_screen.dart';
 import 'package:tuntigi/ui/screens/dashboard/statement_screen.dart';
-import 'package:tuntigi/ui/screens/dashboard/wallet_screen.dart';
 import 'package:tuntigi/ui/screens/home/challenges_screen.dart';
 import 'package:tuntigi/ui/screens/home/dashboard_screen.dart';
-import 'package:tuntigi/ui/screens/home/news_screen.dart';
+import 'package:tuntigi/ui/screens/home/wallet_screen.dart';
 import 'package:tuntigi/ui/screens/home/settings_screen.dart';
 import 'package:tuntigi/ui/screens/login_screen.dart';
 import 'package:tuntigi/ui/screens/referral_code_screen.dart';
@@ -20,7 +19,7 @@ class AppRoutes {
 
   // Base Routes
   static const String appRouteDashboard = '/dashboard';
-  static const String appRouteNews = '/news';
+  static const String appRouteWallet = '/wallet';
   static const String appRouteChallenges = '/challenges';
   static const String appRouteSettings = '/settings';
   static const String appRouteReferralCode = '/referral_code';
@@ -33,7 +32,6 @@ class AppRoutes {
   static const String appRouteRegistrationSuccessful = '/auth/registration/success';
 
   // Dashboard Routes
-  static const String appRouteWallet = '/dashboard/wallet';
   static const String appRouteStatement = '/dashboard/statement';
   static const String appRouteLeaderboard = '/dashboard/leaderboard';
   static const String appRouteReferral = '/dashboard/referral';
@@ -74,9 +72,9 @@ class AppRoutes {
         );
       }
 
-      case appRouteNews: {
+      case appRouteWallet: {
         return MaterialPageRoute(
-            builder: (BuildContext context) => const NewsScreen(),
+            builder: (BuildContext context) => const WalletScreen(),
             fullscreenDialog: true,
             settings: routeSettings
         );

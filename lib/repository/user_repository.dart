@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:tuntigi/databases/app_database.dart';
 import 'package:tuntigi/databases/app_preferences.dart';
+import 'package:tuntigi/models/profile.dart';
 import 'package:tuntigi/models/user.dart';
 import 'package:tuntigi/network/entities/response.dart';
 import 'package:tuntigi/network/nao/user_nao.dart';
@@ -11,63 +12,72 @@ class UserRepository {
 
   final _isShowingBalance = StreamController<bool>.broadcast();
   final _isLoggedIn = StreamController<bool>.broadcast();
-  final _loggedInUser = StreamController<NetworkResponse>.broadcast();
   final _loginResponse = StreamController<NetworkResponse>.broadcast();
   final _registrationResponse = StreamController<NetworkResponse>.broadcast();
+  final _userInfo = StreamController<NetworkResponse>.broadcast();
+  final _playerProfile = StreamController<NetworkResponse>.broadcast();
 
   late AppPreferences _appPreferences;
   late AppDatabase _appDatabase;
 
-  //----------------------- Constructors -----------------------//
-  /// @dependency -> @required appPreferences -> AppPreferences
-  /// @usage -> Returns UserRepository instance by injecting dependencies for private constructor.
   factory UserRepository({required AppPreferences appPreferences, required AppDatabase appDatabase}) => UserRepository._internal(appPreferences, appDatabase);
 
-  /// User Repository Private Constructor -> UserRepository
-  /// @param -> @required appPreference -> AppPreferences
-  /// @usage -> Create Instance of UserRepository and initialize variables
   UserRepository._internal(this._appPreferences, this._appDatabase);
 
-  //----------------------- Methods -----------------------//
-  /// Is Authentic User Method -> void
-  /// @param -> @required username -> String
-  ///        -> @required password -> String
-  /// @usage -> Initiate authentication process and listen to response of authentication, therefore notify authentication result to all listeners
   void isAuthenticUser(
       {required String mobileno, required String pin}) {
     UserNAO.login(mobileno: mobileno, pin: pin)
-        .then((NetworkResponse response) { // On Response
-      _loginResponse.add(response);
+        .then((NetworkResponse response) {
       if(response.isSuccessful) {
+        print({'access_token': response.data['access_token']});
         _appPreferences.setLoggedIn(isLoggedIn: true);
+        _appPreferences.setAccessToken(
+            accessToken: response.data['access_token']
+        );
       }
-      developer.log(
-        'login response',
-        name: 'login',
-        error: response.data
-      );
+      fetchUserInfo();
+      _loginResponse.add(response);
+
     });
   }
 
   void create({required Map<String, dynamic> body}) {
     UserNAO.register(body: body)
         .then((NetworkResponse response) {
-      developer.log(
-          'register response',
-          name: 'register',
-          error: response.data
-      );
-      // if(response.isSuccessful) {
-      //   User user = User.fromMap(response.data['user']);
-      //   // _appDatabase.cacheLoggedInUser(user: user);
-      //   // _appPreferences.setAccessToken(accessToken: response.data['access_token']);
-      //   // _appPreferences.setLoggedIn(isLoggedIn: true);
-      //
-      // } else {
-      //   _appPreferences.setLoggedIn(isLoggedIn: false);
-      // }
       _registrationResponse.add(response);
     });
+  }
+
+  Future<User?> fetchUserInfo() async {
+    UserNAO.userInfo()
+        .then((NetworkResponse response) {
+      if(response.isSuccessful) {
+        User user = User.fromMap(response.data);
+        _appDatabase.saveUser(user: user);
+        _appPreferences.setUserId(userId: user.id);
+        fetchPlayerProfile(user.id);
+
+        return user;
+      }
+      _playerProfile.add(response);
+    });
+    return null;
+  }
+
+  Future<Profile?> fetchPlayerProfile(playerId) async{
+    // int playerId = 56;
+    UserNAO.playerProfile({"player_id": playerId})
+        .then((NetworkResponse response) {
+      if(response.isSuccessful) {
+        Profile profile = Profile.fromMap(response.data);
+        _appDatabase.savePlayerProfile(profile: profile);
+
+        return profile;
+      }
+      _playerProfile.add(response);
+    });
+
+    return null;
   }
 
   void isShowingBalance() async {
@@ -87,10 +97,28 @@ class UserRepository {
   }
 
   Future<User?> getUser() async {
-    User? user = await _appDatabase.getLoggedInUser();
-    return user;
+    User? user = await _appDatabase.getUser();
+    if(user != null) {
+      return user;
+    }
+    return fetchUserInfo();
   }
 
+
+
+  Future<Profile?> getPlayerProfile() async {
+    Profile? profile = await _appDatabase.getPlayerProfile();
+    if(profile != null) {
+      return profile;
+    }
+    getUser().then((User? user) async {
+      if(user != null) {
+        return fetchPlayerProfile(user.id);
+      }
+    });
+
+    return null;
+  }
 
   /// Get Login Response Method -> Stream<bool>
   /// @param -> _

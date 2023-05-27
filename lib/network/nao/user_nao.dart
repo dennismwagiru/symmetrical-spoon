@@ -7,26 +7,18 @@ import 'package:tuntigi/utils/network_util.dart';
 
 class UserNAO {
 
-  static Future<NetworkResponse> register(
-      {required Map<String, dynamic> body}
-      ) =>
+  static Future<NetworkResponse> register({required Map<String, dynamic> body}) =>
       NetworkUtil().post(url: NetworkConstants.register, body: body)
           .then((dynamic response) { // On response received
         return NetworkResponse(isSuccessful: true, data: response);
       }).onError((error, stackTrace) {
-        // print({
-        //   'Error': error,
-        // });
         return NetworkResponse(
             isSocketException: (error is SocketException || error is TimeoutException),
             isSuccessful: false,  error: error.toString()
         );
       });
 
-  /// Static Is Authentic User Method -> Future<UserModel>
-  /// @param -> @required username -> String
-  ///        -> @required password -> String
-  /// @usage -> Makes a HTTP-POST request to REST api on server.
+
   static Future<NetworkResponse> login(
       {required String mobileno, required String pin}) {
     return NetworkUtil().post( // HTTP-POST request
@@ -37,6 +29,42 @@ class UserNAO {
         })
         .then((dynamic response) { // On response received
       return NetworkResponse(isSuccessful: true, data: response);
+    }).onError((error, stackTrace) {
+      return NetworkResponse(
+          isSocketException: (error is SocketException || error is TimeoutException),
+          isSuccessful: false,  error: error.toString()
+      );
+    });
+  }
+
+  static Future<NetworkResponse> refreshToken() {
+    return NetworkUtil().post(url: NetworkConstants.refreshToken)
+        .then((dynamic response) { // On response received
+      return NetworkResponse(isSuccessful: true, data: response);
+    }).onError((error, stackTrace) {
+      return NetworkResponse(
+          isSocketException: (error is SocketException || error is TimeoutException),
+          isSuccessful: false,  error: error.toString()
+      );
+    });
+  }
+
+  static Future<NetworkResponse> userInfo() {
+    return NetworkUtil().post(url: NetworkConstants.userInfo)
+        .then((dynamic response) {
+      return NetworkResponse(isSuccessful: true, data: response['User Info.']);
+    }).onError((error, stackTrace) {
+      return NetworkResponse(
+          isSocketException: (error is SocketException || error is TimeoutException),
+          isSuccessful: false,  error: error.toString()
+      );
+    });
+  }
+
+  static Future<NetworkResponse> playerProfile(Map<String, dynamic> payload) {
+    return NetworkUtil().post(url: NetworkConstants.playerProfile, body: payload)
+        .then((dynamic response) {
+      return NetworkResponse(isSuccessful: true, data: response['Player Info.']);
     }).onError((error, stackTrace) {
       return NetworkResponse(
           isSocketException: (error is SocketException || error is TimeoutException),

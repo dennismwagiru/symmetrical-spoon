@@ -196,7 +196,13 @@ class _LoginScreenState extends State<LoginScreen> {
       });
       if(response.isSuccessful) {
         Fluttertoast.showToast(msg: "Login Successful");
-        Navigator.pushReplacementNamed(context, AppRoutes.appRouteDashboard);
+        _viewModel.getUser().then((value) =>
+            _viewModel.getPlayerProfile()
+                .then((profile) {
+              Navigator.pushReplacementNamed(context, AppRoutes.appRouteDashboard);
+            })
+        );
+
       } else {
         const JsonDecoder decoder = JsonDecoder();
         try {

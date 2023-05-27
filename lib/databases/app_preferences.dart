@@ -59,7 +59,7 @@ class AppPreferences with ChangeNotifier {
   /// @usage -> Set value of IS_LOGGED_IN in preferences
   void setShowBalance({required bool showBalance}) => _setPreference(prefName: prefShowBalance, prefValue: showBalance, prefType: prefTypeBool);
   void setLoggedIn({required bool isLoggedIn}) => _setPreference(prefName: prefIsLoggedIn, prefValue: isLoggedIn, prefType: prefTypeBool);
-  void setUserId({required String userId}) => _setPreference(prefName: prefUserId, prefValue: userId, prefType: prefTypeString);
+  void setUserId({required int userId}) => _setPreference(prefName: prefUserId, prefValue: userId, prefType: prefTypeInteger);
   void setStartTime({required String? startTime}) => _setPreference(prefName: prefStartTime, prefValue: startTime, prefType: prefTypeString);
   void setEndTime({required String? endTime}) => _setPreference(prefName: prefEndTime, prefValue: endTime, prefType: prefTypeString);
   void setMobile({required String? mobile}) => _setPreference(prefName: prefMobile, prefValue: mobile, prefType: prefTypeString);
@@ -72,7 +72,7 @@ class AppPreferences with ChangeNotifier {
   /// @usage -> Get value of IS_LOGGED_IN from preferences
   Future<bool> getShowBalance() async => await _getPreference(prefName: prefShowBalance) ?? true; // Check value for Null. If Null  provide default value as True.
   Future<bool> getLoggedIn() async => await _getPreference(prefName: prefIsLoggedIn) ?? false; // Check value for Null. If Null  provide default value as False.
-  Future<String?> getUserId() async => await _getPreference(prefName: prefUserId); // Check value for Null. If Null  provide default value as False.
+  Future<int?> getUserId() async => await _getPreference(prefName: prefUserId); // Check value for Null. If Null  provide default value as False.
   Future<String?> getStartTime() async => await _getPreference(prefName: prefStartTime);
   Future<String?> getEndTime() async => await _getPreference(prefName: prefEndTime);
   Future<String?> getMobile() async => await _getPreference(prefName: prefMobile);

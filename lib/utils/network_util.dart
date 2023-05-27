@@ -2,10 +2,65 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:http_interceptor/http/interceptor_contract.dart';
+import 'package:http_interceptor/models/request_data.dart';
+import 'package:http_interceptor/models/response_data.dart';
+import 'package:http_interceptor/models/retry_policy.dart';
+import 'package:tuntigi/app/app.dart';
 import 'package:tuntigi/app/app_exceptions.dart';
-import 'package:tuntigi/network/constants.dart';
+import 'package:tuntigi/network/entities/response.dart';
+import 'package:tuntigi/network/nao/user_nao.dart';
 
-import '../app/app.dart';
+
+class AuthorizationInterceptor implements InterceptorContract {
+
+  @override
+  Future<RequestData> interceptRequest({required RequestData data}) async {
+
+    try {
+      // Fetching token from local data
+      var preferences = const App().getAppPreferences();
+      await preferences.isPreferenceReady;
+
+      final String? token = await preferences.getAccessToken();
+
+      // Clear previous header and update it with updated token
+      data.headers.clear();
+
+      data.headers['authorization'] = 'Bearer ${token!}';
+      data.headers['content-type'] = 'application/json';
+    } catch (e) {
+      print(e);
+    }
+
+    return data;
+  }
+
+  @override
+  Future<ResponseData> interceptResponse({required ResponseData data}) async {
+    return data;
+  }
+}
+
+class ExpiredTokenRetryPolicy extends RetryPolicy {
+//Number of retry
+  @override
+  int maxRetryAttempts = 2;
+
+  @override
+  Future<bool> shouldAttemptRetryOnResponse(ResponseData response) async {
+    if (response.statusCode == 401) {
+      var preferences = const App().getAppPreferences();
+
+      UserNAO.refreshToken().then((NetworkResponse response) async {
+        await preferences.isPreferenceReady;
+        preferences.setAccessToken(accessToken: response.data['access_token']);
+      });
+      return true;
+    }
+    return false;
+  }
+}
 
 /// Network Util Class -> A utility class for handling network operations
 class NetworkUtil {
@@ -36,7 +91,7 @@ class NetworkUtil {
 
     final String? token = await preferences.getAccessToken();
     if (token != null) {
-      headers[HttpHeaders.authorizationHeader] = 'Token $token';
+      headers[HttpHeaders.authorizationHeader] = 'Bearer $token';
     }
     return headers;
   }
@@ -121,22 +176,6 @@ class NetworkUtil {
       });
     }
     return url;
-  }
-
-  String _getErrorMessage (String body) {
-    try {
-      final Map<String, dynamic> res = _decoder.convert(body);
-      String error = '';
-      if (res.containsKey('error')) {
-        error = res['error'];
-      } else {
-        print({'keys', res.keys});
-        error = res[res.keys.first][0];
-      }
-      return error;
-    } on Exception catch(e) {
-      return body.toString();
-    }
   }
 
   dynamic _returnResponse(http.Response response) {

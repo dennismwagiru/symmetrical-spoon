@@ -201,14 +201,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
-  dart_either:
-    dependency: transitive
-    description:
-      name: dart_either
-      sha256: "928895b8266ac5906eb4e2993fead563a73b17fc86eec6b40172100d56ca2507"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.0"
   dart_style:
     dependency: transitive
     description:
@@ -217,14 +209,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.1"
-  disposebag:
-    dependency: transitive
-    description:
-      name: disposebag
-      sha256: c38be345780e0e4a4690b25b7c76b7d7d0cb39ec1c1f7895fe5e72f3630e3b78
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.5.1"
   fake_async:
     dependency: transitive
     description:
@@ -302,6 +286,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
+  flutter_mobx:
+    dependency: "direct main"
+    description:
+      name: flutter_mobx
+      sha256: "0da4add0016387a7bf309a0d0c41d36c6b3ae25ed7a176409267f166509e723e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.6+5"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -352,6 +344,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.13.6"
+  http_interceptor:
+    dependency: "direct main"
+    description:
+      name: http_interceptor
+      sha256: "5f3dde028e67789339c250252c09510a74aff21ce16b06d07d9096bda6582bab"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   http_multi_server:
     dependency: transitive
     description:
@@ -456,6 +456,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
+  mobx:
+    dependency: "direct main"
+    description:
+      name: mobx
+      sha256: "0afcf88b3ee9d6819890bf16c11a727fc8c62cf736fda8e5d3b9b4eace4e62ea"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.0"
+  mobx_codegen:
+    dependency: "direct dev"
+    description:
+      name: mobx_codegen
+      sha256: d4beb9cea4b7b014321235f8fdc7c2193ee0fe1d1198e9da7403f8bc85c4407c
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.0"
   package_config:
     dependency: transitive
     description:
@@ -560,38 +576,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.3"
-  rx_shared_preferences:
-    dependency: "direct main"
-    description:
-      name: rx_shared_preferences
-      sha256: "630c1be222544723da2dfbcfc2762abff4af9c1bc6c09e84b4dbd69c8ae8362b"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.0"
-  rx_storage:
-    dependency: transitive
-    description:
-      name: rx_storage
-      sha256: bbf4ab990d56edcccbccfca2edfa7935076f00cb07770f37f6de075e44b6c048
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.0"
-  rxdart:
-    dependency: transitive
-    description:
-      name: rxdart
-      sha256: "0c7c0cedd93788d996e33041ffecda924cc54389199cde4e6a34b440f50044cb"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.27.7"
-  rxdart_ext:
-    dependency: transitive
-    description:
-      name: rxdart_ext
-      sha256: ca0b07216b4568e70d88154efd893ded54cf8cea43276c66baae245a843c326f
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.2.9"
   shared_preferences:
     dependency: "direct main"
     description:

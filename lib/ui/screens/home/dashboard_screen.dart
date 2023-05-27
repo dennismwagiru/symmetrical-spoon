@@ -13,7 +13,7 @@ class DashboardScreen extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: Scaffold(
-          bottomNavigationBar: BottomNavBar(index: 0),
+          bottomNavigationBar: const BottomNavBar(index: 0),
           body: Padding(
             padding: const EdgeInsets.only(
                 left: 30.0,

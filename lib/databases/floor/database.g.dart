@@ -63,6 +63,8 @@ class _$TunTigiDatabase extends TunTigiDatabase {
 
   UserDao? _userDaoInstance;
 
+  ProfileDao? _profileDaoInstance;
+
   Future<sqflite.Database> open(
     String path,
     List<Migration> migrations, [
@@ -85,7 +87,9 @@ class _$TunTigiDatabase extends TunTigiDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `User` (`id` TEXT NOT NULL, `email` TEXT NOT NULL, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `User` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `email` TEXT, `usertype` INTEGER, `role` INTEGER, `mobile` TEXT, `isApproved` INTEGER, PRIMARY KEY (`id`))');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `Profile` (`id` INTEGER NOT NULL, `mobile` TEXT, `name` TEXT, `alias` TEXT, `balance` TEXT, `rank` TEXT, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -97,6 +101,11 @@ class _$TunTigiDatabase extends TunTigiDatabase {
   UserDao get userDao {
     return _userDaoInstance ??= _$UserDao(database, changeListener);
   }
+
+  @override
+  ProfileDao get profileDao {
+    return _profileDaoInstance ??= _$ProfileDao(database, changeListener);
+  }
 }
 
 class _$UserDao extends UserDao {
@@ -107,14 +116,28 @@ class _$UserDao extends UserDao {
         _userInsertionAdapter = InsertionAdapter(
             database,
             'User',
-            (User item) =>
-                <String, Object?>{'id': item.id, 'email': item.email}),
+            (User item) => <String, Object?>{
+                  'id': item.id,
+                  'name': item.name,
+                  'email': item.email,
+                  'usertype': item.usertype,
+                  'role': item.role,
+                  'mobile': item.mobile,
+                  'isApproved': item.isApproved
+                }),
         _userUpdateAdapter = UpdateAdapter(
             database,
             'User',
             ['id'],
-            (User item) =>
-                <String, Object?>{'id': item.id, 'email': item.email});
+            (User item) => <String, Object?>{
+                  'id': item.id,
+                  'name': item.name,
+                  'email': item.email,
+                  'usertype': item.usertype,
+                  'role': item.role,
+                  'mobile': item.mobile,
+                  'isApproved': item.isApproved
+                });
 
   final sqflite.DatabaseExecutor database;
 
@@ -129,8 +152,14 @@ class _$UserDao extends UserDao {
   @override
   Future<User?> getCurrent() async {
     return _queryAdapter.query('SELECT * FROM User Limit 1',
-        mapper: (Map<String, Object?> row) =>
-            User(id: row['id'] as String, email: row['email'] as String));
+        mapper: (Map<String, Object?> row) => User(
+            id: row['id'] as int,
+            name: row['name'] as String,
+            email: row['email'] as String?,
+            usertype: row['usertype'] as int?,
+            role: row['role'] as int?,
+            mobile: row['mobile'] as String?,
+            isApproved: row['isApproved'] as int?));
   }
 
   @override
@@ -146,6 +175,73 @@ class _$UserDao extends UserDao {
   @override
   Future<void> updateSingle(User user) async {
     await _userUpdateAdapter.update(user, OnConflictStrategy.abort);
+  }
+}
+
+class _$ProfileDao extends ProfileDao {
+  _$ProfileDao(
+    this.database,
+    this.changeListener,
+  )   : _queryAdapter = QueryAdapter(database),
+        _profileInsertionAdapter = InsertionAdapter(
+            database,
+            'Profile',
+            (Profile item) => <String, Object?>{
+                  'id': item.id,
+                  'mobile': item.mobile,
+                  'name': item.name,
+                  'alias': item.alias,
+                  'balance': item.balance,
+                  'rank': item.rank
+                }),
+        _profileUpdateAdapter = UpdateAdapter(
+            database,
+            'Profile',
+            ['id'],
+            (Profile item) => <String, Object?>{
+                  'id': item.id,
+                  'mobile': item.mobile,
+                  'name': item.name,
+                  'alias': item.alias,
+                  'balance': item.balance,
+                  'rank': item.rank
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<Profile> _profileInsertionAdapter;
+
+  final UpdateAdapter<Profile> _profileUpdateAdapter;
+
+  @override
+  Future<Profile?> getProfile() async {
+    return _queryAdapter.query('SELECT * FROM Profile Limit 1',
+        mapper: (Map<String, Object?> row) => Profile(
+            id: row['id'] as int,
+            mobile: row['mobile'] as String?,
+            name: row['name'] as String?,
+            alias: row['alias'] as String?,
+            balance: row['balance'] as String?,
+            rank: row['rank'] as String?));
+  }
+
+  @override
+  Future<void> deleteAllProfiles() async {
+    await _queryAdapter.queryNoReturn('DELETE FROM Profile');
+  }
+
+  @override
+  Future<void> insertSingle(Profile profile) async {
+    await _profileInsertionAdapter.insert(profile, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> updateSingle(Profile profile) async {
+    await _profileUpdateAdapter.update(profile, OnConflictStrategy.abort);
   }
 }
 

@@ -53,14 +53,18 @@ class _SplashScreenState extends State<SplashScreen> {
   void subscribeToViewModel() {
     _viewModel.getIsLoggedIn()
         .listen((bool event) {
-          Timer(const Duration(seconds: 3), () {
-            if(event) {
-              Navigator.pushReplacementNamed(context, AppRoutes.appRouteDashboard);
-            } else {
-              Navigator.pushReplacementNamed(context, AppRoutes.appRouteLogin);
-
-            }
-          });
+          if(event) {
+            _viewModel.getUser().then((value) =>
+                _viewModel.getPlayerProfile()
+                    .then((profile) {
+                  Navigator.pushReplacementNamed(context, AppRoutes.appRouteDashboard);
+                })
+            );
+          } else {
+            Timer(const Duration(seconds: 3), () {
+                Navigator.pushReplacementNamed(context, AppRoutes.appRouteLogin);
+            });
+          }
 
     });
   }

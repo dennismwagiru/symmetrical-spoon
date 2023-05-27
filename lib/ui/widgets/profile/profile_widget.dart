@@ -1,10 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:tuntigi/app/app.dart';
+import 'package:tuntigi/models/profile.dart';
 import 'package:tuntigi/utils/colors.dart';
 import 'package:tuntigi/utils/custom_style.dart';
 import 'package:tuntigi/utils/strings.dart';
+import 'package:tuntigi/viewmodels/user_viewmodel.dart';
 
-class ProfileWidget extends StatelessWidget {
-  const ProfileWidget({Key? key}) : super(key: key);
+class ProfileWidget extends StatefulWidget {
+  const ProfileWidget({super.key});
+
+  @override
+  State<StatefulWidget> createState() => _ProfileWidget();
+
+}
+
+class _ProfileWidget extends State<ProfileWidget> {
+
+  late UserViewModel _viewModel;
+  late Profile? _profile = null;
+
+  @override
+  void initState() {
+    _viewModel = UserViewModel(const App());
+    _viewModel.getPlayerProfile()
+        .then((Profile? profile) {
+      setState(() => _profile = profile);
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +53,12 @@ class ProfileWidget extends StatelessWidget {
         // ),
         const SizedBox(height: 23),
         Text(
-          Strings.greeting,
+          '${Strings.greeting} ${_profile?.name ?? '-'}',
           style: CustomStyle.greetingStyle,
         ),
         const SizedBox(height: 5),
         Text(
-          Strings.designation,
+          _profile?.rank ?? '-',
           style: CustomStyle.designationStyle,
         ),
       ],
