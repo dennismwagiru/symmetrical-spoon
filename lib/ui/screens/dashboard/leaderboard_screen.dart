@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tuntigi/app/app.dart';
 import 'package:tuntigi/app/app_routes.dart';
+import 'package:tuntigi/models/player.dart';
 import 'package:tuntigi/ui/widgets/bottom_nav_bar.dart';
 import 'package:tuntigi/ui/widgets/common/balance_widget.dart';
 import 'package:tuntigi/ui/widgets/profile/profile_header_widget.dart';
@@ -8,9 +10,30 @@ import 'package:tuntigi/ui/widgets/profile/wallet_widget.dart';
 import 'package:tuntigi/utils/colors.dart';
 import 'package:tuntigi/utils/custom_style.dart';
 import 'package:tuntigi/utils/strings.dart';
+import 'package:tuntigi/viewmodels/player_viewmodel.dart';
 
-class LeaderboardScreen extends StatelessWidget {
+class LeaderboardScreen extends StatefulWidget {
   const LeaderboardScreen({Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _LeaderboardScreen();
+}
+
+class _LeaderboardScreen extends State<LeaderboardScreen> {
+
+  late List<Player> _players = [];
+  late PlayerViewModel _viewModel;
+
+  @override
+  void initState() {
+    _viewModel = PlayerViewModel(const App());
+
+    _viewModel.getPlayers()
+        .then((List<Player> players) =>
+        setState(() => _players = players));
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +56,8 @@ class LeaderboardScreen extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      ProfileWidget(),
-                      Spacer(),
+                      const ProfileWidget(),
+                      const Spacer(),
                       GestureDetector(
                         onTap: () {
                           Navigator.pushReplacementNamed(context, AppRoutes.appRouteReferralCode);
@@ -72,7 +95,7 @@ class LeaderboardScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 44,),
                   const Text(
-                    'Kilifi Gamers Lounge',
+                    'Tuntigi Gaming',
                     style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 12
@@ -163,206 +186,208 @@ class LeaderboardScreen extends StatelessWidget {
                             )
                           ]
                       ),
-                      TableRow(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
-                              color: const Color(0xFFFAFAF8)
-                            // color: const Color(0xFF156CF7)
-                          ),
-                          children: [
-                            TableCell(
-                                child: Container(
-                                  padding: const EdgeInsets.only(left:10, bottom: 7, top: 7),
-                                  child: Text(
-                                    "1 Juma Ali".toUpperCase(),
-                                    style: CustomStyle.tableDataSelectedStyle,
-                                  ),
-                                )
-                            ),
-                            TableCell(
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(vertical: 7),
-                                  child: Text(
-                                      "8",
-                                      style: CustomStyle.tableDataSelectedStyle,
-                                      textAlign: TextAlign.center
-                                  ),
-                                )
-                            ),
-                            TableCell(
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(vertical: 7),
-                                  child: Text(
-                                      "0",
-                                      style: CustomStyle.tableDataSelectedStyle,
-                                      textAlign: TextAlign.center
-                                  ),
-                                )
-                            ),
-                            TableCell(
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(vertical: 7),
-                                  decoration: const BoxDecoration(
-                                      border: Border(
-                                          right: BorderSide(
-                                              color: Colors.white,
-                                              width: 2
+                      ..._players.map((Player player) =>
+                          TableRow(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              children: [
+
+                                TableCell(
+                                    child: Container(
+                                      padding: const EdgeInsets.only(left:10, bottom: 7, top: 7),
+                                      child: Text(
+                                        player.name.toUpperCase(),
+                                        style: CustomStyle.tableDataStyle,
+                                      ),
+                                    )
+                                ),
+                                TableCell(
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(vertical: 7),
+                                      child: Text(
+                                          player.wins.toString(),
+                                          style: CustomStyle.tableDataStyle,
+                                          textAlign: TextAlign.center
+                                      ),
+                                    )
+                                ),
+                                TableCell(
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(vertical: 7),
+                                      child: Text(
+                                          player.draws.toString(),
+                                          style: CustomStyle.tableDataStyle,
+                                          textAlign: TextAlign.center
+                                      ),
+                                    )
+                                ),
+                                TableCell(
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(vertical: 7),
+                                      decoration: const BoxDecoration(
+                                          border: Border(
+                                              right: BorderSide(
+                                                  color: Colors.white,
+                                                  width: 2
+                                              )
                                           )
-                                      )
-                                  ),
-                                  child: Text(
-                                      "0",
-                                      style: CustomStyle.tableDataSelectedStyle,
-                                      textAlign: TextAlign.center
-                                  ),
+                                      ),
+                                      child: Text(
+                                         player.loses.toString(),
+                                          style: CustomStyle.tableDataStyle,
+                                          textAlign: TextAlign.center
+                                      ),
+                                    )
+                                ),
+                                TableCell(
+                                    child: Container(
+                                      padding: const EdgeInsets.only(top: 7, bottom: 7, right: 4),
+                                      child: Text(
+                                          player.score.toString(),
+                                          style: CustomStyle.tableDataStyle,
+                                          textAlign: TextAlign.center
+                                      ),
+                                    )
                                 )
-                            ),
-                            TableCell(
-                                child: Container(
-                                  padding: const EdgeInsets.only(top: 7, bottom: 7, right: 4),
-                                  child: Text(
-                                      "24",
-                                      style: CustomStyle.tableDataSelectedStyle,
-                                      textAlign: TextAlign.center
-                                  ),
-                                )
-                            )
-                          ]
-                      ),
-                      TableRow(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
+                              ]
                           ),
-                          children: [
-                            TableCell(
-                                child: Container(
-                                  padding: const EdgeInsets.only(left:10, bottom: 7, top: 7),
-                                  child: Text(
-                                    "2 John Kama".toUpperCase(),
-                                    style: CustomStyle.tableDataStyle,
-                                  ),
-                                )
-                            ),
-                            TableCell(
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(vertical: 7),
-                                  child: Text(
-                                      "8",
-                                      style: CustomStyle.tableDataStyle,
-                                      textAlign: TextAlign.center
-                                  ),
-                                )
-                            ),
-                            TableCell(
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(vertical: 7),
-                                  child: Text(
-                                      "0",
-                                      style: CustomStyle.tableDataStyle,
-                                      textAlign: TextAlign.center
-                                  ),
-                                )
-                            ),
-                            TableCell(
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(vertical: 7),
-                                  decoration: BoxDecoration(
-                                      border: Border(
-                                          right: BorderSide(
-                                              color: Colors.white,
-                                              width: 2
-                                          )
-                                      )
-                                  ),
-                                  child: Text(
-                                      "0",
-                                      style: CustomStyle.tableDataStyle,
-                                      textAlign: TextAlign.center
-                                  ),
-                                )
-                            ),
-                            TableCell(
-                                child: Container(
-                                  padding: const EdgeInsets.only(top: 7, bottom: 7, right: 4),
-                                  decoration: const BoxDecoration(
-                                      color: Color(0xFFFAFAF8),
-                                      borderRadius: BorderRadius.only(
-                                          topRight: Radius.circular(4),
-                                          bottomRight: Radius.circular(4)
-                                      )
-                                  ),
-                                  child: Text(
-                                      "24",
-                                      style: CustomStyle.tableDataStyle,
-                                      textAlign: TextAlign.center
-                                  ),
-                                )
-                            )
-                          ]
                       ),
-                      TableRow(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          children: [
-                            TableCell(
-                                child: Container(
-                                  padding: const EdgeInsets.only(left:10, bottom: 7, top: 7),
-                                  child: Text(
-                                    "3 Anne Fatuma".toUpperCase(),
-                                    style: CustomStyle.tableDataStyle,
-                                  ),
-                                )
-                            ),
-                            TableCell(
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(vertical: 7),
-                                  child: Text(
-                                      "8",
-                                      style: CustomStyle.tableDataStyle,
-                                      textAlign: TextAlign.center
-                                  ),
-                                )
-                            ),
-                            TableCell(
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(vertical: 7),
-                                  child: Text(
-                                      "0",
-                                      style: CustomStyle.tableDataStyle,
-                                      textAlign: TextAlign.center
-                                  ),
-                                )
-                            ),
-                            TableCell(
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(vertical: 7),
-                                  child: Text(
-                                      "0",
-                                      style: CustomStyle.tableDataStyle,
-                                      textAlign: TextAlign.center
-                                  ),
-                                )
-                            ),
-                            TableCell(
-                                child: Container(
-                                  padding: const EdgeInsets.only(top: 7, bottom: 7, right: 4),
-                                  decoration: const BoxDecoration(
-                                      color: Color(0xFFFAFAF8),
-                                      borderRadius: BorderRadius.only(
-                                          topRight: Radius.circular(4),
-                                          bottomRight: Radius.circular(4)
-                                      )
-                                  ),
-                                  child: Text(
-                                      "24",
-                                      style: CustomStyle.tableDataStyle,
-                                      textAlign: TextAlign.center
-                                  ),
-                                )
-                            )
-                          ]
-                      ),
+
+                      // TableRow(
+                      //     decoration: BoxDecoration(
+                      //       borderRadius: BorderRadius.circular(4),
+                      //     ),
+                      //     children: [
+                      //       TableCell(
+                      //           child: Container(
+                      //             padding: const EdgeInsets.only(left:10, bottom: 7, top: 7),
+                      //             child: Text(
+                      //               "2 John Kama".toUpperCase(),
+                      //               style: CustomStyle.tableDataStyle,
+                      //             ),
+                      //           )
+                      //       ),
+                      //       TableCell(
+                      //           child: Container(
+                      //             padding: const EdgeInsets.symmetric(vertical: 7),
+                      //             child: Text(
+                      //                 "8",
+                      //                 style: CustomStyle.tableDataStyle,
+                      //                 textAlign: TextAlign.center
+                      //             ),
+                      //           )
+                      //       ),
+                      //       TableCell(
+                      //           child: Container(
+                      //             padding: const EdgeInsets.symmetric(vertical: 7),
+                      //             child: Text(
+                      //                 "0",
+                      //                 style: CustomStyle.tableDataStyle,
+                      //                 textAlign: TextAlign.center
+                      //             ),
+                      //           )
+                      //       ),
+                      //       TableCell(
+                      //           child: Container(
+                      //             padding: const EdgeInsets.symmetric(vertical: 7),
+                      //             decoration: BoxDecoration(
+                      //                 border: Border(
+                      //                     right: BorderSide(
+                      //                         color: Colors.white,
+                      //                         width: 2
+                      //                     )
+                      //                 )
+                      //             ),
+                      //             child: Text(
+                      //                 "0",
+                      //                 style: CustomStyle.tableDataStyle,
+                      //                 textAlign: TextAlign.center
+                      //             ),
+                      //           )
+                      //       ),
+                      //       TableCell(
+                      //           child: Container(
+                      //             padding: const EdgeInsets.only(top: 7, bottom: 7, right: 4),
+                      //             decoration: const BoxDecoration(
+                      //                 color: Color(0xFFFAFAF8),
+                      //                 borderRadius: BorderRadius.only(
+                      //                     topRight: Radius.circular(4),
+                      //                     bottomRight: Radius.circular(4)
+                      //                 )
+                      //             ),
+                      //             child: Text(
+                      //                 "24",
+                      //                 style: CustomStyle.tableDataStyle,
+                      //                 textAlign: TextAlign.center
+                      //             ),
+                      //           )
+                      //       )
+                      //     ]
+                      // ),
+                      // TableRow(
+                      //     decoration: BoxDecoration(
+                      //       borderRadius: BorderRadius.circular(4),
+                      //     ),
+                      //     children: [
+                      //       TableCell(
+                      //           child: Container(
+                      //             padding: const EdgeInsets.only(left:10, bottom: 7, top: 7),
+                      //             child: Text(
+                      //               "3 Anne Fatuma".toUpperCase(),
+                      //               style: CustomStyle.tableDataStyle,
+                      //             ),
+                      //           )
+                      //       ),
+                      //       TableCell(
+                      //           child: Container(
+                      //             padding: const EdgeInsets.symmetric(vertical: 7),
+                      //             child: Text(
+                      //                 "8",
+                      //                 style: CustomStyle.tableDataStyle,
+                      //                 textAlign: TextAlign.center
+                      //             ),
+                      //           )
+                      //       ),
+                      //       TableCell(
+                      //           child: Container(
+                      //             padding: const EdgeInsets.symmetric(vertical: 7),
+                      //             child: Text(
+                      //                 "0",
+                      //                 style: CustomStyle.tableDataStyle,
+                      //                 textAlign: TextAlign.center
+                      //             ),
+                      //           )
+                      //       ),
+                      //       TableCell(
+                      //           child: Container(
+                      //             padding: const EdgeInsets.symmetric(vertical: 7),
+                      //             child: Text(
+                      //                 "0",
+                      //                 style: CustomStyle.tableDataStyle,
+                      //                 textAlign: TextAlign.center
+                      //             ),
+                      //           )
+                      //       ),
+                      //       TableCell(
+                      //           child: Container(
+                      //             padding: const EdgeInsets.only(top: 7, bottom: 7, right: 4),
+                      //             decoration: const BoxDecoration(
+                      //                 color: Color(0xFFFAFAF8),
+                      //                 borderRadius: BorderRadius.only(
+                      //                     topRight: Radius.circular(4),
+                      //                     bottomRight: Radius.circular(4)
+                      //                 )
+                      //             ),
+                      //             child: Text(
+                      //                 "24",
+                      //                 style: CustomStyle.tableDataStyle,
+                      //                 textAlign: TextAlign.center
+                      //             ),
+                      //           )
+                      //       )
+                      //     ]
+                      // ),
                     ],
                   )
                 ]

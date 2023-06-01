@@ -72,4 +72,28 @@ class UserNAO {
       );
     });
   }
+
+  static Future<NetworkResponse> deposit(Map<String, dynamic> payload) {
+    return NetworkUtil().post(url: NetworkConstants.stkPush, body: payload)
+        .then((dynamic response) {
+      return NetworkResponse(isSuccessful: true, data: response);
+    }).onError((error, stackTrace) {
+      return NetworkResponse(
+          isSocketException: (error is SocketException || error is TimeoutException),
+          isSuccessful: false,  error: error.toString()
+      );
+    });
+  }
+
+  static Future<NetworkResponse> withdraw(Map<String, dynamic> payload) {
+    return NetworkUtil().post(url: NetworkConstants.b2c, body: payload)
+        .then((dynamic response) {
+      return NetworkResponse(isSuccessful: true, data: response);
+    }).onError((error, stackTrace) {
+      return NetworkResponse(
+          isSocketException: (error is SocketException || error is TimeoutException),
+          isSuccessful: false,  error: error.toString()
+      );
+    });
+  }
 }

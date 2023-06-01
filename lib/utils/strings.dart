@@ -65,8 +65,7 @@ class Strings {
   static String topupAmount = 'Top Up amount';
   static String minimumDeposit = 'Minimum deposit of KES. 30';
   static String topUpSuccessful = 'Top up successful';
-  static String topUpSuccessDesc = 'You have successfully topped up KES. 650 on'
-      ' your wallet, new Tuntigi balance is KES 1,35o';
+  static String topUpSuccessDesc = 'Enter your M-Pesa Pin on the STK-Push submitted to your phone';
 
 
 }

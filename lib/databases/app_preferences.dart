@@ -125,6 +125,7 @@ class AppPreferences with ChangeNotifier {
         break;
       }
     }
+    notifyListeners();
   }
 
   /// Get Preference Method -> Future<dynamic>

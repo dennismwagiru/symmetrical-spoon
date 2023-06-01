@@ -92,9 +92,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   children: [
                     TextInputWidget(
-                        label: Strings.phoneNumber,
-                        controller: mobileController,
-                        textInputType: TextInputType.phone,
+                      label: Strings.phoneNumber,
+                      controller: mobileController,
+                      textInputType: TextInputType.phone,
                       suffix: mobileController.value.text.isNotEmpty && !_errors.containsKey('mobileno') ? const Icon(
                         Icons.check_circle,
                         color: CustomColor.blueColor,
@@ -190,20 +190,19 @@ class _LoginScreenState extends State<LoginScreen> {
   void subscribeToViewModel() {
     _viewModel.getLoginResponse()
         .listen((NetworkResponse response) {
-      setState(() => {
-        _loading = false,
-        _message = null
-      });
+      setState(() => _message = null );
       if(response.isSuccessful) {
         Fluttertoast.showToast(msg: "Login Successful");
-        _viewModel.getUser().then((value) =>
-            _viewModel.getPlayerProfile()
-                .then((profile) {
-              Navigator.pushReplacementNamed(context, AppRoutes.appRouteDashboard);
-            })
-        );
+        _viewModel.getPlayerProfile()
+            .then((profile) {
+          Navigator.pushReplacementNamed(context, AppRoutes.appRouteDashboard);
+        });
 
       } else {
+        setState(() => {
+          _loading = false,
+          _message = null
+        });
         const JsonDecoder decoder = JsonDecoder();
         try {
           final Map<String, dynamic> res = decoder.convert(

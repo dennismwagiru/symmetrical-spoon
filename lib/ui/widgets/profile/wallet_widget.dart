@@ -1,7 +1,9 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tuntigi/app/app.dart';
 import 'package:tuntigi/app/app_routes.dart';
+import 'package:tuntigi/databases/providers/balance_provider.dart';
 import 'package:tuntigi/utils/colors.dart';
 import 'package:tuntigi/utils/custom_style.dart';
 import 'package:tuntigi/utils/dimensions.dart';
@@ -30,6 +32,7 @@ class _WalletWidget extends State<WalletWidget> {
   }
   @override
   Widget build(BuildContext context) {
+    final showBalanceProvider = Provider.of<ShowBalanceProvider>(context);
     return Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
@@ -69,8 +72,9 @@ class _WalletWidget extends State<WalletWidget> {
           const SizedBox(height: 32),
           GestureDetector(
             onTap: () {
-              _viewModel.setIsShowingBalance(!_isShowingBalance);
-              setState(() => _isShowingBalance = !_isShowingBalance);
+              showBalanceProvider.showBalance = !showBalanceProvider.showBalance;
+              // _viewModel.setIsShowingBalance(!_isShowingBalance);
+              // setState(() => _isShowingBalance = !_isShowingBalance);
             },
             child: Container(
               decoration: BoxDecoration(
@@ -85,7 +89,7 @@ class _WalletWidget extends State<WalletWidget> {
                 child: Row(
                   children: [
                     Text(
-                        _isShowingBalance ? Strings.hideBalance : Strings.showBalance,
+                        showBalanceProvider.showBalance ? Strings.hideBalance : Strings.showBalance,
                         style: const TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.w400,
@@ -94,7 +98,7 @@ class _WalletWidget extends State<WalletWidget> {
                     ),
                     const SizedBox(width: 5),
                     Icon(
-                        _isShowingBalance ? Icons.visibility_off : Icons.remove_red_eye_outlined,
+                        showBalanceProvider.showBalance ? Icons.visibility_off : Icons.remove_red_eye_outlined,
                         size: 16,
                         color: const Color(0xFFAEAEAE)
                     ),

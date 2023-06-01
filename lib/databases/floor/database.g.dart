@@ -65,6 +65,8 @@ class _$TunTigiDatabase extends TunTigiDatabase {
 
   ProfileDao? _profileDaoInstance;
 
+  PlayerDao? _playerDaoInstance;
+
   Future<sqflite.Database> open(
     String path,
     List<Migration> migrations, [
@@ -90,6 +92,8 @@ class _$TunTigiDatabase extends TunTigiDatabase {
             'CREATE TABLE IF NOT EXISTS `User` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `email` TEXT, `usertype` INTEGER, `role` INTEGER, `mobile` TEXT, `isApproved` INTEGER, PRIMARY KEY (`id`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Profile` (`id` INTEGER NOT NULL, `mobile` TEXT, `name` TEXT, `alias` TEXT, `balance` TEXT, `rank` TEXT, PRIMARY KEY (`id`))');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `Player` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `score` INTEGER, `wins` INTEGER, `draws` INTEGER, `loses` INTEGER, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -105,6 +109,11 @@ class _$TunTigiDatabase extends TunTigiDatabase {
   @override
   ProfileDao get profileDao {
     return _profileDaoInstance ??= _$ProfileDao(database, changeListener);
+  }
+
+  @override
+  PlayerDao get playerDao {
+    return _playerDaoInstance ??= _$PlayerDao(database, changeListener);
   }
 }
 
@@ -242,6 +251,115 @@ class _$ProfileDao extends ProfileDao {
   @override
   Future<void> updateSingle(Profile profile) async {
     await _profileUpdateAdapter.update(profile, OnConflictStrategy.abort);
+  }
+}
+
+class _$PlayerDao extends PlayerDao {
+  _$PlayerDao(
+    this.database,
+    this.changeListener,
+  )   : _queryAdapter = QueryAdapter(database),
+        _playerInsertionAdapter = InsertionAdapter(
+            database,
+            'Player',
+            (Player item) => <String, Object?>{
+                  'id': item.id,
+                  'name': item.name,
+                  'score': item.score,
+                  'wins': item.wins,
+                  'draws': item.draws,
+                  'loses': item.loses
+                }),
+        _playerUpdateAdapter = UpdateAdapter(
+            database,
+            'Player',
+            ['id'],
+            (Player item) => <String, Object?>{
+                  'id': item.id,
+                  'name': item.name,
+                  'score': item.score,
+                  'wins': item.wins,
+                  'draws': item.draws,
+                  'loses': item.loses
+                }),
+        _playerDeletionAdapter = DeletionAdapter(
+            database,
+            'Player',
+            ['id'],
+            (Player item) => <String, Object?>{
+                  'id': item.id,
+                  'name': item.name,
+                  'score': item.score,
+                  'wins': item.wins,
+                  'draws': item.draws,
+                  'loses': item.loses
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<Player> _playerInsertionAdapter;
+
+  final UpdateAdapter<Player> _playerUpdateAdapter;
+
+  final DeletionAdapter<Player> _playerDeletionAdapter;
+
+  @override
+  Future<List<Player>> getAll() async {
+    return _queryAdapter.queryList('SELECT * FROM Player',
+        mapper: (Map<String, Object?> row) => Player(
+            id: row['id'] as int,
+            name: row['name'] as String,
+            score: row['score'] as int?,
+            wins: row['wins'] as int?,
+            draws: row['draws'] as int?,
+            loses: row['loses'] as int?));
+  }
+
+  @override
+  Future<Player?> findById(int id) async {
+    return _queryAdapter.query('SELECT * FROM Player WHERE id = ?1',
+        mapper: (Map<String, Object?> row) => Player(
+            id: row['id'] as int,
+            name: row['name'] as String,
+            score: row['score'] as int?,
+            wins: row['wins'] as int?,
+            draws: row['draws'] as int?,
+            loses: row['loses'] as int?),
+        arguments: [id]);
+  }
+
+  @override
+  Future<void> deleteAll() async {
+    await _queryAdapter.queryNoReturn('DELETE FROM Player');
+  }
+
+  @override
+  Future<void> insertSingle(Player player) async {
+    await _playerInsertionAdapter.insert(player, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> insertMultiple(List<Player> players) async {
+    await _playerInsertionAdapter.insertList(players, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> updateSingle(Player player) async {
+    await _playerUpdateAdapter.update(player, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> updateMultiple(List<Player> players) async {
+    await _playerUpdateAdapter.updateList(players, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> deleteSingle(Player item) async {
+    await _playerDeletionAdapter.delete(item);
   }
 }
 

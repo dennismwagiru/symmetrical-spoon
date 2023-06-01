@@ -1,5 +1,6 @@
 
 import 'package:tuntigi/databases/floor/database.dart';
+import 'package:tuntigi/models/player.dart';
 import 'package:tuntigi/models/profile.dart';
 import 'package:tuntigi/models/user.dart';
 
@@ -46,6 +47,22 @@ class AppDatabase {
     return _database.profileDao.updateSingle(profile);
   }
 
+  Future<List<Player>> getPlayers() {
+    return _database.playerDao.getAll();
+  }
+
+  Future<Player?> getPlayer({required int id}) {
+    return _database.playerDao.findById(id);
+  }
+
+  Future<void> insertPlayer(Player player) {
+    return _database.playerDao.insertSingle(player);
+  }
+
+  Future<void> insertPlayers(List<Player> players) {
+    _database.playerDao.deleteAll();
+    return _database.playerDao.insertMultiple(players);
+  }
 
 
 }

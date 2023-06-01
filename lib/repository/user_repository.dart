@@ -29,15 +29,12 @@ class UserRepository {
     UserNAO.login(mobileno: mobileno, pin: pin)
         .then((NetworkResponse response) {
       if(response.isSuccessful) {
-        print({'access_token': response.data['access_token']});
         _appPreferences.setLoggedIn(isLoggedIn: true);
         _appPreferences.setAccessToken(
             accessToken: response.data['access_token']
         );
       }
-      fetchUserInfo();
       _loginResponse.add(response);
-
     });
   }
 
@@ -49,24 +46,22 @@ class UserRepository {
   }
 
   Future<User?> fetchUserInfo() async {
-    UserNAO.userInfo()
-        .then((NetworkResponse response) {
+    return UserNAO.userInfo()
+        .then((NetworkResponse response) async {
       if(response.isSuccessful) {
         User user = User.fromMap(response.data);
         _appDatabase.saveUser(user: user);
         _appPreferences.setUserId(userId: user.id);
-        fetchPlayerProfile(user.id);
+        await fetchPlayerProfile(user.id);
 
         return user;
       }
-      _playerProfile.add(response);
+      return null;
     });
-    return null;
   }
 
   Future<Profile?> fetchPlayerProfile(playerId) async{
-    // int playerId = 56;
-    UserNAO.playerProfile({"player_id": playerId})
+    return UserNAO.playerProfile({"player_id": playerId})
         .then((NetworkResponse response) {
       if(response.isSuccessful) {
         Profile profile = Profile.fromMap(response.data);
@@ -74,10 +69,8 @@ class UserRepository {
 
         return profile;
       }
-      _playerProfile.add(response);
+      return null;
     });
-
-    return null;
   }
 
   void isShowingBalance() async {
@@ -96,26 +89,14 @@ class UserRepository {
     _appPreferences.setShowBalance(showBalance: showBalance);
   }
 
-  Future<User?> getUser() async {
-    User? user = await _appDatabase.getUser();
-    if(user != null) {
-      return user;
-    }
-    return fetchUserInfo();
-  }
-
-
-
   Future<Profile?> getPlayerProfile() async {
+    await _appDatabase.isDatabaseReady;
     Profile? profile = await _appDatabase.getPlayerProfile();
     if(profile != null) {
       return profile;
     }
-    getUser().then((User? user) async {
-      if(user != null) {
-        return fetchPlayerProfile(user.id);
-      }
-    });
+    await fetchUserInfo();
+    return await _appDatabase.getPlayerProfile();
 
     return null;
   }

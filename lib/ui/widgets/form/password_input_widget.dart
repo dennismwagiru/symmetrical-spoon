@@ -21,6 +21,7 @@ class _PasswordInputState extends State<PasswordInputWidget> {
     return TextFormField(
       style: CustomStyle.inputFieldStyle,
       controller: widget.controller,
+      keyboardType: TextInputType.number,
       // validator: (String value){
       //   if(value.isEmpty){
       //     return Strings.pleaseFillOutTheField;

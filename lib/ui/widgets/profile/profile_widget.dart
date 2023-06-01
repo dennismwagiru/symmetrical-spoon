@@ -23,9 +23,10 @@ class _ProfileWidget extends State<ProfileWidget> {
   void initState() {
     _viewModel = UserViewModel(const App());
     _viewModel.getPlayerProfile()
-        .then((Profile? profile) {
-      setState(() => _profile = profile);
-    });
+            .then((Profile? profile) {
+            setState(() => _profile = profile);
+        });
+
 
     super.initState();
   }

@@ -53,7 +53,6 @@ class UserViewModel extends ChangeNotifier {
   }
 
 
-  Future<User?> getUser() => _userRepository.getUser();
   Future<Profile?> getPlayerProfile() => _userRepository.getPlayerProfile();
 
   void create({required Map<String, dynamic> body}) => _userRepository.create(body: body);
@@ -61,8 +60,6 @@ class UserViewModel extends ChangeNotifier {
   void isAuthentic({required String mobileno, required String pin}) {
     _userRepository.isAuthenticUser(mobileno: mobileno, pin: pin);
   }
-
-  void fetchUser() => _userRepository.fetchUserInfo();
 
 
 
