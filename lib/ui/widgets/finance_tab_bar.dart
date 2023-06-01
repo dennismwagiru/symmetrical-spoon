@@ -43,8 +43,6 @@ class FinanceTabBar extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 14,),
-              const BalanceWidget(),
-              const SizedBox(height: 14,),
               const Expanded(
                   child: TabBarView(
                     children: [

@@ -63,6 +63,7 @@ class Strings {
   static String shareCode = 'Share Code';
 
   static String topupAmount = 'Top Up amount';
+  static String withdrawalAmount = 'Withdrawal amount';
   static String minimumDeposit = 'Minimum deposit of KES. 30';
   static String topUpSuccessful = 'Top up successful';
   static String topUpSuccessDesc = 'Enter your M-Pesa Pin on the STK-Push submitted to your phone';

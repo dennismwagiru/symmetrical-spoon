@@ -52,8 +52,12 @@ class UserViewModel extends ChangeNotifier {
     _userRepository.isUserLoggedIn();
   }
 
+  void fetchUserProfile() {
+    _userRepository.getPlayerProfile();
+  }
 
-  Future<Profile?> getPlayerProfile() => _userRepository.getPlayerProfile();
+
+  Future<Profile?> getPlayerProfile({bool refresh = false}) => _userRepository.getPlayerProfile(refresh: refresh);
 
   void create({required Map<String, dynamic> body}) => _userRepository.create(body: body);
 

@@ -16,16 +16,16 @@ import 'package:tuntigi/utils/dimensions.dart';
 import 'package:tuntigi/utils/strings.dart';
 import 'package:tuntigi/viewmodels/user_viewmodel.dart';
 
-class TopUpScreen extends StatefulWidget {
-  const TopUpScreen({Key? key}) : super(key: key);
+class WithdrawalScreen extends StatefulWidget {
+  const WithdrawalScreen({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _TopUpScreen();
+  State<StatefulWidget> createState() => _WithdrawalScreen();
 }
 
-class _TopUpScreen extends State<TopUpScreen> {
+class _WithdrawalScreen extends State<WithdrawalScreen> {
   TextEditingController phoneController = TextEditingController();
-  TextEditingController topUpController = TextEditingController();
+  TextEditingController amountController = TextEditingController();
 
   bool _loading = false;
   String? _message;
@@ -82,7 +82,7 @@ class _TopUpScreen extends State<TopUpScreen> {
                                 weight: 60,
                               ),
                               Text(
-                                'Top Up',
+                                'Withdraw',
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 16,
@@ -149,8 +149,8 @@ class _TopUpScreen extends State<TopUpScreen> {
                       ),
                       const SizedBox(height: 16),
                       TextInputWidget(
-                        label: Strings.topupAmount,
-                        controller: topUpController,
+                        label: Strings.withdrawalAmount,
+                        controller: amountController,
                         textInputType: TextInputType.number,
                         prefix: Padding(
                             padding: const EdgeInsets.only(
@@ -204,7 +204,7 @@ class _TopUpScreen extends State<TopUpScreen> {
                             ),
                           ),
                           onTap: () {
-                            _topup();
+                            _withdraw();
                           },
                         ),
                       ),
@@ -219,7 +219,7 @@ class _TopUpScreen extends State<TopUpScreen> {
     );
   }
 
-  void _topup() {
+  void _withdraw() {
     setState(() => {
       _loading = true,
       _errors = {},
@@ -228,17 +228,18 @@ class _TopUpScreen extends State<TopUpScreen> {
 
     Map<String, dynamic> payload = {
       "phone": phoneController.text,
-      "amount": topUpController.text,
+      "amount": amountController.text,
       "alias": _profile?.alias
     };
-    UserNAO.deposit(payload)
+    UserNAO.withdraw(payload)
         .then((NetworkResponse response) {
       setState(() {
         _loading = false;
       });
       if(response.isSuccessful) {
-        Fluttertoast.showToast(msg: "Top up Successful");
-        Navigator.pushReplacementNamed(context, AppRoutes.appRouteTopupSuccessful);
+        Fluttertoast.showToast(msg: "Withdrawal Successful");
+        _viewModel.getPlayerProfile(refresh: true).then((value) => Navigator.pushReplacementNamed(context, AppRoutes.appRouteDashboard));
+
       } else {
         const JsonDecoder decoder = JsonDecoder();
         try {

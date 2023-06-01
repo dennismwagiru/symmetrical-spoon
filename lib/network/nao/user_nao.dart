@@ -14,7 +14,7 @@ class UserNAO {
       }).onError((error, stackTrace) {
         return NetworkResponse(
             isSocketException: (error is SocketException || error is TimeoutException),
-            isSuccessful: false,  error: error.toString()
+            isSuccessful: false,  error: error is TimeoutException ? "Request Timed Out. Please try again later" : error.toString()
         );
       });
 
@@ -32,7 +32,7 @@ class UserNAO {
     }).onError((error, stackTrace) {
       return NetworkResponse(
           isSocketException: (error is SocketException || error is TimeoutException),
-          isSuccessful: false,  error: error.toString()
+          isSuccessful: false,  error: error is TimeoutException ? "Request Timed Out. Please try again later" : error.toString()
       );
     });
   }
@@ -44,7 +44,7 @@ class UserNAO {
     }).onError((error, stackTrace) {
       return NetworkResponse(
           isSocketException: (error is SocketException || error is TimeoutException),
-          isSuccessful: false,  error: error.toString()
+          isSuccessful: false,  error: error is TimeoutException ? "Request Timed Out. Please try again later" : error.toString()
       );
     });
   }
@@ -56,7 +56,7 @@ class UserNAO {
     }).onError((error, stackTrace) {
       return NetworkResponse(
           isSocketException: (error is SocketException || error is TimeoutException),
-          isSuccessful: false,  error: error.toString()
+          isSuccessful: false,  error: error is TimeoutException ? "Request Timed Out. Please try again later" : error.toString()
       );
     });
   }
@@ -68,7 +68,7 @@ class UserNAO {
     }).onError((error, stackTrace) {
       return NetworkResponse(
           isSocketException: (error is SocketException || error is TimeoutException),
-          isSuccessful: false,  error: error.toString()
+          isSuccessful: false,  error: error is TimeoutException ? "Request Timed Out. Please try again later" : error.toString()
       );
     });
   }
@@ -80,7 +80,7 @@ class UserNAO {
     }).onError((error, stackTrace) {
       return NetworkResponse(
           isSocketException: (error is SocketException || error is TimeoutException),
-          isSuccessful: false,  error: error.toString()
+          isSuccessful: false,  error: error is TimeoutException ? "Request Timed Out. Please try again later" : error.toString()
       );
     });
   }
@@ -92,7 +92,7 @@ class UserNAO {
     }).onError((error, stackTrace) {
       return NetworkResponse(
           isSocketException: (error is SocketException || error is TimeoutException),
-          isSuccessful: false,  error: error.toString()
+          isSuccessful: false,  error: error is TimeoutException ? "Request Timed Out. Please try again later" : error.toString()
       );
     });
   }

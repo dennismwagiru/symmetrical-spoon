@@ -14,6 +14,7 @@ import 'package:tuntigi/ui/screens/regististration_success_screen.dart';
 import 'package:tuntigi/ui/screens/splash_screen.dart';
 import 'package:tuntigi/ui/screens/topup_screen.dart';
 import 'package:tuntigi/ui/screens/topup_successful_screen.dart';
+import 'package:tuntigi/ui/screens/withdrawal_screen.dart';
 
 class AppRoutes {
 
@@ -23,6 +24,7 @@ class AppRoutes {
   static const String appRouteChallenges = '/challenges';
   static const String appRouteSettings = '/settings';
   static const String appRouteReferralCode = '/referral_code';
+  static const String appRouteWithdraw = '/withdraw';
   static const String appRouteTopup = '/topup';
   static const String appRouteTopupSuccessful = '/topup/success';
 
@@ -131,6 +133,14 @@ class AppRoutes {
       case appRouteReferralCode: {
         return MaterialPageRoute(
             builder: (BuildContext context) => const ReferralCodeScreen(),
+            fullscreenDialog: true,
+            settings: routeSettings
+        );
+      }
+
+      case appRouteWithdraw: {
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const WithdrawalScreen(),
             fullscreenDialog: true,
             settings: routeSettings
         );

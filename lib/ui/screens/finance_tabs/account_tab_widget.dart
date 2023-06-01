@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tuntigi/ui/widgets/common/balance_widget.dart';
 import 'package:tuntigi/ui/widgets/form/search_input_widget.dart';
 import 'package:tuntigi/ui/widgets/transaction_item_widget.dart';
 
@@ -10,6 +11,8 @@ class AccountTabWidget extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: const [
+          const BalanceWidget(),
+          const SizedBox(height: 14,),
           SearchInputWidget(label: 'Search for a game ID, amount',),
           SizedBox(height: 20,),
           // TransactionItemWidget(title: 'Game ID: 15202', date: 'April 20, 4:34 PM', amount: '+75',),

@@ -29,6 +29,7 @@ class AuthorizationInterceptor implements InterceptorContract {
 
       data.headers['authorization'] = 'Bearer ${token!}';
       data.headers['content-type'] = 'application/json';
+      data.headers['accept'] = 'application/json';
     } catch (e) {
       print(e);
     }
@@ -85,6 +86,7 @@ class NetworkUtil {
   Future<Map<String, String>> _headers() async {
     var headers = {
       HttpHeaders.userAgentHeader: 'beta.tun-tigi.com',
+      HttpHeaders.acceptHeader: 'application/json',
     };
     var preferences = const App().getAppPreferences();
     await preferences.isPreferenceReady;
@@ -103,7 +105,7 @@ class NetworkUtil {
   Future<dynamic> get({required String url,}) async {
     var headers = await _headers();
     return await http.get(Uri.parse(url), headers: headers, )
-        .timeout(const Duration(seconds: 10))
+        .timeout(const Duration(seconds: 30))
         .then((http.Response response) { // On response received
       print({
         'Method': 'GET',
@@ -129,6 +131,7 @@ class NetworkUtil {
     return await http.post(Uri.parse(url), body: payload,
         headers: headers,
         encoding: encoding)
+        .timeout(const Duration(seconds: 30))
         .then((http.Response response) { // On response received
       print({
         'Method': 'POST',
@@ -153,7 +156,7 @@ class NetworkUtil {
     return await http.patch(Uri.parse(url), body: body,
         headers: headers,
         encoding: encoding)
-        .timeout(const Duration(seconds: 10))
+        .timeout(const Duration(seconds: 30))
         .then((http.Response response) {
       print({
         'Method': 'PATCH',

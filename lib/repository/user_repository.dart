@@ -89,11 +89,13 @@ class UserRepository {
     _appPreferences.setShowBalance(showBalance: showBalance);
   }
 
-  Future<Profile?> getPlayerProfile() async {
-    await _appDatabase.isDatabaseReady;
-    Profile? profile = await _appDatabase.getPlayerProfile();
-    if(profile != null) {
-      return profile;
+  Future<Profile?> getPlayerProfile({bool refresh = false}) async {
+    if(!refresh) {
+      await _appDatabase.isDatabaseReady;
+      Profile? profile = await _appDatabase.getPlayerProfile();
+      if (profile != null) {
+        return profile;
+      }
     }
     await fetchUserInfo();
     return await _appDatabase.getPlayerProfile();

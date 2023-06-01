@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tuntigi/app/app.dart';
+import 'package:tuntigi/databases/providers/profile_provider.dart';
 import 'package:tuntigi/models/profile.dart';
 import 'package:tuntigi/utils/colors.dart';
 import 'package:tuntigi/utils/custom_style.dart';
@@ -16,23 +18,10 @@ class ProfileWidget extends StatefulWidget {
 
 class _ProfileWidget extends State<ProfileWidget> {
 
-  late UserViewModel _viewModel;
-  late Profile? _profile = null;
-
-  @override
-  void initState() {
-    _viewModel = UserViewModel(const App());
-    _viewModel.getPlayerProfile()
-            .then((Profile? profile) {
-            setState(() => _profile = profile);
-        });
-
-
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final profileProvider = Provider.of<ProfileProvider>(context);
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,12 +43,12 @@ class _ProfileWidget extends State<ProfileWidget> {
         // ),
         const SizedBox(height: 23),
         Text(
-          '${Strings.greeting} ${_profile?.name ?? '-'}',
+          '${Strings.greeting} ${profileProvider.profile?.name ?? '-'}',
           style: CustomStyle.greetingStyle,
         ),
         const SizedBox(height: 5),
         Text(
-          _profile?.rank ?? '-',
+          profileProvider.profile?.rank ?? '-',
           style: CustomStyle.designationStyle,
         ),
       ],

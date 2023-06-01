@@ -4,6 +4,7 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:tuntigi/app/app.dart';
 import 'package:tuntigi/app/app_routes.dart';
+import 'package:tuntigi/models/profile.dart';
 import 'package:tuntigi/network/entities/response.dart';
 import 'package:tuntigi/ui/widgets/common/logo_widget.dart';
 import 'package:tuntigi/utils/colors.dart';
@@ -24,10 +25,6 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     _viewModel = UserViewModel(const App());
-    _viewModel.isUserLoggedIn();
-
-    print({'event': 'event'});
-
     super.initState();
 
     subscribeToViewModel();
@@ -51,19 +48,13 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void subscribeToViewModel() {
-    _viewModel.getIsLoggedIn()
-        .listen((bool event) {
-      if(event) {
-        _viewModel.getPlayerProfile()
-            .then((profile) {
-          Navigator.pushReplacementNamed(context, AppRoutes.appRouteDashboard);
-        });
+    _viewModel.getPlayerProfile(refresh: true)
+    .then((Profile? profile) {
+      if(profile == null) {
+        Navigator.pushReplacementNamed(context, AppRoutes.appRouteLogin);
       } else {
-        Timer(const Duration(seconds: 3), () {
-          Navigator.pushReplacementNamed(context, AppRoutes.appRouteLogin);
-        });
+        Navigator.pushReplacementNamed(context, AppRoutes.appRouteDashboard);
       }
-
     });
   }
 

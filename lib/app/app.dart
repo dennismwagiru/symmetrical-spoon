@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:tuntigi/databases/app_database.dart';
 import 'package:tuntigi/databases/app_preferences.dart';
 import 'package:tuntigi/databases/providers/balance_provider.dart';
+import 'package:tuntigi/databases/providers/profile_provider.dart';
 import 'package:tuntigi/repository/player_repository.dart';
 import 'package:tuntigi/repository/user_repository.dart';
 
@@ -18,6 +19,7 @@ class App extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => ShowBalanceProvider()),
+          ChangeNotifierProvider(create: (context) => ProfileProvider()),
         ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
