@@ -9,6 +9,7 @@ class NetworkConstants {
   static const String userInfo      = '$_baseApi/player/getuserid';
   static const String playerProfile = '$_baseApi/player/profile';
   static const String leaderboard   = '$_baseApi/player/leaderboard';
+  static const String transactions  = '$_baseApi/player/transactions';
   static const String stkPush       = '$_baseApi/mpesa/stk/push';
   static const String b2c           = '$_baseApi/mpesa/b2cRequest';
 }

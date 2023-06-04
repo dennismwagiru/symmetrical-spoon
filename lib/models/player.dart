@@ -11,8 +11,8 @@ class Player {
   final int? loses;
 
   Player({
-    required this.id, required this.name, required this.score, this.wins,
-    this.draws, this.loses,
+    required this.id, required this.name,
+    required this.score, this.wins, this.draws, this.loses,
   });
 
   factory Player.fromMap(Map<dynamic, dynamic> data) {

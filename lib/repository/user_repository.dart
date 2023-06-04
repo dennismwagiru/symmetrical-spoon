@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:tuntigi/databases/app_database.dart';
 import 'package:tuntigi/databases/app_preferences.dart';
 import 'package:tuntigi/models/profile.dart';
+import 'package:tuntigi/models/transaction.dart';
 import 'package:tuntigi/models/user.dart';
 import 'package:tuntigi/network/entities/response.dart';
 import 'package:tuntigi/network/nao/user_nao.dart';
@@ -73,6 +74,23 @@ class UserRepository {
     });
   }
 
+  Future<List<Trans>> fetchTransactions({userId}) async{
+    return UserNAO.transactions({"userid": userId})
+        .then((NetworkResponse response) async {
+      List<Trans> transactions = [];
+      if(response.isSuccessful) {
+
+        for(var item in response.data) {
+          transactions.add(Trans.fromMap(item));
+        }
+
+        await _appDatabase.isDatabaseReady;
+        _appDatabase.insertTransactions(transactions);
+      }
+      return transactions;
+    });
+  }
+
   void isShowingBalance() async {
     _appPreferences.isPreferenceReady;
     _appPreferences.getShowBalance()
@@ -89,7 +107,20 @@ class UserRepository {
     _appPreferences.setShowBalance(showBalance: showBalance);
   }
 
+  Future<User?> getUser({bool refresh = false}) async {
+    await _appDatabase.isDatabaseReady;
+    if(!refresh) {
+      User? user = await _appDatabase.getUser();
+      if (user != null) {
+        return user;
+      }
+    }
+    await fetchUserInfo();
+    return await _appDatabase.getUser();
+  }
+
   Future<Profile?> getPlayerProfile({bool refresh = false}) async {
+    await _appDatabase.isDatabaseReady;
     if(!refresh) {
       await _appDatabase.isDatabaseReady;
       Profile? profile = await _appDatabase.getPlayerProfile();
@@ -99,9 +130,20 @@ class UserRepository {
     }
     await fetchUserInfo();
     return await _appDatabase.getPlayerProfile();
-
-    return null;
   }
+
+  Future<List<Trans>> getTransactions({bool refresh = false}) async {
+    if(!refresh) {
+      await _appDatabase.isDatabaseReady;
+      List<Trans> transactions = await _appDatabase.getTransactions();
+      return transactions;
+    }
+    User? user = await _appDatabase.getUser();
+    // await fetchTransactions(userId: '36');
+    await fetchTransactions(userId: user?.id ?? '');
+    return await _appDatabase.getTransactions();
+  }
+
 
   /// Get Login Response Method -> Stream<bool>
   /// @param -> _

@@ -42,7 +42,7 @@ class _BalanceWidget extends State<BalanceWidget> {
 
     return showBalanceProvider.showBalance ? GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, widget.nextRoute ?? AppRoutes.appRouteTopup);
+        // Navigator.pushNamed(context, widget.nextRoute ?? AppRoutes.appRouteTopup);
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

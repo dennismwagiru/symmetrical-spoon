@@ -2,6 +2,7 @@
 import 'package:tuntigi/databases/floor/database.dart';
 import 'package:tuntigi/models/player.dart';
 import 'package:tuntigi/models/profile.dart';
+import 'package:tuntigi/models/transaction.dart';
 import 'package:tuntigi/models/user.dart';
 
 class AppDatabase {
@@ -65,4 +66,16 @@ class AppDatabase {
   }
 
 
+  Future<List<Trans>> getTransactions() {
+    return _database.transactionDao.getAll();
+  }
+
+  Future<Trans?> getTransaction({required int id}) {
+    return _database.transactionDao.findById(id);
+  }
+
+  Future<void> insertTransactions(List<Trans> transactions) {
+    _database.transactionDao.deleteAll();
+    return _database.transactionDao.insertMultiple(transactions);
+  }
 }

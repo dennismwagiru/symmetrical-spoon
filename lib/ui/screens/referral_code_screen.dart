@@ -1,12 +1,18 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:tuntigi/app/app_routes.dart';
+import 'package:tuntigi/databases/providers/profile_provider.dart';
+import 'package:tuntigi/models/profile.dart';
 import 'package:tuntigi/ui/widgets/loadable_widget.dart';
 import 'package:tuntigi/ui/widgets/profile/profile_widget.dart';
 import 'package:tuntigi/utils/colors.dart';
 import 'package:tuntigi/utils/custom_style.dart';
 import 'package:tuntigi/utils/dimensions.dart';
 import 'package:tuntigi/utils/strings.dart';
+import 'package:tuntigi/viewmodels/user_viewmodel.dart';
 
 class ReferralCodeScreen extends StatefulWidget {
   const ReferralCodeScreen({Key? key}) : super(key: key);
@@ -21,6 +27,8 @@ class _ReferralCodeScreenState extends State<ReferralCodeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final profileProvider = Provider.of<ProfileProvider>(context);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SizedBox(
@@ -53,12 +61,12 @@ class _ReferralCodeScreenState extends State<ReferralCodeScreen> {
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 16),
-              Text(
-                Strings.validUntil,
-                style: CustomStyle.subTitleStyle,
-                textAlign: TextAlign.center,
-              ),
+              // const SizedBox(height: 16),
+              // Text(
+              //   Strings.validUntil,
+              //   style: CustomStyle.subTitleStyle,
+              //   textAlign: TextAlign.center,
+              // ),
               const Spacer(),
               GestureDetector(
                 child: Container(
@@ -66,7 +74,7 @@ class _ReferralCodeScreenState extends State<ReferralCodeScreen> {
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                       color: Color((0xFFD9D9D9 * .5).round()),
-                      borderRadius: BorderRadius.all(Radius.circular(Dimensions.radius))
+                      borderRadius: const BorderRadius.all(Radius.circular(Dimensions.radius))
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -80,7 +88,7 @@ class _ReferralCodeScreenState extends State<ReferralCodeScreen> {
                         ),
                       ),
                       Text(
-                        Strings.referralCode,
+                        profileProvider.profile?.referalCode ?? '-',
                         style: const TextStyle(
                           color: Color(0xFF969AA8),
                           fontSize: 24,
@@ -91,7 +99,7 @@ class _ReferralCodeScreenState extends State<ReferralCodeScreen> {
                   ),
                 ),
                 onTap: () {
-                  Navigator.pushReplacementNamed(context, AppRoutes.appRouteDashboard);
+                  Clipboard.setData(ClipboardData(text: profileProvider.profile?.referalCode ?? '-'));
                 },
               ),
               const SizedBox(height: 28),
@@ -114,7 +122,7 @@ class _ReferralCodeScreenState extends State<ReferralCodeScreen> {
                   ),
                 ),
                 onTap: () {
-                  Navigator.pushReplacementNamed(context, AppRoutes.appRouteDashboard);
+                  Share.share('Use my referral code to signupt to Tuntigi:- ${profileProvider.profile?.referalCode ?? '-'}', subject: 'Tuntigi!');
                 },
               ),
               const SizedBox(height: 56),

@@ -96,4 +96,16 @@ class UserNAO {
       );
     });
   }
+
+  static Future<NetworkResponse> transactions(Map<String, dynamic> payload) {
+    return NetworkUtil().post(url: NetworkConstants.transactions, body: payload)
+        .then((dynamic response) {
+      return NetworkResponse(isSuccessful: true, data: response['Transactions Info.']);
+    }).onError((error, stackTrace) {
+      return NetworkResponse(
+          isSocketException: (error is SocketException || error is TimeoutException),
+          isSuccessful: false,  error: error is TimeoutException ? "Request Timed Out. Please try again later" : error.toString()
+      );
+    });
+  }
 }

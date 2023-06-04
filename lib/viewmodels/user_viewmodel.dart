@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:tuntigi/app/app.dart';
 import 'package:tuntigi/models/profile.dart';
+import 'package:tuntigi/models/transaction.dart';
 import 'package:tuntigi/models/user.dart';
 import 'package:tuntigi/network/entities/response.dart';
 import 'package:tuntigi/repository/user_repository.dart';
@@ -57,7 +58,11 @@ class UserViewModel extends ChangeNotifier {
   }
 
 
+
+
+  Future<User?> getUser({bool refresh = false}) => _userRepository.getUser(refresh: refresh);
   Future<Profile?> getPlayerProfile({bool refresh = false}) => _userRepository.getPlayerProfile(refresh: refresh);
+  Future<List<Trans>> getTransactions({bool refresh = false}) => _userRepository.getTransactions(refresh: refresh);
 
   void create({required Map<String, dynamic> body}) => _userRepository.create(body: body);
 

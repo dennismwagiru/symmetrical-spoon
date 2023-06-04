@@ -11,6 +11,7 @@ class Strings {
   static String welcomeBack = 'Welcome back!';
   static String signInToYourAccount = 'Sign In To Your Account';
   static String phoneNumber = 'Mobile number';
+  static String referralCode = 'Referral Code';
   static String email = 'Email Address';
   static String password = 'Password';
   static String pin = 'Pin';
@@ -55,11 +56,11 @@ class Strings {
 
   // Referral Code
   static String earnOnReferrals = 'Earn on referrals!';
-  static String referFriends = 'Refer your friends and get KES. 50 fo every'
+  static String referFriends = 'Refer your friends and get KES. 30 fo every'
       'successful sign up!';
   static String validUntil = 'Valid until: May 5, 2023';
   static String tapToCopyCode = 'Tap to copy code';
-  static String referralCode = 'JUMAKGL';
+  // static String referralCode = 'JUMAKGL';
   static String shareCode = 'Share Code';
 
   static String topupAmount = 'Top Up amount';

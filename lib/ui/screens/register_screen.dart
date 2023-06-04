@@ -33,6 +33,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   TextEditingController emailController = TextEditingController();
   TextEditingController mobileController = TextEditingController();
+  TextEditingController referralController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
@@ -132,6 +133,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                               ),
                               const SizedBox(height: 26),
+                              TextInputWidget(
+                                label: Strings.referralCode,
+                                controller: referralController,
+                                textInputType: TextInputType.text,
+                                errorText: _errors.containsKey('refferal_code') ? _errors['refferal_code'][0] : null,
+                              ),
+                              const SizedBox(height: 26),
                               PasswordInputWidget(
                                 label: Strings.pin,
                                 controller: pinController,
@@ -197,6 +205,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       'mobileno': mobileController.text,
       'pin': pinController.text,
       'confirmPin': passwordConfirmationController.text,
+      'refferal_code': referralController.text,
     });
   }
 
