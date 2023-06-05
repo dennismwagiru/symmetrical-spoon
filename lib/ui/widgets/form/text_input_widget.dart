@@ -4,6 +4,7 @@ import 'package:tuntigi/utils/custom_style.dart';
 
 class TextInputWidget extends StatefulWidget {
   final String label;
+  final bool isEnabled;
   final String? errorText;
   final TextEditingController controller;
   final TextInputType? textInputType;
@@ -12,7 +13,7 @@ class TextInputWidget extends StatefulWidget {
   final String? Function(String?)? validator;
   const TextInputWidget({
     Key? key,
-    required this.label,
+    required this.label, this.isEnabled = true,
     required this.controller,
     this.textInputType,
     this.suffix,
@@ -33,6 +34,7 @@ class _TextInputWidget extends State<TextInputWidget> {
       controller: widget.controller,
       keyboardType: widget.textInputType ?? TextInputType.text,
       validator: widget.validator,
+      enabled: widget.isEnabled,
       decoration: InputDecoration(
           labelText: widget.label,
           // contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),

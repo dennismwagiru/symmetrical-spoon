@@ -136,7 +136,7 @@ class _LeaderboardScreen extends State<LeaderboardScreen> {
                                 child: Container(
                                   padding: const EdgeInsets.only(left:10, bottom: 7, top: 7),
                                   child: Text(
-                                    "Club",
+                                    "Player",
                                     style: CustomStyle.tableHeaderStyle,
                                   ),
                                 )

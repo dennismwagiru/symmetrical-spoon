@@ -36,7 +36,7 @@ class Strings {
   static String signupSuccessfulDesc = 'You have successfully signup to Tuntigi Gaming Community.';
 
   // Dashboard Widget
-  static String earn = 'Earn KES. 50';
+  static String earn = 'Earn KES. 30';
   static String greeting = 'Hi,';
   static String designation = 'Admiral 2nd Class';
   static String showBalance = 'Show balance';
@@ -66,8 +66,11 @@ class Strings {
   static String topupAmount = 'Top Up amount';
   static String withdrawalAmount = 'Withdrawal amount';
   static String minimumDeposit = 'Minimum deposit of KES. 30';
-  static String topUpSuccessful = 'Top up successful';
+  static String minimumWithdrawal = 'Minimum withdrawal of KES. 30';
+  static String topUpSuccessful = 'STK Push successful';
+  static String withdrawalSuccessful = 'Withdrawal successful';
   static String topUpSuccessDesc = 'Enter your M-Pesa Pin on the STK-Push submitted to your phone';
+  static String withdrawalSuccessDesc = 'Your withdrawal has been queued successfully. You will recieve an M-Pesa confirmation shortly';
 
 
 }

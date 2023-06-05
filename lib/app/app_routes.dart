@@ -15,6 +15,7 @@ import 'package:tuntigi/ui/screens/splash_screen.dart';
 import 'package:tuntigi/ui/screens/topup_screen.dart';
 import 'package:tuntigi/ui/screens/topup_successful_screen.dart';
 import 'package:tuntigi/ui/screens/withdrawal_screen.dart';
+import 'package:tuntigi/ui/screens/withdrawal_successful_screen.dart';
 
 class AppRoutes {
 
@@ -27,6 +28,7 @@ class AppRoutes {
   static const String appRouteWithdraw = '/withdraw';
   static const String appRouteTopup = '/topup';
   static const String appRouteTopupSuccessful = '/topup/success';
+  static const String appRouteWithdrawalSuccessful = '/withdraw/success';
 
   // Auth Routes
   static const String appRouteLogin = '/auth/login';
@@ -157,6 +159,14 @@ class AppRoutes {
       case appRouteTopupSuccessful: {
         return MaterialPageRoute(
             builder: (BuildContext context) => const TopupSuccessfulScreen(),
+            fullscreenDialog: true,
+            settings: routeSettings
+        );
+      }
+
+      case appRouteWithdrawalSuccessful: {
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const WithdrawalSuccessfulScreen(),
             fullscreenDialog: true,
             settings: routeSettings
         );

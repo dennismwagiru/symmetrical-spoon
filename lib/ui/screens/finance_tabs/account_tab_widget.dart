@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tuntigi/app/app.dart';
+import 'package:tuntigi/app/app_routes.dart';
+import 'package:tuntigi/databases/app_database.dart';
 import 'package:tuntigi/models/transaction.dart';
+import 'package:tuntigi/models/user.dart';
+import 'package:tuntigi/network/entities/response.dart';
+import 'package:tuntigi/network/nao/user_nao.dart';
 import 'package:tuntigi/ui/widgets/common/balance_widget.dart';
 import 'package:tuntigi/ui/widgets/form/search_input_widget.dart';
 import 'package:tuntigi/ui/widgets/transaction_item_widget.dart';
@@ -17,32 +23,42 @@ class _AccountTabWidget extends State<AccountTabWidget> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
   GlobalKey<RefreshIndicatorState>();
 
-  late UserViewModel _viewModel;
+  late AppDatabase _appDatabase;
 
   List<Trans> _transactions = [];
 
   @override
   void initState() {
-    _viewModel = UserViewModel(const App());
+    _appDatabase = const App().getAppDatabase();
 
     super.initState();
 
-    _viewModel.getTransactions(refresh: true).then((value) => {
-      setState(() => _transactions = value)
-    });
+    _prefetchData();
 
+  }
+
+  _prefetchData() async {
+    User? user = await _appDatabase.getUser();
+    UserNAO.transactions({'userid': user?.id ?? ''}).then((NetworkResponse response) {
+      if(response.isSuccessful) {
+        List<Trans> transactions = [];
+        for(var item in response.data) {
+          transactions.add(Trans.fromMap(item));
+        }
+        setState(() {
+          _transactions = transactions;
+        });
+      } else {
+        Fluttertoast.showToast(msg: "Session expired. Login and try again");
+        Navigator.pushReplacementNamed(context, AppRoutes.appRouteLogin);
+      }
+
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: RefreshIndicator(
-        key: _refreshIndicatorKey,
-        onRefresh: () =>
-          _viewModel.getTransactions(refresh: true).then((value) {
-            setState(() => _transactions = value);
-            return;
-          }),
 
         child: Column(
           children: [
@@ -64,7 +80,6 @@ class _AccountTabWidget extends State<AccountTabWidget> {
             // TransactionItemWidget(title: 'Game ID: 10928', date: 'April 20, 4:34 PM', amount: '+49',),
           ],
         ),
-      ),
     );
   }
 }

@@ -66,32 +66,13 @@ class _DepositTabWidget extends State<DepositTabWidget> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text('My Balance'),
-                    ),
-                    Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10),
-                            child: Text(
-                                Strings.currency.toUpperCase(),
-                                style: CustomStyle.currencyStyle
-                            ),
-                          ),
-                          Text(
-                            _profile?.balance.toString() ?? '-',
-                            style: CustomStyle.balanceAmountStyle,
-                          )
-                        ]
-                    ),
+                    const BalanceWidget(showTag: true,),
                     const SizedBox(height: 16),
                     MessageWidget(message: _message),
                     const SizedBox(height: 16),
                     TextInputWidget(
                       label: Strings.phoneNumber,
+                      isEnabled: false,
                       controller: phoneController,
                       textInputType: TextInputType.number,
                       prefix: const Padding(

@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tuntigi/app/app.dart';
 import 'package:tuntigi/app/app_routes.dart';
+import 'package:tuntigi/databases/app_database.dart';
 import 'package:tuntigi/databases/providers/balance_provider.dart';
 import 'package:tuntigi/databases/providers/profile_provider.dart';
 import 'package:tuntigi/models/profile.dart';
+import 'package:tuntigi/models/transaction.dart';
+import 'package:tuntigi/models/user.dart';
+import 'package:tuntigi/network/entities/response.dart';
+import 'package:tuntigi/network/nao/user_nao.dart';
 import 'package:tuntigi/utils/custom_style.dart';
 import 'package:tuntigi/utils/dimensions.dart';
 import 'package:tuntigi/utils/strings.dart';
@@ -12,7 +17,8 @@ import 'package:tuntigi/viewmodels/user_viewmodel.dart';
 
 class BalanceWidget extends StatefulWidget {
   final String? nextRoute;
-  const BalanceWidget({Key? key, this.nextRoute}) : super(key: key);
+  final bool showTag;
+  const BalanceWidget({Key? key, this.nextRoute, this.showTag = false}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() =>  _BalanceWidget();
@@ -20,19 +26,29 @@ class BalanceWidget extends StatefulWidget {
 
 class _BalanceWidget extends State<BalanceWidget> {
 
-  late UserViewModel _viewModel;
-  late Profile? _profile = null;
+  late AppDatabase _appDatabase;
 
   @override
   void initState() {
-    _viewModel = UserViewModel(const App());
-
-    _viewModel.getPlayerProfile()
-        .then((Profile? profile) {
-      setState(() => _profile = profile);
-    });
+    _appDatabase = const App().getAppDatabase();
 
     super.initState();
+
+    _prefetchData();
+  }
+
+  void _prefetchData() async {
+    User? user = await _appDatabase.getUser();
+    UserNAO.transactions({'userid': user?.id ?? ''})
+        .then((NetworkResponse response) async {
+          if(response.isSuccessful) {
+            List<Trans> transactions = [];
+            return transactions;
+          } else {
+
+          }
+
+    });
   }
 
   @override
@@ -47,9 +63,13 @@ class _BalanceWidget extends State<BalanceWidget> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          widget.showTag ?const Align(
+            alignment: Alignment.centerLeft,
+            child: Text('My Balance'),
+          ) : Container(),
           Row(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: widget.showTag ? MainAxisAlignment.start : MainAxisAlignment.center,
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 10),
@@ -64,7 +84,7 @@ class _BalanceWidget extends State<BalanceWidget> {
                 )
               ]
           ),
-          Text(
+          widget.showTag ? Container() : Text(
             Strings.accountBalance,
             style: CustomStyle.walletAccountBalanceStyle,
           )

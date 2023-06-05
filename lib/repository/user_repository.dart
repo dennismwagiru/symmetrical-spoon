@@ -115,21 +115,19 @@ class UserRepository {
         return user;
       }
     }
-    await fetchUserInfo();
-    return await _appDatabase.getUser();
+    return fetchUserInfo();
   }
 
   Future<Profile?> getPlayerProfile({bool refresh = false}) async {
     await _appDatabase.isDatabaseReady;
     if(!refresh) {
-      await _appDatabase.isDatabaseReady;
       Profile? profile = await _appDatabase.getPlayerProfile();
       if (profile != null) {
         return profile;
       }
     }
-    await fetchUserInfo();
-    return await _appDatabase.getPlayerProfile();
+    User? user = await fetchUserInfo();
+    return fetchPlayerProfile(user?.id ?? '');
   }
 
   Future<List<Trans>> getTransactions({bool refresh = false}) async {

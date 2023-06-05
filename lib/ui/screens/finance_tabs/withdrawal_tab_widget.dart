@@ -69,33 +69,13 @@ class _WithdrawalTabWidget extends State<WithdrawalTabWidget> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 16),
-                    const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text('My Balance'),
-                    ),
-                    Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10),
-                            child: Text(
-                                Strings.currency.toUpperCase(),
-                                style: CustomStyle.currencyStyle
-                            ),
-                          ),
-                          Text(
-                            _profile?.balance.toString() ?? '-',
-                            style: CustomStyle.balanceAmountStyle,
-                          )
-                        ]
-                    ),
+                    const BalanceWidget(showTag: true,),
                     const SizedBox(height: 16),
                     MessageWidget(message: _message),
                     const SizedBox(height: 16),
                     TextInputWidget(
                       label: Strings.phoneNumber,
+                      isEnabled: false,
                       controller: phoneController,
                       textInputType: TextInputType.number,
                       prefix: const Padding(
@@ -156,7 +136,7 @@ class _WithdrawalTabWidget extends State<WithdrawalTabWidget> {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                        Strings.minimumDeposit,
+                        Strings.minimumWithdrawal,
                         style: CustomStyle.subTitleStyle
                     ),
                     const SizedBox(height: 50),
@@ -213,7 +193,7 @@ class _WithdrawalTabWidget extends State<WithdrawalTabWidget> {
       });
       if(response.isSuccessful) {
         Fluttertoast.showToast(msg: "Withdrawal Successful");
-        _viewModel.getPlayerProfile(refresh: true).then((value) => Navigator.pushReplacementNamed(context, AppRoutes.appRouteDashboard));
+        _viewModel.getPlayerProfile(refresh: true).then((value) => Navigator.pushReplacementNamed(context, AppRoutes.appRouteWithdrawalSuccessful));
 
       } else {
         const JsonDecoder decoder = JsonDecoder();
