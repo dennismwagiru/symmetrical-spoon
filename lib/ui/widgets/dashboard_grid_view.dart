@@ -44,7 +44,7 @@ class DashboardGridView extends StatelessWidget {
                   icon: 'assets/images/referral.png',
                   title: Strings.referral,
                   subTitle: Strings.referralDesc,
-                  routeName: AppRoutes.appRouteReferral
+                  routeName: AppRoutes.appRouteReferralCode
               ),
             ]
         )

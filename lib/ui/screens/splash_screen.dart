@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:tuntigi/app/app.dart';
 import 'package:tuntigi/app/app_routes.dart';
 import 'package:tuntigi/models/profile.dart';
+import 'package:tuntigi/models/user.dart';
 import 'package:tuntigi/network/entities/response.dart';
 import 'package:tuntigi/ui/widgets/common/logo_widget.dart';
 import 'package:tuntigi/utils/colors.dart';
@@ -48,9 +49,9 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void subscribeToViewModel() {
-    _viewModel.getPlayerProfile(refresh: true)
-    .then((Profile? profile) {
-      if(profile == null) {
+    _viewModel.getUser(refresh: true)
+    .then((User? user) {
+      if(user == null) {
         Navigator.pushReplacementNamed(context, AppRoutes.appRouteLogin);
       } else {
         Navigator.pushReplacementNamed(context, AppRoutes.appRouteDashboard);

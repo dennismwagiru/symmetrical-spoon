@@ -6,16 +6,32 @@ import 'package:tuntigi/viewmodels/user_viewmodel.dart';
 
 class ProfileProvider extends ChangeNotifier {
   late Profile? _profile = null;
+  bool _isInitial = true;
   final UserViewModel _viewModel = UserViewModel(const App());
-  final AppDatabase _appDatabase = App().getAppDatabase();
+  final AppDatabase _appDatabase = const App().getAppDatabase();
 
   ProfileProvider() {
-    _appDatabase.isDatabaseReady.then((value) => {
-      _appDatabase.getPlayerProfile().then((Profile? profile) {
+    _prefetch();
+  }
+
+  _prefetch() async {
+
+    if(_isInitial) {
+      await _appDatabase.isDatabaseReady;
+      _appDatabase.getPlayerProfile()
+          .then((Profile? profile) {
         _profile = profile;
         notifyListeners();
-      })
+      });
+    }
+
+    _viewModel.getPlayerProfile(refresh: true)
+        .then((Profile? profile) {
+      _profile = profile;
+      notifyListeners();
+      _isInitial = false;
     });
+
   }
 
 
@@ -24,11 +40,6 @@ class ProfileProvider extends ChangeNotifier {
   set profile(Profile? profile) {
     if(profile != null) {
       _profile = profile;
-      _appDatabase.isDatabaseReady.then((value) {
-        _appDatabase.savePlayerProfile(profile: profile);
-        notifyListeners();
-      });
-
     }
   }
 }

@@ -158,7 +158,47 @@ class _DepositTabWidget extends State<DepositTabWidget> {
                           ),
                         ),
                         onTap: () {
-                          _topup();
+                          setState(() => {
+                            _loading = true,
+                            _errors = {},
+                            _message = null
+                          });
+
+                          Map<String, dynamic> payload = {
+                            "phone": phoneController.text,
+                            "amount": topUpController.text,
+                            "alias": _profile?.alias
+                          };
+                          UserNAO.deposit(payload)
+                              .then((NetworkResponse response) {
+                            setState(() {
+                              _loading = false;
+                            });
+                            if(response.isSuccessful) {
+                              Fluttertoast.showToast(msg: "Top up Successful");
+                              Navigator.pushReplacementNamed(context, AppRoutes.appRouteTopupSuccessful);
+                            } else {
+                              const JsonDecoder decoder = JsonDecoder();
+                              try {
+                                final Map<String, dynamic> res = decoder.convert(
+                                    response.error ?? '');
+                                if(res.containsKey('message') && res['message'] == 'Unauthenticated.'){
+                                  Fluttertoast.showToast(msg: "Session expired, Please login again to continue.");
+                                  Navigator.pushReplacementNamed(context, AppRoutes.appRouteLogin);
+                                }
+                                if(res.containsKey('error')) {
+                                  setState(() => _message = res['error']);
+                                } else {
+                                  setState(() => _errors = res);
+                                }
+                              } on Exception catch (e) {
+                                setState(() => _message = response.error);
+                              }
+                            }
+                          })
+                              .onError((error, stackTrace){
+                            setState(() => _message = "An error occurred. Please try again later");
+                          });
                         },
                       ),
                     ),
@@ -169,49 +209,5 @@ class _DepositTabWidget extends State<DepositTabWidget> {
         ),
       ),
     );
-  }
-
-  void _topup() {
-    setState(() => {
-      _loading = true,
-      _errors = {},
-      _message = null
-    });
-
-    Map<String, dynamic> payload = {
-      "phone": phoneController.text,
-      "amount": topUpController.text,
-      "alias": _profile?.alias
-    };
-    UserNAO.deposit(payload)
-        .then((NetworkResponse response) {
-      setState(() {
-        _loading = false;
-      });
-      if(response.isSuccessful) {
-        Fluttertoast.showToast(msg: "Top up Successful");
-        Navigator.pushReplacementNamed(context, AppRoutes.appRouteTopupSuccessful);
-      } else {
-        const JsonDecoder decoder = JsonDecoder();
-        try {
-          final Map<String, dynamic> res = decoder.convert(
-              response.error ?? '');
-          if(res.containsKey('message') && res['message'] == 'Unauthenticated.'){
-            Fluttertoast.showToast(msg: "Session expired, Please login again to continue.");
-            Navigator.pushReplacementNamed(context, AppRoutes.appRouteLogin);
-          }
-          if(res.containsKey('error')) {
-            setState(() => _message = res['error']);
-          } else {
-            setState(() => _errors = res);
-          }
-        } on Exception catch (e) {
-          setState(() => _message = response.error);
-        }
-      }
-    })
-        .onError((error, stackTrace){
-      setState(() => _message = "An error occurred. Please try again later");
-    });
   }
 }

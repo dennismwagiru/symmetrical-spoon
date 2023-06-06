@@ -76,30 +76,31 @@ class _StatementScreen extends State<StatementScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const ProfileHeaderWidget(),
-                  const SizedBox(height: 44,),
-                  const BalanceWidget(),
-                  SingleChildScrollView(
 
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 14,),
-                        const SearchInputWidget(label: 'Search for a game ID, amount',),
-                        const SizedBox(height: 20,),
-                        ..._transactions.map((Trans transaction) =>
-                            TransactionItemWidget(
-                              title: transaction.receipt ?? '-',
-                              date: transaction.date,
-                              amount: (transaction.type?.toLowerCase() == 'deposit' ? '+' : '-') + (transaction.amount ?? '-'),
+                  Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 44,),
+                            const BalanceWidget(),
+                            const SizedBox(height: 14,),
+                            const SearchInputWidget(label: 'Search for a game ID, amount',),
+                            const SizedBox(height: 20,),
+                            ..._transactions.map((Trans transaction) =>
+                                TransactionItemWidget(
+                                  title: transaction.receipt ?? '-',
+                                  date: transaction.date,
+                                  amount: (transaction.type?.toLowerCase() == 'deposit' ? '+' : '-') + (transaction.amount ?? '-'),
+                                ),
                             ),
+                            // TransactionItemWidget(title: 'Game ID: 14213', date: 'April 20, 4:34 PM', amount: '-50',),
+                            // TransactionItemWidget(title: 'Game ID: 1422', date: 'April 20, 4:34 PM', amount: '+43',),
+                            // TransactionItemWidget(title: 'Game ID: 11072', date: 'April 20, 4:34 PM', amount: '+64',),
+                            // TransactionItemWidget(title: 'Game ID: 10758', date: 'April 20, 4:34 PM', amount: '-126',),
+                            // TransactionItemWidget(title: 'Game ID: 10928', date: 'April 20, 4:34 PM', amount: '+49',),
+                          ],
                         ),
-                        // TransactionItemWidget(title: 'Game ID: 14213', date: 'April 20, 4:34 PM', amount: '-50',),
-                        // TransactionItemWidget(title: 'Game ID: 1422', date: 'April 20, 4:34 PM', amount: '+43',),
-                        // TransactionItemWidget(title: 'Game ID: 11072', date: 'April 20, 4:34 PM', amount: '+64',),
-                        // TransactionItemWidget(title: 'Game ID: 10758', date: 'April 20, 4:34 PM', amount: '-126',),
-                        // TransactionItemWidget(title: 'Game ID: 10928', date: 'April 20, 4:34 PM', amount: '+49',),
-                      ],
-                    ),
-                  )
+                      ))
                 ]
             ),
           ),

@@ -26,30 +26,6 @@ class BalanceWidget extends StatefulWidget {
 
 class _BalanceWidget extends State<BalanceWidget> {
 
-  late AppDatabase _appDatabase;
-
-  @override
-  void initState() {
-    _appDatabase = const App().getAppDatabase();
-
-    super.initState();
-
-    _prefetchData();
-  }
-
-  void _prefetchData() async {
-    User? user = await _appDatabase.getUser();
-    UserNAO.transactions({'userid': user?.id ?? ''})
-        .then((NetworkResponse response) async {
-          if(response.isSuccessful) {
-            List<Trans> transactions = [];
-            return transactions;
-          } else {
-
-          }
-
-    });
-  }
 
   @override
   Widget build(BuildContext context) {

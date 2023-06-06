@@ -52,12 +52,11 @@ class Strings {
   static String leaderboard = 'Leaderboard';
   static String leaderboardDesc = 'View the latest table';
   static String referral = 'Referral';
-  static String referralDesc = 'Refer a player and earn Kes. 50';
+  static String referralDesc = 'Refer a player and earn Kes. 30';
 
   // Referral Code
-  static String earnOnReferrals = 'Earn on referrals!';
-  static String referFriends = 'Refer your friends and get KES. 30 fo every'
-      'successful sign up!';
+  static String earnOnReferrals = 'Refer And Earn!';
+  static String referFriends = 'Refer your friends and earn Kes. 30 for every successful sign up & deposit.';
   static String validUntil = 'Valid until: May 5, 2023';
   static String tapToCopyCode = 'Tap to copy code';
   // static String referralCode = 'JUMAKGL';

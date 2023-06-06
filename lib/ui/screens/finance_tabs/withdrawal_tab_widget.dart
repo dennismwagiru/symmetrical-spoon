@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:tuntigi/app/app.dart';
 import 'package:tuntigi/app/app_routes.dart';
+import 'package:tuntigi/databases/providers/profile_provider.dart';
 import 'package:tuntigi/models/profile.dart';
 import 'package:tuntigi/network/entities/response.dart';
 import 'package:tuntigi/network/nao/user_nao.dart';
@@ -55,6 +57,8 @@ class _WithdrawalTabWidget extends State<WithdrawalTabWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final profileProvider = Provider.of<ProfileProvider>(context);
+
     return SingleChildScrollView(
       child: Center(
         child: Column(
@@ -161,7 +165,51 @@ class _WithdrawalTabWidget extends State<WithdrawalTabWidget> {
                           ),
                         ),
                         onTap: () {
-                          _withdraw();
+                          setState(() => {
+                            _loading = true,
+                            _errors = {},
+                            _message = null
+                          });
+
+                          Map<String, dynamic> payload = {
+                            "phone": phoneController.text,
+                            "amount": amountController.text,
+                            "alias": _profile?.alias
+                          };
+                          UserNAO.withdraw(payload)
+                              .then((NetworkResponse response) {
+                            setState(() {
+                              _loading = false;
+                            });
+                            if(response.isSuccessful) {
+                              Fluttertoast.showToast(msg: "Withdrawal Successful");
+                              _viewModel.getPlayerProfile(refresh: true).then((Profile? profile) {
+                                profileProvider.profile = profile;
+                                Navigator.pushReplacementNamed(context, AppRoutes.appRouteWithdrawalSuccessful);
+                              });
+
+                            } else {
+                              const JsonDecoder decoder = JsonDecoder();
+                              try {
+                                final Map<String, dynamic> res = decoder.convert(
+                                    response.error ?? '');
+                                if(res.containsKey('message') && res['message'] == 'Unauthenticated.'){
+                                  Fluttertoast.showToast(msg: "Session expired, Please login again to continue.");
+                                  Navigator.pushReplacementNamed(context, AppRoutes.appRouteLogin);
+                                }
+                                if(res.containsKey('error')) {
+                                  setState(() => _message = res['error']);
+                                } else {
+                                  setState(() => _errors = res);
+                                }
+                              } on Exception catch (e) {
+                                setState(() => _message = response.error);
+                              }
+                            }
+                          })
+                              .onError((error, stackTrace){
+                            setState(() => _message = "An error occurred. Please try again later");
+                          });
                         },
                       ),
                     ),
@@ -172,51 +220,6 @@ class _WithdrawalTabWidget extends State<WithdrawalTabWidget> {
         ),
       ),
     );
-  }
-
-  void _withdraw() {
-    setState(() => {
-      _loading = true,
-      _errors = {},
-      _message = null
-    });
-
-    Map<String, dynamic> payload = {
-      "phone": phoneController.text,
-      "amount": amountController.text,
-      "alias": _profile?.alias
-    };
-    UserNAO.withdraw(payload)
-        .then((NetworkResponse response) {
-      setState(() {
-        _loading = false;
-      });
-      if(response.isSuccessful) {
-        Fluttertoast.showToast(msg: "Withdrawal Successful");
-        _viewModel.getPlayerProfile(refresh: true).then((value) => Navigator.pushReplacementNamed(context, AppRoutes.appRouteWithdrawalSuccessful));
-
-      } else {
-        const JsonDecoder decoder = JsonDecoder();
-        try {
-          final Map<String, dynamic> res = decoder.convert(
-              response.error ?? '');
-          if(res.containsKey('message') && res['message'] == 'Unauthenticated.'){
-            Fluttertoast.showToast(msg: "Session expired, Please login again to continue.");
-            Navigator.pushReplacementNamed(context, AppRoutes.appRouteLogin);
-          }
-          if(res.containsKey('error')) {
-            setState(() => _message = res['error']);
-          } else {
-            setState(() => _errors = res);
-          }
-        } on Exception catch (e) {
-          setState(() => _message = response.error);
-        }
-      }
-    })
-        .onError((error, stackTrace){
-      setState(() => _message = "An error occurred. Please try again later");
-    });
   }
 
 }

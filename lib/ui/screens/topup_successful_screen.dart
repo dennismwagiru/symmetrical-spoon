@@ -1,15 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tuntigi/app/app.dart';
 import 'package:tuntigi/app/app_routes.dart';
+import 'package:tuntigi/databases/providers/profile_provider.dart';
+import 'package:tuntigi/models/profile.dart';
 import 'package:tuntigi/utils/colors.dart';
 import 'package:tuntigi/utils/custom_style.dart';
 import 'package:tuntigi/utils/dimensions.dart';
 import 'package:tuntigi/utils/strings.dart';
+import 'package:tuntigi/viewmodels/user_viewmodel.dart';
 
-class TopupSuccessfulScreen extends StatelessWidget {
+class TopupSuccessfulScreen extends StatefulWidget {
   const TopupSuccessfulScreen({Key? key}) : super(key: key);
 
   @override
+  State<StatefulWidget> createState() => _TopupSuccessfulScreen();
+}
+
+class _TopupSuccessfulScreen extends State<TopupSuccessfulScreen> {
+
+  late UserViewModel _viewModel;
+
+  @override
+  void initState() {
+    _viewModel = UserViewModel(const App());
+
+    super.initState();
+  }
+
+
+  @override
   Widget build(BuildContext context) {
+    final profileProvider = Provider.of<ProfileProvider>(context);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
@@ -67,7 +90,11 @@ class TopupSuccessfulScreen extends StatelessWidget {
                         ),
                       ),
                       onTap: () {
-                        Navigator.pop(context);
+                        _viewModel.getPlayerProfile(refresh: true).then((Profile? profile) {
+                          profileProvider.profile = profile;
+                          Navigator.pushNamedAndRemoveUntil(context, AppRoutes.appRouteDashboard,  (Route<dynamic> route) => false,);   //// this MainPage is your page to refresh
+
+                        });
                       },
                     ),
                     const SizedBox(height: 56),
