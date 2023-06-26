@@ -5,6 +5,8 @@ import 'package:tuntigi/models/profile.dart';
 import 'package:tuntigi/models/transaction.dart';
 import 'package:tuntigi/models/user.dart';
 
+import 'floor/migrations.dart';
+
 class AppDatabase {
 
   late Future _isDatabaseInstanceReady;
@@ -17,6 +19,7 @@ class AppDatabase {
 
   AppDatabase._internal() {
     _isDatabaseInstanceReady = $FloorTunTigiDatabase.databaseBuilder('app_database.db')
+        .addMigrations([migration1to2])
         .build().then((database) => _database = database);
   }
   Future get isDatabaseReady => _isDatabaseInstanceReady;
