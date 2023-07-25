@@ -18,7 +18,7 @@ import 'package:sqflite/sqflite.dart' as sqflite;
 part 'database.g.dart';
 
 @TypeConverters([DateTimeConverter, ListStringConverter])
-@Database(version: 2, entities: [
+@Database(version: 3, entities: [
   User, Profile, Player, Trans,
 ])
 

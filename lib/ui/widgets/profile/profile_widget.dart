@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tuntigi/app/app.dart';
 import 'package:tuntigi/app/app_routes.dart';
+import 'package:tuntigi/databases/app_database.dart';
 import 'package:tuntigi/databases/app_preferences.dart';
 import 'package:tuntigi/databases/providers/profile_provider.dart';
 import 'package:tuntigi/models/profile.dart';
@@ -60,21 +61,24 @@ class ProfileWidget extends StatefulWidget {
 class _ProfileWidget extends State<ProfileWidget> {
 
   late AppPreferences _appPreferences;
+  late AppDatabase _appDatabase;
 
   @override
   void initState() {
-    _appPreferences = App().getAppPreferences();
-
+    _appPreferences = const App().getAppPreferences();
+    _appDatabase = const App().getAppDatabase();
     super.initState();
   }
 
-  void logout() async {
+  void logout(context) async {
+    _appDatabase.clearUser();
     await _appPreferences.isPreferenceReady;
     _appPreferences.setLoggedIn(isLoggedIn: false);
     _appPreferences.setAccessToken(
         accessToken: ''
     );
-    Navigator.pushReplacementNamed(context, AppRoutes.appRouteLogin);
+
+    Navigator.popAndPushNamed(context, AppRoutes.appRouteLogin);
   }
 
   @override
@@ -87,7 +91,7 @@ class _ProfileWidget extends State<ProfileWidget> {
       children: [
         DropdownButtonHideUnderline(
             child: DropdownButton2(
-              customButton: CircleAvatar(
+              customButton: const CircleAvatar(
                 backgroundColor: CustomColor.primaryColor,
                 child: CircleAvatar(
                   backgroundColor: CustomColor.primaryColor,
@@ -115,7 +119,7 @@ class _ProfileWidget extends State<ProfileWidget> {
                   //Do something
                     break;
                   case MenuItems.logout:
-                    logout();
+                    logout(context);
                     break;
                 }
               },

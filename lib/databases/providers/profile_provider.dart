@@ -21,25 +21,31 @@ class ProfileProvider extends ChangeNotifier {
       _appDatabase.getPlayerProfile()
           .then((Profile? profile) {
         _profile = profile;
+        if (profile == null) {
+          loadFromNetwork();
+        }
+
         notifyListeners();
       });
+    } else {
+      loadFromNetwork();
     }
+  }
 
-    _viewModel.getPlayerProfile(refresh: true)
+  loadFromNetwork() async {
+    return _viewModel.getPlayerProfile(refresh: true)
         .then((Profile? profile) {
       _profile = profile;
       notifyListeners();
       _isInitial = false;
+      return profile;
     });
-
   }
 
 
   Profile? get profile => _profile;
 
   set profile(Profile? profile) {
-    if(profile != null) {
-      _profile = profile;
-    }
+    _profile = profile;
   }
 }

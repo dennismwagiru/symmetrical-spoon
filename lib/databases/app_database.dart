@@ -19,7 +19,7 @@ class AppDatabase {
 
   AppDatabase._internal() {
     _isDatabaseInstanceReady = $FloorTunTigiDatabase.databaseBuilder('app_database.db')
-        .addMigrations([migration1to2])
+        .addMigrations([migration1to2, migration2to3])
         .build().then((database) => _database = database);
   }
   Future get isDatabaseReady => _isDatabaseInstanceReady;
@@ -27,6 +27,11 @@ class AppDatabase {
   void saveUser({required User user}) {
     _database.userDao.deleteAllUsers();
     _database.userDao.insertSingle(user);
+  }
+
+  void clearUser() {
+    _database.userDao.deleteAllUsers();
+    _database.profileDao.deleteAllProfiles();
   }
 
   Future<User?> getUser() async {

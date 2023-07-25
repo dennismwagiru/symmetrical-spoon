@@ -10,10 +10,11 @@ class Player {
   final int? draws;
   final int? loses;
   final int? gd;
+  final int? position;
 
   Player({
     required this.id, required this.name,
-    required this.score, this.wins, this.draws, this.loses, this.gd
+    required this.score, this.wins, this.draws, this.loses, this.gd, this.position
   });
 
   factory Player.fromMap(Map<dynamic, dynamic> data) {
@@ -25,11 +26,12 @@ class Player {
         draws: data['draws'],
         loses: data['loses'],
       gd: data['gd'],
+      position: data['position'],
     );
   }
 
   @override
   String toString() {
-    return 'id: $id, name: $name, score: $score, wins: $wins, draws: $draws, loses: $loses, gd: $gd';
+    return 'id: $id, name: $name, score: $score, wins: $wins, draws: $draws, loses: $loses, gd: $gd position: $position';
   }
 }

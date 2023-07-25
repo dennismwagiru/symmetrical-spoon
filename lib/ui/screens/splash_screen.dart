@@ -52,6 +52,7 @@ class _SplashScreenState extends State<SplashScreen> {
     _viewModel.getUser(refresh: true)
     .then((User? user) {
       if(user == null) {
+        // Navigator.pushReplacementNamed(context, AppRoutes.appRouteDashboard);
         Navigator.pushReplacementNamed(context, AppRoutes.appRouteLogin);
       } else {
         Navigator.pushReplacementNamed(context, AppRoutes.appRouteDashboard);

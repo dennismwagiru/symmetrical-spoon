@@ -211,7 +211,7 @@ class _LeaderboardScreen extends State<LeaderboardScreen> {
                                       child: Container(
                                         padding: const EdgeInsets.only(left:10, bottom: 7, top: 7),
                                         child: Text(
-                                          player.name.toUpperCase(),
+                                          '${player.position != null ? player.position.toString() : ''}. ${player.name.toUpperCase()}',
                                           style: CustomStyle.tableDataStyle,
                                         ),
                                       )

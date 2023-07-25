@@ -2,8 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:tuntigi/app/app.dart';
 import 'package:tuntigi/app/app_routes.dart';
+import 'package:tuntigi/databases/app_database.dart';
+import 'package:tuntigi/databases/providers/profile_provider.dart';
+import 'package:tuntigi/models/profile.dart';
 import 'package:tuntigi/network/entities/response.dart';
 import 'package:tuntigi/ui/widgets/common/logo_widget.dart';
 import 'package:tuntigi/ui/widgets/form/message_widget.dart';
@@ -40,9 +44,16 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     _viewModel = UserViewModel(const App());
 
+    clearSession();
     super.initState();
 
     subscribeToViewModel();
+  }
+
+  clearSession() async {
+    AppDatabase appDatabase = const App().getAppDatabase();
+    await appDatabase.isDatabaseReady;
+    appDatabase.clearUser();
   }
 
   @override
@@ -189,14 +200,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void subscribeToViewModel() {
     _viewModel.getLoginResponse()
-        .listen((NetworkResponse response) {
+        .listen((NetworkResponse response) async {
       setState(() => _message = null );
       if(response.isSuccessful) {
         Fluttertoast.showToast(msg: "Login Successful");
-        _viewModel.getPlayerProfile()
-            .then((profile) {
-          Navigator.pushReplacementNamed(context, AppRoutes.appRouteDashboard);
-        });
+        await Provider.of<ProfileProvider>(context, listen: false).loadFromNetwork();
+        Navigator.popAndPushNamed(context, AppRoutes.appRouteDashboard);
 
       } else {
         setState(() => {

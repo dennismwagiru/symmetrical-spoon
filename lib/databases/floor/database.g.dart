@@ -75,7 +75,7 @@ class _$TunTigiDatabase extends TunTigiDatabase {
     Callback? callback,
   ]) async {
     final databaseOptions = sqflite.OpenDatabaseOptions(
-      version: 1,
+      version: 3,
       onConfigure: (database) async {
         await database.execute('PRAGMA foreign_keys = ON');
         await callback?.onConfigure?.call(database);
@@ -95,7 +95,7 @@ class _$TunTigiDatabase extends TunTigiDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Profile` (`id` INTEGER NOT NULL, `referalCode` TEXT, `mobile` TEXT, `name` TEXT, `alias` TEXT, `balance` TEXT, `rank` TEXT, PRIMARY KEY (`id`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Player` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `score` INTEGER, `wins` INTEGER, `draws` INTEGER, `loses` INTEGER, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `Player` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `score` INTEGER, `wins` INTEGER, `draws` INTEGER, `loses` INTEGER, `gd` INTEGER, `position` INTEGER, PRIMARY KEY (`id`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Trans` (`id` TEXT NOT NULL, `date` TEXT NOT NULL, `amount` TEXT, `receipt` TEXT, `type` TEXT, PRIMARY KEY (`id`))');
 
@@ -281,7 +281,9 @@ class _$PlayerDao extends PlayerDao {
                   'score': item.score,
                   'wins': item.wins,
                   'draws': item.draws,
-                  'loses': item.loses
+                  'loses': item.loses,
+                  'gd': item.gd,
+                  'position': item.position
                 }),
         _playerUpdateAdapter = UpdateAdapter(
             database,
@@ -293,7 +295,9 @@ class _$PlayerDao extends PlayerDao {
                   'score': item.score,
                   'wins': item.wins,
                   'draws': item.draws,
-                  'loses': item.loses
+                  'loses': item.loses,
+                  'gd': item.gd,
+                  'position': item.position
                 }),
         _playerDeletionAdapter = DeletionAdapter(
             database,
@@ -305,7 +309,9 @@ class _$PlayerDao extends PlayerDao {
                   'score': item.score,
                   'wins': item.wins,
                   'draws': item.draws,
-                  'loses': item.loses
+                  'loses': item.loses,
+                  'gd': item.gd,
+                  'position': item.position
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -329,7 +335,9 @@ class _$PlayerDao extends PlayerDao {
             score: row['score'] as int?,
             wins: row['wins'] as int?,
             draws: row['draws'] as int?,
-            loses: row['loses'] as int?));
+            loses: row['loses'] as int?,
+            gd: row['gd'] as int?,
+            position: row['position'] as int?));
   }
 
   @override
@@ -341,7 +349,9 @@ class _$PlayerDao extends PlayerDao {
             score: row['score'] as int?,
             wins: row['wins'] as int?,
             draws: row['draws'] as int?,
-            loses: row['loses'] as int?),
+            loses: row['loses'] as int?,
+            gd: row['gd'] as int?,
+            position: row['position'] as int?),
         arguments: [id]);
   }
 
