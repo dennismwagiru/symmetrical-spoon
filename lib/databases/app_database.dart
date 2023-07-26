@@ -19,7 +19,7 @@ class AppDatabase {
 
   AppDatabase._internal() {
     _isDatabaseInstanceReady = $FloorTunTigiDatabase.databaseBuilder('app_database.db')
-        .addMigrations([migration1to2, migration2to3])
+        .addMigrations([migration1to2, migration2to3, migration3to4])
         .build().then((database) => _database = database);
   }
   Future get isDatabaseReady => _isDatabaseInstanceReady;

@@ -157,7 +157,7 @@ class _ProfileWidget extends State<ProfileWidget> {
         ),
         const SizedBox(height: 5),
         Text(
-          profileProvider.profile?.rank ?? '-',
+          '${profileProvider.profile?.rank ?? '-'}, ${profileProvider.profile?.position ?? '_'}',
           style: CustomStyle.designationStyle,
         ),
       ],
