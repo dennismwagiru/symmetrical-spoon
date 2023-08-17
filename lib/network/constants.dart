@@ -14,4 +14,5 @@ class NetworkConstants {
   static const String stkPush       = '$_baseApi/mpesa/stk/push';
   static const String b2c           = '$_baseApi/mpesa/b2cRequest';
   static const String gamezones     = '$_baseApi/general/gamezones';
+  static const String uploadprofpic = '$_baseApi/player/uploadprofpic';
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:image_picker/image_picker.dart';
 import 'package:tuntigi/network/constants.dart';
 import 'package:tuntigi/network/entities/response.dart';
 import 'package:tuntigi/utils/network_util.dart';
@@ -53,6 +54,15 @@ class UserNAO {
       );
     });
   }
+  static Future<NetworkResponse> uploadAvatar({required XFile file}) =>
+      NetworkUtil().upload(url: NetworkConstants.uploadprofpic, file: file)
+          .then((response) {
+        return NetworkResponse(isSuccessful: true, data: response);
+      }
+      ).onError((error, stackTrace) =>
+          NetworkResponse(isSuccessful: false, error: error.toString())
+      );
+
 
   static Future<NetworkResponse> refreshToken() {
     return NetworkUtil().post(url: NetworkConstants.refreshToken)

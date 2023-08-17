@@ -6,8 +6,10 @@ import 'package:http_interceptor/http/interceptor_contract.dart';
 import 'package:http_interceptor/models/request_data.dart';
 import 'package:http_interceptor/models/response_data.dart';
 import 'package:http_interceptor/models/retry_policy.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tuntigi/app/app.dart';
 import 'package:tuntigi/app/app_exceptions.dart';
+import 'package:tuntigi/network/constants.dart';
 import 'package:tuntigi/network/entities/response.dart';
 import 'package:tuntigi/network/nao/user_nao.dart';
 
@@ -174,6 +176,33 @@ class NetworkUtil {
         'Response': response.body
       });
       return _returnResponse(response);
+    });
+  }
+
+  Future<dynamic> upload({required String url, required XFile file}) async {
+    var headers = await _headers();
+    var request = http.MultipartRequest('POST', Uri.parse(url),)
+      ..files.add(await http.MultipartFile.fromPath(
+        'image', file.path,
+      ));
+    request.headers.addAll(headers);
+    return await request.send()
+        .then((response) async {
+      return http.Response.fromStream(response)
+          .then((value) {
+        print({
+          'Method': 'UPLOAD',
+          'URL': url,
+          'Headers': headers,
+          'StatusCode': response.statusCode,
+          'Response': value.body,
+        });
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          return _decoder.convert(value.body);
+        } else {
+          return _returnResponse(value);
+        }
+      });
     });
   }
 

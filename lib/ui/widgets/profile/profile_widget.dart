@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:tuntigi/app/app.dart';
@@ -9,6 +10,8 @@ import 'package:tuntigi/app/app_routes.dart';
 import 'package:tuntigi/databases/app_database.dart';
 import 'package:tuntigi/databases/app_preferences.dart';
 import 'package:tuntigi/databases/providers/profile_provider.dart';
+import 'package:tuntigi/network/entities/response.dart';
+import 'package:tuntigi/network/nao/user_nao.dart';
 import 'package:tuntigi/utils/colors.dart';
 import 'package:tuntigi/utils/custom_style.dart';
 import 'package:tuntigi/utils/strings.dart';
@@ -83,13 +86,20 @@ class _ProfileWidget extends State<ProfileWidget> {
     Navigator.popAndPushNamed(context, AppRoutes.appRouteLogin);
   }
 
-
-  // final picker = ImagePicker();
+  void uploadAvatar(XFile file) {
+    UserNAO.uploadAvatar(file: file)
+        .then((NetworkResponse response) async {
+          Fluttertoast.showToast(msg: "Profile Picture Updated");
+      await Provider.of<ProfileProvider>(context, listen: false).loadFromNetwork();
+    });
+  }
 
 //Image Picker function to get image from gallery
   Future getImageFromGallery() async {
     final pickedFile = await ImagePicker().pickMedia();
 
+    print(pickedFile?.path ?? '....');
+    uploadAvatar(pickedFile!);
     // setState(() {
     //   if (pickedFile != null) {
     //     _image = File(pickedFile.path);
@@ -101,6 +111,9 @@ class _ProfileWidget extends State<ProfileWidget> {
   Future getImageFromCamera() async {
     final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
 
+    print(pickedFile?.path ?? '....');
+
+    uploadAvatar(pickedFile!);
     // setState(() {
     //   if (pickedFile != null) {
     //     _image = File(pickedFile.path);
@@ -164,7 +177,7 @@ class _ProfileWidget extends State<ProfileWidget> {
                     children: <Widget>[
                       ListTile(
                         leading: const Icon(Icons.photo),
-                        title: const Text('Upload Photo'),
+                        title: const Text('Add Profile Photo'),
                         onTap: showOptions,
                       ),
                       GestureDetector(
