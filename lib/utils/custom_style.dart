@@ -108,6 +108,12 @@ class CustomStyle {
     letterSpacing: 0.02,
   );
 
+  static var gamezoneTextStyle = const TextStyle(
+    color: Colors.black,
+    fontSize: 14,
+    fontWeight: FontWeight.w800,
+  );
+
   static var listStyle = TextStyle(
       color: Colors.black,
       fontSize: Dimensions.defaultTextSize
@@ -132,4 +138,5 @@ class CustomStyle {
     borderRadius: const BorderRadius.all(Radius.circular(10.0)),
     borderSide: BorderSide(color: Colors.black.withOpacity(0.1), width: 1.0),
   );
+
 }

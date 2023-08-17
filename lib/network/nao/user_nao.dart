@@ -37,6 +37,23 @@ class UserNAO {
     });
   }
 
+  static Future<NetworkResponse> resetPin(
+      {required String mobileno}) {
+    return NetworkUtil().post( // HTTP-POST request
+        url: NetworkConstants.resetPin, // REST api URL
+        body: { // Request body
+          'mobileno': mobileno,
+        })
+        .then((dynamic response) { // On response received
+      return NetworkResponse(isSuccessful: true, data: response);
+    }).onError((error, stackTrace) {
+      return NetworkResponse(
+          isSocketException: (error is SocketException || error is TimeoutException),
+          isSuccessful: false,  error: error is TimeoutException ? "Request Timed Out. Please try again later" : error.toString()
+      );
+    });
+  }
+
   static Future<NetworkResponse> refreshToken() {
     return NetworkUtil().post(url: NetworkConstants.refreshToken)
         .then((dynamic response) { // On response received
@@ -101,6 +118,18 @@ class UserNAO {
     return NetworkUtil().post(url: NetworkConstants.transactions, body: payload)
         .then((dynamic response) {
       return NetworkResponse(isSuccessful: true, data: response['Transactions Info.']);
+    }).onError((error, stackTrace) {
+      return NetworkResponse(
+          isSocketException: (error is SocketException || error is TimeoutException),
+          isSuccessful: false,  error: error is TimeoutException ? "Request Timed Out. Please try again later" : error.toString()
+      );
+    });
+  }
+
+  static Future<NetworkResponse> gamezones() {
+    return NetworkUtil().get(url: NetworkConstants.gamezones)
+        .then((dynamic response) {
+      return NetworkResponse(isSuccessful: true, data: response['Gamezones Info.']);
     }).onError((error, stackTrace) {
       return NetworkResponse(
           isSocketException: (error is SocketException || error is TimeoutException),

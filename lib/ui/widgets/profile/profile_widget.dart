@@ -1,16 +1,17 @@
-import 'package:dropdown_button2/dropdown_button2.dart';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:tuntigi/app/app.dart';
 import 'package:tuntigi/app/app_routes.dart';
 import 'package:tuntigi/databases/app_database.dart';
 import 'package:tuntigi/databases/app_preferences.dart';
 import 'package:tuntigi/databases/providers/profile_provider.dart';
-import 'package:tuntigi/models/profile.dart';
 import 'package:tuntigi/utils/colors.dart';
 import 'package:tuntigi/utils/custom_style.dart';
 import 'package:tuntigi/utils/strings.dart';
-import 'package:tuntigi/viewmodels/user_viewmodel.dart';
 
 class MenuItem {
   final String text;
@@ -62,6 +63,7 @@ class _ProfileWidget extends State<ProfileWidget> {
 
   late AppPreferences _appPreferences;
   late AppDatabase _appDatabase;
+  final ImagePicker _picker = ImagePicker();
 
   @override
   void initState() {
@@ -81,6 +83,61 @@ class _ProfileWidget extends State<ProfileWidget> {
     Navigator.popAndPushNamed(context, AppRoutes.appRouteLogin);
   }
 
+
+  // final picker = ImagePicker();
+
+//Image Picker function to get image from gallery
+  Future getImageFromGallery() async {
+    final pickedFile = await ImagePicker().pickMedia();
+
+    // setState(() {
+    //   if (pickedFile != null) {
+    //     _image = File(pickedFile.path);
+    //   }
+    // });
+  }
+
+//Image Picker function to get image from camera
+  Future getImageFromCamera() async {
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
+
+    // setState(() {
+    //   if (pickedFile != null) {
+    //     _image = File(pickedFile.path);
+    //   }
+    // });
+  }
+
+  //Show options to get image from camera or gallery
+  Future showOptions() async {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (context) => CupertinoActionSheet(
+        actions: [
+          CupertinoActionSheetAction(
+            child: Text('Photo Gallery'),
+            onPressed: () {
+              // close the options modal
+              Navigator.of(context).pop();
+              // get image from gallery
+              getImageFromGallery();
+            },
+          ),
+          CupertinoActionSheetAction(
+            child: Text('Camera'),
+            onPressed: () {
+              // close the options modal
+              Navigator.of(context).pop();
+              // get image from camera
+              getImageFromCamera();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final profileProvider = Provider.of<ProfileProvider>(context);
@@ -89,52 +146,94 @@ class _ProfileWidget extends State<ProfileWidget> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        DropdownButtonHideUnderline(
-            child: DropdownButton2(
-              customButton: const CircleAvatar(
-                backgroundColor: CustomColor.primaryColor,
-                child: CircleAvatar(
-                  backgroundColor: CustomColor.primaryColor,
-                  radius: 30,
-                  child: Icon(
-                    Icons.person,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              items: [
-                // DropdownMenuItem<MenuItem>(
-                //   value: MenuItems.share,
-                //   child: MenuItems.buildItem(MenuItems.share),
-                // ),
-                DropdownMenuItem<MenuItem>(
-                  value: MenuItems.logout,
-                  child: MenuItems.buildItem(MenuItems.logout),
-                ),
-
-              ],
-              onChanged: (value) {
-                switch (value) {
-                  case MenuItems.share:
-                  //Do something
-                    break;
-                  case MenuItems.logout:
-                    logout(context);
-                    break;
-                }
-              },
-              dropdownStyleData: DropdownStyleData(
-                width: 160,
-                padding: const EdgeInsets.symmetric(vertical: 6),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(4),
-                  color: Colors.white,
-                ),
-                elevation: 8,
-                offset: const Offset(40, -4),
-              ),
-            )
+        GestureDetector(
+          child: CircleAvatar(
+            backgroundColor: CustomColor.primaryColor,
+            child: CircleAvatar(
+              backgroundColor: CustomColor.primaryColor,
+              radius: 30,
+              child: Image.network(profileProvider.profile?.profpic ?? 'https://tun-tigi.com/public/images/profpics/no-image.png', width: 60, height: 60),
+            ),
+          ),
+          onTap: () {
+            showModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      ListTile(
+                        leading: const Icon(Icons.photo),
+                        title: const Text('Upload Photo'),
+                        onTap: showOptions,
+                      ),
+                      GestureDetector(
+                        child: ListTile(
+                          leading: const Icon(
+                            Icons.attribution_outlined,
+                            weight: 29,
+                            size: 29,
+                          ),
+                          title: const Text('Logout',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                          onTap: () {
+                            logout(context);
+                          },
+                        ),
+                      ),
+                    ],
+                  );
+                });
+          },
         ),
+        // DropdownButtonHideUnderline(
+        //     child: DropdownButton2(
+        //       customButton: CircleAvatar(
+        //         backgroundColor: CustomColor.primaryColor,
+        //         child: CircleAvatar(
+        //           backgroundColor: CustomColor.primaryColor,
+        //           radius: 30,
+        //           child: Image.network(profileProvider.profile?.profpic ?? 'https://tun-tigi.com/public/images/profpics/no-image.png', width: 60, height: 60),
+        //         ),
+        //       ),
+        //       items: [
+        //         // DropdownMenuItem<MenuItem>(
+        //         //   value: MenuItems.share,
+        //         //   child: MenuItems.buildItem(MenuItems.share),
+        //         // ),
+        //         DropdownMenuItem<MenuItem>(
+        //           value: MenuItems.logout,
+        //           child: MenuItems.buildItem(MenuItems.logout),
+        //         ),
+        //
+        //       ],
+        //       onChanged: (value) {
+        //         switch (value) {
+        //           case MenuItems.share:
+        //           //Do something
+        //             break;
+        //           case MenuItems.logout:
+        //             logout(context);
+        //             break;
+        //         }
+        //       },
+        //       dropdownStyleData: DropdownStyleData(
+        //         width: 160,
+        //         padding: const EdgeInsets.symmetric(vertical: 6),
+        //         decoration: BoxDecoration(
+        //           borderRadius: BorderRadius.circular(4),
+        //           color: Colors.white,
+        //         ),
+        //         elevation: 8,
+        //         offset: const Offset(40, -4),
+        //       ),
+        //     )
+        // ),
         // Container(
         //   height: 45,
         //   width: 45,

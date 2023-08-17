@@ -11,6 +11,7 @@ import 'package:tuntigi/ui/screens/login_screen.dart';
 import 'package:tuntigi/ui/screens/referral_code_screen.dart';
 import 'package:tuntigi/ui/screens/register_screen.dart';
 import 'package:tuntigi/ui/screens/regististration_success_screen.dart';
+import 'package:tuntigi/ui/screens/reset_pin_screen.dart';
 import 'package:tuntigi/ui/screens/splash_screen.dart';
 import 'package:tuntigi/ui/screens/topup_screen.dart';
 import 'package:tuntigi/ui/screens/topup_successful_screen.dart';
@@ -20,6 +21,7 @@ import 'package:tuntigi/ui/screens/withdrawal_successful_screen.dart';
 class AppRoutes {
 
   // Base Routes
+  static const String appRouteSplash = '/splash';
   static const String appRouteDashboard = '/dashboard';
   static const String appRouteWallet = '/wallet';
   static const String appRouteChallenges = '/challenges';
@@ -33,6 +35,7 @@ class AppRoutes {
   // Auth Routes
   static const String appRouteLogin = '/auth/login';
   static const String appRouteRegister = '/auth/register';
+  static const String appRouteResetPin = '/auth/resetPin';
   static const String appRouteRegistrationSuccessful = '/auth/registration/success';
 
   // Dashboard Routes
@@ -55,6 +58,14 @@ class AppRoutes {
       case appRouteRegister: {
         return MaterialPageRoute(
             builder: (BuildContext context) => const RegisterScreen(),
+            fullscreenDialog: true,
+            settings: routeSettings
+        );
+      }
+
+      case appRouteResetPin: {
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const ResetPinScreen(),
             fullscreenDialog: true,
             settings: routeSettings
         );

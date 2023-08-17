@@ -10,11 +10,12 @@ class Profile {
   final String? alias;
   final String? balance;
   final String? rank;
-  final String? position;
+  final String? profpic;
+  final int? position;
 
   Profile({
     required this.id, required this.referalCode, required this.mobile, required this.name, this.alias,
-    this.balance, this.rank, this.position
+    this.balance, this.rank, this.position, this.profpic,
   });
 
   factory Profile.fromMap(Map<dynamic, dynamic> data) {
@@ -27,6 +28,7 @@ class Profile {
       balance: data['balance'],
       rank: data['rank'],
       position: data['position'],
+      profpic: data['profpic'],
     );
   }
 

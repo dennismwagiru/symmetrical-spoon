@@ -9,6 +9,7 @@ import 'package:tuntigi/databases/app_database.dart';
 import 'package:tuntigi/databases/providers/profile_provider.dart';
 import 'package:tuntigi/models/profile.dart';
 import 'package:tuntigi/network/entities/response.dart';
+import 'package:tuntigi/network/nao/user_nao.dart';
 import 'package:tuntigi/ui/widgets/common/logo_widget.dart';
 import 'package:tuntigi/ui/widgets/form/message_widget.dart';
 import 'package:tuntigi/ui/widgets/form/password_input_widget.dart';
@@ -20,14 +21,14 @@ import 'package:tuntigi/utils/dimensions.dart';
 import 'package:tuntigi/utils/strings.dart';
 import 'package:tuntigi/viewmodels/user_viewmodel.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class ResetPinScreen extends StatefulWidget {
+  const ResetPinScreen({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _LoginScreenState();
+  State<StatefulWidget> createState() => _ResetPinScreen();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _ResetPinScreen extends State<ResetPinScreen> {
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -36,24 +37,11 @@ class _LoginScreenState extends State<LoginScreen> {
   late Map<String, dynamic> _errors = {};
 
   TextEditingController mobileController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
 
-  late UserViewModel _viewModel;
 
   @override
   void initState() {
-    _viewModel = UserViewModel(const App());
-
-    clearSession();
     super.initState();
-
-    subscribeToViewModel();
-  }
-
-  clearSession() async {
-    AppDatabase appDatabase = const App().getAppDatabase();
-    await appDatabase.isDatabaseReady;
-    appDatabase.clearUser();
   }
 
   @override
@@ -114,34 +102,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       errorText: _errors.containsKey('mobileno') ? _errors['mobileno'][0] : null,
 
                     ),
-                    const SizedBox(height: 23),
-                    PasswordInputWidget(
-                      label: Strings.pin,
-                      controller: passwordController,
-                      errorText: _errors.containsKey('pin') ? _errors['pin'][0] : null,
-                    ),
                     const SizedBox(height: Dimensions.heightSize),
                   ],
                 )
-            ),
-            const SizedBox(height: 14),
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child:
-              GestureDetector(
-                child: Text(
-                  Strings.forgotPin,
-                  style: TextStyle(
-                      fontSize: Dimensions.defaultTextSize,
-                      color: CustomColor.accentColor,
-                      fontWeight: FontWeight.bold
-                  ),
-                  textAlign: TextAlign.end,
-                ),
-                onTap: () {
-                  Navigator.pushReplacementNamed(context, AppRoutes.appRouteResetPin);
-                },
-              ),
             ),
             const SizedBox(height: 39),
             LoadableWidget(
@@ -156,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     child: Center(
                       child: Text(
-                        Strings.signIn,
+                        "Reset Pin",
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: Dimensions.largeTextSize
@@ -169,74 +132,44 @@ class _LoginScreenState extends State<LoginScreen> {
                       _loading = true,
                       _message = null
                     });
-                    _viewModel.isAuthentic(mobileno: mobileController.text, pin: passwordController.text);
+                    UserNAO.resetPin(mobileno: mobileController.value.text)
+                        .then((NetworkResponse response) async {
+                      if(response.isSuccessful) {
+                        Fluttertoast.showToast(msg: "Reset Pin Successful");
+                        Navigator.popAndPushNamed(context, AppRoutes.appRouteLogin);
+                      } else {
+                        setState(() => {
+                          _loading = false,
+                          _message = null
+                        });
+                        const JsonDecoder decoder = JsonDecoder();
+                        try {
+                          final Map<String, dynamic> res = decoder.convert(
+                              response.error ?? '');
+                          if(res.containsKey('error')) {
+                            setState(() {
+                              _errors = {
+                                'mobileno': [res['error']],
+                                'pin': [res['error']]
+                              };
+                            });
+                          } else {
+                            setState(() => _errors = res);
+                          }
+                        } on Exception catch (e) {
+                          setState(() => _message = response.error);
+                        }
+                      }
+                    });
                     // Navigator.pushReplacementNamed(context, AppRoutes.appRouteDashboard);
                   },
                 )
             ),
             const SizedBox(height: 41),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  Strings.dontHaveAccount,
-                  style: TextStyle(
-                      fontSize: Dimensions.defaultTextSize
-                  ),
-                ),
-                GestureDetector(
-                  child: Text(
-                    Strings.signUp,
-                    style: TextStyle(
-                        fontSize: Dimensions.defaultTextSize,
-                        color: CustomColor.accentColor,
-                        fontWeight: FontWeight.bold
-                    ),
-                  ),
-                  onTap: () {
-                    Navigator.pushReplacementNamed(context, AppRoutes.appRouteRegister);
-                  },
-                )
-              ],
-            )
           ],
         )
     );
   }
 
-  void subscribeToViewModel() {
-    _viewModel.getLoginResponse()
-        .listen((NetworkResponse response) async {
-      setState(() => _message = null );
-      if(response.isSuccessful) {
-        await Provider.of<ProfileProvider>(context, listen: false).loadFromNetwork();
-        Fluttertoast.showToast(msg: "Login Successful");
-        Navigator.popAndPushNamed(context, AppRoutes.appRouteDashboard);
-
-      } else {
-        setState(() => {
-          _loading = false,
-          _message = null
-        });
-        const JsonDecoder decoder = JsonDecoder();
-        try {
-          final Map<String, dynamic> res = decoder.convert(
-              response.error ?? '');
-          if(res.containsKey('error')) {
-            setState(() {
-              _errors = {
-                'mobileno': [res['error']],
-                'pin': [res['error']]
-              };
-            });
-          } else {
-            setState(() => _errors = res);
-          }
-        } on Exception catch (e) {
-          setState(() => _message = response.error);
-        }
-      }
-    });
-  }
 
 }

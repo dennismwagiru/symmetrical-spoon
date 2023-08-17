@@ -16,20 +16,16 @@ class ProfileProvider extends ChangeNotifier {
 
   _prefetch() async {
 
-    if(_isInitial) {
-      await _appDatabase.isDatabaseReady;
-      _appDatabase.getPlayerProfile()
-          .then((Profile? profile) {
-        _profile = profile;
-        if (profile == null) {
-          loadFromNetwork();
-        }
+    await _appDatabase.isDatabaseReady;
+    _appDatabase.getPlayerProfile()
+        .then((Profile? profile) {
+      _profile = profile;
+      if (profile == null) {
+        loadFromNetwork();
+      }
 
-        notifyListeners();
-      });
-    } else {
-      loadFromNetwork();
-    }
+      notifyListeners();
+    });
   }
 
   loadFromNetwork() async {

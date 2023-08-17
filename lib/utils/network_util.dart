@@ -85,7 +85,7 @@ class NetworkUtil {
 
   Future<Map<String, String>> _headers() async {
     var headers = {
-      HttpHeaders.userAgentHeader: 'beta.tun-tigi.com',
+      HttpHeaders.userAgentHeader: 'app.tun-tigi.com',
       HttpHeaders.acceptHeader: 'application/json',
     };
     var preferences = const App().getAppPreferences();
@@ -128,6 +128,14 @@ class NetworkUtil {
     var payload = json.encode(body);
     var headers = await _headers();
     headers[HttpHeaders.contentTypeHeader] = 'application/json';
+    print({
+      'Method': 'POST..',
+      'URL': url,
+      'body': payload,
+      'Headers': headers,
+      // 'StatusCode': response.statusCode,
+      // 'Response': response.body
+    });
     return await http.post(Uri.parse(url), body: payload,
         headers: headers,
         encoding: encoding)

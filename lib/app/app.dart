@@ -26,7 +26,7 @@ class App extends StatelessWidget {
         theme: ThemeData(
           // useMaterial3: true,
           primaryColor: Colors.white,
-          // visualDensity: VisualDensity.adaptivePlatformDensity,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
           fontFamily: 'SFUIText',
         ),
         onGenerateRoute: getAppRoutes().getRoutes,

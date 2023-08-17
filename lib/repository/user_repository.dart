@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:tuntigi/databases/app_database.dart';
 import 'package:tuntigi/databases/app_preferences.dart';
+import 'package:tuntigi/models/gamezone.dart';
 import 'package:tuntigi/models/profile.dart';
 import 'package:tuntigi/models/transaction.dart';
 import 'package:tuntigi/models/user.dart';
@@ -29,6 +30,7 @@ class UserRepository {
       {required String mobileno, required String pin}) {
     UserNAO.login(mobileno: mobileno, pin: pin)
         .then((NetworkResponse response) {
+          print(response);
       if(response.isSuccessful) {
         _appPreferences.setLoggedIn(isLoggedIn: true);
         _appPreferences.setAccessToken(
@@ -88,6 +90,21 @@ class UserRepository {
         _appDatabase.insertTransactions(transactions);
       }
       return transactions;
+    });
+  }
+
+  Future<List<Gamezone>> fetchGamezones() async{
+    return UserNAO.gamezones()
+        .then((NetworkResponse response) async {
+      List<Gamezone> gamezones = [];
+      if(response.isSuccessful) {
+
+        for(var item in response.data) {
+          gamezones.add(Gamezone.fromMap(item));
+        }
+
+      }
+      return gamezones;
     });
   }
 
