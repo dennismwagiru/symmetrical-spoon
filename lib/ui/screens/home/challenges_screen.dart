@@ -19,7 +19,10 @@ class ChallengesScreen extends StatefulWidget {
 
 class _ChallengesScreen extends State<ChallengesScreen> {
 
+  List<Gamezone> _allGamezones = [];
   List<Gamezone> _gamezones = [];
+
+  TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
@@ -29,12 +32,12 @@ class _ChallengesScreen extends State<ChallengesScreen> {
       if(response.isSuccessful) {
 
         for(var item in response.data) {
-          print(item);
           gamezones.add(Gamezone.fromMap(item));
         }
 
       }
       setState(() {
+        _allGamezones = gamezones;
         _gamezones = gamezones;
       });
     });
@@ -75,7 +78,19 @@ class _ChallengesScreen extends State<ChallengesScreen> {
                         ],
                       ),
                       const SizedBox(height: 15,),
-                      const SearchInputWidget(label: 'Search gamezones, county, ward',),
+                      SearchInputWidget(label: 'Search gamezones, county, ward', controller: searchController, onChanged: (String text) {
+                        print(_allGamezones);
+                        setState(() {
+                          _gamezones = _allGamezones.where((Gamezone gamezone) =>
+                             gamezone.gamezone.toLowerCase().contains(text.toLowerCase()) ||
+                                gamezone.contact.toLowerCase().contains(text.toLowerCase()) ||
+                                gamezone.county.toLowerCase().contains(text.toLowerCase()) ||
+                                gamezone.constituency.toLowerCase().contains(text.toLowerCase()) ||
+                            gamezone.constituency.toLowerCase().contains(text.toLowerCase())
+
+                          ).toList();
+                        });
+                      },),
                       const SizedBox(height: 15,),
                       ..._gamezones.map((Gamezone gamezone) => GamezoneWidget(gamezone: gamezone))
                     ],

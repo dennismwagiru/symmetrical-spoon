@@ -82,7 +82,7 @@ class _ResetPinScreen extends State<ResetPinScreen> {
             ),
             const SizedBox(height: 11,),
             Text(
-                Strings.signInToYourAccount,
+                "Reset Your Pin Here",
                 style: CustomStyle.subTitleStyle
             ),
             const SizedBox(height: 105),

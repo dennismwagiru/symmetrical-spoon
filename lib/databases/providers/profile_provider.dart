@@ -6,7 +6,6 @@ import 'package:tuntigi/viewmodels/user_viewmodel.dart';
 
 class ProfileProvider extends ChangeNotifier {
   late Profile? _profile = null;
-  bool _isInitial = true;
   final UserViewModel _viewModel = UserViewModel(const App());
   final AppDatabase _appDatabase = const App().getAppDatabase();
 
@@ -33,7 +32,6 @@ class ProfileProvider extends ChangeNotifier {
         .then((Profile? profile) {
       _profile = profile;
       notifyListeners();
-      _isInitial = false;
       return profile;
     });
   }

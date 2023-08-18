@@ -12,6 +12,8 @@ import 'package:tuntigi/databases/app_preferences.dart';
 import 'package:tuntigi/databases/providers/profile_provider.dart';
 import 'package:tuntigi/network/entities/response.dart';
 import 'package:tuntigi/network/nao/user_nao.dart';
+import 'package:tuntigi/ui/widgets/form/message_widget.dart';
+import 'package:tuntigi/ui/widgets/loadable_widget.dart';
 import 'package:tuntigi/utils/colors.dart';
 import 'package:tuntigi/utils/custom_style.dart';
 import 'package:tuntigi/utils/strings.dart';
@@ -67,6 +69,8 @@ class _ProfileWidget extends State<ProfileWidget> {
   late AppPreferences _appPreferences;
   late AppDatabase _appDatabase;
   final ImagePicker _picker = ImagePicker();
+  String? _message;
+  bool _loading = false;
 
   @override
   void initState() {
@@ -89,8 +93,13 @@ class _ProfileWidget extends State<ProfileWidget> {
   void uploadAvatar(XFile file) {
     UserNAO.uploadAvatar(file: file)
         .then((NetworkResponse response) async {
-          Fluttertoast.showToast(msg: "Profile Picture Updated");
-      await Provider.of<ProfileProvider>(context, listen: false).loadFromNetwork();
+      if(response.isSuccessful) {
+
+        Fluttertoast.showToast(msg: "Profile Picture Updated");
+        await Provider.of<ProfileProvider>(context, listen: false).loadFromNetwork();
+      } else {
+        Fluttertoast.showToast(msg: "Profile Picture Update Failed: ${response.error}");
+      }
     });
   }
 
@@ -175,10 +184,15 @@ class _ProfileWidget extends State<ProfileWidget> {
                   return Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      ListTile(
-                        leading: const Icon(Icons.photo),
-                        title: const Text('Add Profile Photo'),
-                        onTap: showOptions,
+                      SizedBox(height: 10,),
+                      MessageWidget(message: _message),
+                      LoadableWidget(
+                        loading: _loading,
+                        widget: ListTile(
+                          leading: const Icon(Icons.photo),
+                          title: const Text('Add Profile Photo'),
+                          onTap: showOptions,
+                        ),
                       ),
                       GestureDetector(
                         child: ListTile(

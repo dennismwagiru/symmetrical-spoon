@@ -4,11 +4,15 @@ import 'package:tuntigi/utils/custom_style.dart';
 
 class SearchInputWidget extends StatelessWidget {
   final String label;
-  const SearchInputWidget({Key? key, required this.label}) : super(key: key);
+  final TextEditingController? controller;
+  final Function(String)? onChanged;
+  const SearchInputWidget({Key? key, required this.label, this.controller, this.onChanged}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
+      onChanged: onChanged,
       style: const TextStyle(
           fontSize: 11,
           fontWeight: FontWeight.w400,

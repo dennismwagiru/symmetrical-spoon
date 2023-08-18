@@ -68,6 +68,7 @@ class UserRepository {
         .then((NetworkResponse response) {
       if(response.isSuccessful) {
         Profile profile = Profile.fromMap(response.data);
+        print({'......': profile});
         _appDatabase.savePlayerProfile(profile: profile);
 
         return profile;
