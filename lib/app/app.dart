@@ -6,8 +6,9 @@ import 'package:tuntigi/databases/providers/balance_provider.dart';
 import 'package:tuntigi/databases/providers/profile_provider.dart';
 import 'package:tuntigi/repository/player_repository.dart';
 import 'package:tuntigi/repository/user_repository.dart';
+import 'package:tuntigi/services/FCMProvider.dart';
 
-import 'package:tuntigi/utils/colors.dart';
+
 
 import 'app_routes.dart';
 
@@ -18,6 +19,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
+          ChangeNotifierProvider(create: (context) => FCMProvider()),
           ChangeNotifierProvider(create: (context) => ShowBalanceProvider()),
           ChangeNotifierProvider(create: (context) => ProfileProvider()),
         ],

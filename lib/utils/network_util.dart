@@ -26,6 +26,8 @@ class AuthorizationInterceptor implements InterceptorContract {
 
       final String? token = await preferences.getAccessToken();
 
+      print(data);
+
       // Clear previous header and update it with updated token
       data.headers.clear();
 
@@ -127,16 +129,23 @@ class NetworkUtil {
   ///        -> encoding -> dynamic
   /// @usage -> Make HTTP-POST request to specified URL and returns the response in JSON format
   Future<dynamic> post({required String url, body, encoding}) async {
+    var preferences = const App().getAppPreferences();
+    await preferences.isPreferenceReady;
+    final userId = await preferences.getUserId() ?? '';
+    if (body == null)
+      body = new Map<String, dynamic>();
+    body['userid'] = userId.toString();
+    body['playerid'] = userId.toString();
+
     var payload = json.encode(body);
     var headers = await _headers();
     headers[HttpHeaders.contentTypeHeader] = 'application/json';
+
     print({
-      'Method': 'POST..',
+      'Method': 'POST',
       'URL': url,
       'body': payload,
       'Headers': headers,
-      // 'StatusCode': response.statusCode,
-      // 'Response': response.body
     });
     return await http.post(Uri.parse(url), body: payload,
         headers: headers,

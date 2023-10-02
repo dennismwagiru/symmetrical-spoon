@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:tuntigi/app/app.dart';
+import 'package:tuntigi/models/challenge.dart';
 import 'package:tuntigi/models/player.dart';
 import 'package:tuntigi/models/profile.dart';
 import 'package:tuntigi/models/user.dart';
@@ -15,6 +16,8 @@ class PlayerViewModel extends ChangeNotifier {
 
   static late PlayerViewModel _instance;
 
+  final _challengesResponse = StreamController<NetworkResponse>.broadcast();
+
   factory PlayerViewModel(App app) {
     _instance = PlayerViewModel._internal(playerRepository: app.getPlayerRepository(appDatabase: app.getAppDatabase()));
 
@@ -26,4 +29,7 @@ class PlayerViewModel extends ChangeNotifier {
   }
 
   Future<List<Player>> getPlayers() => _playerRepository.list();
+
+  Future<List<Challenge>> getChallenges() => _playerRepository.getChallenges();
+
 }

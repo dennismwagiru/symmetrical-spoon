@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "698063850794",
+    "project_id": "tuntigi",
+    "storage_bucket": "tuntigi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:698063850794:android:d4457607c301f527b62253",
+        "android_client_info": {
+          "package_name": "com.opirth.tuntigi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvDamCe9EdEaGnagE_zD-GmI9woUMwwUw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

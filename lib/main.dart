@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tuntigi/app/app.dart';
+import 'package:tuntigi/services/FirebaseService.dart';
 
-void main() => runApp(App());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await FirebaseService.initializeFirebase();
+  runApp(const App());
+}

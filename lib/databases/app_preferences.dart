@@ -16,6 +16,7 @@ class AppPreferences with ChangeNotifier {
   static const String prefIsLoggedIn  = 'IS_LOGGED_IN';
   static const String prefUserId  = 'USER_ID';
   static const String prefAccessToken = 'ACCESS_TOKEN';
+  static const String prefFirebaseToken = 'FIREBASE_TOKEN';
   static const String prefStartTime = 'START_TIME';
   static const String prefEndTime = 'END_TIME';
   static const String prefMobile = 'MOBILE';
@@ -83,12 +84,17 @@ class AppPreferences with ChangeNotifier {
   /// @param -> @required accessToken -> bool
   /// @usage -> Set value of ACCESS_TOKEN in preferences
   void setAccessToken({required String accessToken}) => _setPreference(prefName: prefAccessToken, prefValue: accessToken, prefType: prefTypeString);
+  void setFirebaseToken({required String firebaseToken}) => _setPreference(prefName: prefFirebaseToken, prefValue: firebaseToken, prefType: prefTypeString);
 
   /// Get Access-Token Method -> Future<String>
   /// @param -> _
   /// @usage -> Get value of ACCESS_TOKEN from preferences
   Future<String?> getAccessToken() async {
     return await _getPreference(prefName: prefAccessToken);
+  }
+
+  Future<String?> getFirebaseToken() async {
+    return await _getPreference(prefName: prefFirebaseToken);
   }
 
   //----------------------- Private Preference Methods -----------------------//

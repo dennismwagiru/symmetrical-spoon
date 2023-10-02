@@ -69,7 +69,7 @@ class BottomNavBar extends StatelessWidget {
             //   color: index == 2 ? Colors.blue : Colors.grey,
             //   size: 26,
             // ),
-            label: "Game zones"
+            label: "Challenges"
         ),
         BottomNavigationBarItem(
             icon: Image.asset(

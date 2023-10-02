@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -71,6 +73,7 @@ class _ProfileWidget extends State<ProfileWidget> {
   final ImagePicker _picker = ImagePicker();
   String? _message;
   bool _loading = false;
+  late Map<String, dynamic> _errors = {};
 
   @override
   void initState() {
@@ -98,7 +101,24 @@ class _ProfileWidget extends State<ProfileWidget> {
         Fluttertoast.showToast(msg: "Profile Picture Updated");
         await Provider.of<ProfileProvider>(context, listen: false).loadFromNetwork();
       } else {
-        Fluttertoast.showToast(msg: "Profile Picture Update Failed: ${response.error}");
+        const JsonDecoder decoder = JsonDecoder();
+        try {
+          final Map<String, dynamic> res = decoder.convert(
+              response.error ?? '');
+          if(res.containsKey('error')) {
+            setState(() {
+              _errors = {
+                'mobileno': [res['error']],
+                'pin': [res['error']]
+              };
+            });
+          } else {
+            setState(() => _errors = res);
+          }
+        } on Exception catch (e) {
+          setState(() => _message = response.error);
+        }
+        Fluttertoast.showToast(msg: response.error ?? "Profile Picture Update Failed: ${response.error}");
       }
     });
   }

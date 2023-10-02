@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:tuntigi/databases/app_database.dart';
 import 'package:tuntigi/databases/app_preferences.dart';
+import 'package:tuntigi/models/challenge.dart';
 import 'package:tuntigi/models/player.dart';
 import 'package:tuntigi/models/profile.dart';
 import 'package:tuntigi/models/user.dart';
@@ -33,6 +34,21 @@ class PlayerRepository {
         _appDatabase.insertPlayers(players);
       }
       return players;
+    });
+  }
+
+  Future<List<Challenge>> getChallenges() {
+    return UserNAO.challenges()
+        .then((NetworkResponse response) async {
+      List<Challenge> challenges = [];
+      if(response.isSuccessful) {
+
+        for(var item in response.data) {
+          challenges.add(Challenge.fromMap(item));
+        }
+
+      }
+      return challenges;
     });
   }
 

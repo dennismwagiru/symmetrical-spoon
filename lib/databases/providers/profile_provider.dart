@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:tuntigi/app/app.dart';
 import 'package:tuntigi/databases/app_database.dart';
 import 'package:tuntigi/models/profile.dart';
+import 'package:tuntigi/network/nao/user_nao.dart';
 import 'package:tuntigi/viewmodels/user_viewmodel.dart';
 
 class ProfileProvider extends ChangeNotifier {
@@ -19,10 +20,6 @@ class ProfileProvider extends ChangeNotifier {
     _appDatabase.getPlayerProfile()
         .then((Profile? profile) {
       _profile = profile;
-      if (profile == null) {
-        loadFromNetwork();
-      }
-
       notifyListeners();
     });
   }
@@ -30,10 +27,8 @@ class ProfileProvider extends ChangeNotifier {
   loadFromNetwork() async {
     return _viewModel.getPlayerProfile(refresh: true)
         .then((Profile? profile) {
-      _profile = profile;
-      notifyListeners();
-      return profile;
-    });
+      _prefetch();
+    }).then((value) => UserNAO.saveDeviceToken());
   }
 
 

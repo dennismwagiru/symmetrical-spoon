@@ -30,11 +30,14 @@ class UserRepository {
       {required String mobileno, required String pin}) {
     UserNAO.login(mobileno: mobileno, pin: pin)
         .then((NetworkResponse response) {
-          print(response);
+      print(response);
       if(response.isSuccessful) {
         _appPreferences.setLoggedIn(isLoggedIn: true);
         _appPreferences.setAccessToken(
             accessToken: response.data['access_token']
+        );
+        _appPreferences.setUserId(
+            userId: response.data['user_id']
         );
       }
       _loginResponse.add(response);
@@ -49,6 +52,7 @@ class UserRepository {
   }
 
   Future<User?> fetchUserInfo() async {
+    print('fetchUserInfo');
     return UserNAO.userInfo()
         .then((NetworkResponse response) async {
       if(response.isSuccessful) {
@@ -58,6 +62,8 @@ class UserRepository {
         await fetchPlayerProfile(user.id);
 
         return user;
+      } else {
+        print('Request unsuccessful.');
       }
       return null;
     });
@@ -68,7 +74,6 @@ class UserRepository {
         .then((NetworkResponse response) {
       if(response.isSuccessful) {
         Profile profile = Profile.fromMap(response.data);
-        print({'......': profile});
         _appDatabase.savePlayerProfile(profile: profile);
 
         return profile;
@@ -126,14 +131,16 @@ class UserRepository {
   }
 
   Future<User?> getUser({bool refresh = false}) async {
-    await _appDatabase.isDatabaseReady;
     if(!refresh) {
+      await _appDatabase.isDatabaseReady;
+
       User? user = await _appDatabase.getUser();
       if (user != null) {
         return user;
       }
+    } else {
+      return fetchUserInfo();
     }
-    return fetchUserInfo();
   }
 
   Future<Profile?> getPlayerProfile({bool refresh = false}) async {
@@ -144,8 +151,9 @@ class UserRepository {
         return profile;
       }
     }
-    User? user = await fetchUserInfo();
-    return fetchPlayerProfile(user?.id ?? '');
+    await _appPreferences.isPreferenceReady;
+    int? userId = await _appPreferences.getUserId();
+    return fetchPlayerProfile(userId ?? '');
   }
 
   Future<List<Trans>> getTransactions({bool refresh = false}) async {
@@ -154,9 +162,9 @@ class UserRepository {
       List<Trans> transactions = await _appDatabase.getTransactions();
       return transactions;
     }
-    User? user = await _appDatabase.getUser();
-    // await fetchTransactions(userId: '36');
-    await fetchTransactions(userId: user?.id ?? '');
+    await _appPreferences.isPreferenceReady;
+    int? userId = await _appPreferences.getUserId();
+    await fetchTransactions(userId: userId ?? '');
     return await _appDatabase.getTransactions();
   }
 

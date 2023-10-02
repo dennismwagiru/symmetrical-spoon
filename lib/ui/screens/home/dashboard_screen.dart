@@ -5,6 +5,7 @@ import 'package:tuntigi/app/app.dart';
 import 'package:tuntigi/app/app_routes.dart';
 import 'package:tuntigi/databases/providers/profile_provider.dart';
 import 'package:tuntigi/models/profile.dart';
+import 'package:tuntigi/services/FCMProvider.dart';
 import 'package:tuntigi/ui/widgets/bottom_nav_bar.dart';
 import 'package:tuntigi/ui/widgets/common/balance_widget.dart';
 import 'package:tuntigi/ui/widgets/dashboard_grid_view.dart';
@@ -29,7 +30,9 @@ class _DashboardScreen extends State<DashboardScreen> {
   @override
   void initState() {
     _viewModel = UserViewModel(const App());
-
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      FCMProvider.setContext(context);
+    });
     super.initState();
   }
 
