@@ -5,6 +5,7 @@ import 'package:tuntigi/ui/screens/dashboard/referral_screen.dart';
 import 'package:tuntigi/ui/screens/dashboard/statement_screen.dart';
 import 'package:tuntigi/ui/screens/home/challenges_screen.dart';
 import 'package:tuntigi/ui/screens/home/dashboard_screen.dart';
+import 'package:tuntigi/ui/screens/home/gamezones_screen.dart';
 import 'package:tuntigi/ui/screens/home/wallet_screen.dart';
 import 'package:tuntigi/ui/screens/home/settings_screen.dart';
 import 'package:tuntigi/ui/screens/login_screen.dart';
@@ -24,6 +25,7 @@ class AppRoutes {
   static const String appRouteSplash = '/splash';
   static const String appRouteDashboard = '/dashboard';
   static const String appRouteWallet = '/wallet';
+  static const String appRouteGamezones = '/game-zones';
   static const String appRouteChallenges = '/challenges';
   static const String appRouteSettings = '/settings';
   static const String appRouteReferralCode = '/referral_code';
@@ -98,6 +100,14 @@ class AppRoutes {
       case appRouteChallenges: {
         return MaterialPageRoute(
             builder: (BuildContext context) => const ChallengesScreen(),
+            fullscreenDialog: true,
+            settings: routeSettings
+        );
+      }
+
+      case appRouteGamezones: {
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const GameZonesScreen(),
             fullscreenDialog: true,
             settings: routeSettings
         );

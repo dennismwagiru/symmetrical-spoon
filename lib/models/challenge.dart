@@ -16,10 +16,11 @@ class Challenge {
   final int games;
   final String date_time;
   final String gamezone;
+  final String vs;
 
   Challenge({
     required this.challenge_id, required this.player_1, required this.player_2, required this.games,
-    required this.date_time, required this.gamezone,
+    required this.date_time, required this.gamezone, required this.vs,
   });
 
   factory Challenge.fromMap(Map<dynamic, dynamic> data) {
@@ -30,6 +31,7 @@ class Challenge {
       games: data['games'],
       date_time: data['date_time'],
       gamezone: data['gamezone'],
+      vs: data['vs'],
     );
   }
 }

@@ -40,7 +40,7 @@ class _ChallengeItemWidget extends State<ChallengeItemWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.challenge.player_1,
+                      widget.challenge.vs,
                       style: CustomStyle.titleStyle,
                     ),
                     const SizedBox(height: 2,),
@@ -53,11 +53,11 @@ class _ChallengeItemWidget extends State<ChallengeItemWidget> {
                         "Games: ${widget.challenge.games}",
                         style: CustomStyle.textStyle
                     ),
-                    // const SizedBox(height: 2,),
-                    // Text(
-                    //     "Station: 4",
-                    //     style: CustomStyle.textStyle
-                    // ),
+                    const SizedBox(height: 2,),
+                    Text(
+                        widget.challenge.date_time,
+                        style: CustomStyle.textStyle
+                    ),
                   ],
                 ),
                 const Spacer(),

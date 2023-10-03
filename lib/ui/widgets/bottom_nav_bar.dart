@@ -5,7 +5,7 @@ final routes = [
   AppRoutes.appRouteDashboard,
   AppRoutes.appRouteWallet,
   AppRoutes.appRouteChallenges,
-  AppRoutes.appRouteSettings
+  AppRoutes.appRouteGamezones
 ];
 
 class BottomNavBar extends StatelessWidget {
@@ -87,7 +87,7 @@ class BottomNavBar extends StatelessWidget {
             //   color: index == 3 ? Colors.blue : Colors.grey,
             //   size: 35,
             // ),
-            label: "Settings"
+            label: "Game Zones"
         ),
       ],
       currentIndex: index,

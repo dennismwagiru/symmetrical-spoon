@@ -1,6 +1,6 @@
 class NetworkConstants {
-  // static const String _baseUrl = 'https://tun-tigi.com/public';
-  static const String _baseUrl = 'https://uat.tun-tigi.com/public';
+  static const String _baseUrl = 'https://tun-tigi.com/public';
+  // static const String _baseUrl = 'https://uat.tun-tigi.com/public';
 
   static const String _baseApi = '$_baseUrl/api/v1';
 

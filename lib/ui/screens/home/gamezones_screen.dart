@@ -51,7 +51,7 @@ class _GameZonesScreen extends State<GameZonesScreen> {
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: Scaffold(
-            bottomNavigationBar: const BottomNavBar(index: 2),
+            bottomNavigationBar: const BottomNavBar(index: 3),
             body: Padding(
                 padding: const EdgeInsets.only(
                     left: 30.0,
