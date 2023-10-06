@@ -20,6 +20,7 @@ class ProfileProvider extends ChangeNotifier {
     _appDatabase.getPlayerProfile()
         .then((Profile? profile) {
       _profile = profile;
+      print(profile);
       notifyListeners();
     });
   }

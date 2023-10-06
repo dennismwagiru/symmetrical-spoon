@@ -34,6 +34,6 @@ class Profile {
 
   @override
   String toString() {
-    return 'id: $id, name: $name, mobile: $mobile, ';
+    return 'id: $id, name: $name, mobile: $mobile, profpic: $profpic position: $position';
   }
 }

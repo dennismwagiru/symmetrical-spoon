@@ -233,6 +233,11 @@ class _ProfileWidget extends State<ProfileWidget> {
                           },
                         ),
                       ),
+                      Text(
+                        'v1.0.3+8-uat',
+                        style: CustomStyle.textStyle,
+                      ),
+                      SizedBox(height: 10,)
                     ],
                   );
                 });

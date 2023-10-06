@@ -75,7 +75,7 @@ class _$TunTigiDatabase extends TunTigiDatabase {
     Callback? callback,
   ]) async {
     final databaseOptions = sqflite.OpenDatabaseOptions(
-      version: 3,
+      version: 5,
       onConfigure: (database) async {
         await database.execute('PRAGMA foreign_keys = ON');
         await callback?.onConfigure?.call(database);
@@ -93,7 +93,7 @@ class _$TunTigiDatabase extends TunTigiDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `User` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `email` TEXT, `usertype` INTEGER, `role` INTEGER, `mobile` TEXT, `isApproved` INTEGER, PRIMARY KEY (`id`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Profile` (`id` INTEGER NOT NULL, `referalCode` TEXT, `mobile` TEXT, `name` TEXT, `alias` TEXT, `balance` TEXT, `rank` TEXT, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `Profile` (`id` INTEGER NOT NULL, `referalCode` TEXT, `mobile` TEXT, `name` TEXT, `alias` TEXT, `balance` TEXT, `rank` TEXT, `profpic` TEXT, `position` INTEGER, PRIMARY KEY (`id`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Player` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `score` INTEGER, `wins` INTEGER, `draws` INTEGER, `loses` INTEGER, `gd` INTEGER, `position` INTEGER, PRIMARY KEY (`id`))');
         await database.execute(
@@ -212,7 +212,9 @@ class _$ProfileDao extends ProfileDao {
                   'name': item.name,
                   'alias': item.alias,
                   'balance': item.balance,
-                  'rank': item.rank
+                  'rank': item.rank,
+                  'profpic': item.profpic,
+                  'position': item.position
                 }),
         _profileUpdateAdapter = UpdateAdapter(
             database,
@@ -225,7 +227,9 @@ class _$ProfileDao extends ProfileDao {
                   'name': item.name,
                   'alias': item.alias,
                   'balance': item.balance,
-                  'rank': item.rank
+                  'rank': item.rank,
+                  'profpic': item.profpic,
+                  'position': item.position
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -248,7 +252,15 @@ class _$ProfileDao extends ProfileDao {
             name: row['name'] as String?,
             alias: row['alias'] as String?,
             balance: row['balance'] as String?,
-            rank: row['rank'] as String?));
+            rank: row['rank'] as String?,
+            position: row['position'] as int?,
+            profpic: row['profpic'] as String?));
+  }
+
+  @override
+  Future<int?> countProfiles() async {
+    return _queryAdapter.query('SELECT count(*) FROM Profile',
+        mapper: (Map<String, Object?> row) => row.values.first as int);
   }
 
   @override

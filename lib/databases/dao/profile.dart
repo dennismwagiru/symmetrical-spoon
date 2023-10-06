@@ -7,6 +7,9 @@ abstract class ProfileDao {
   @Query('SELECT * FROM Profile Limit 1')
   Future<Profile?> getProfile();
 
+  @Query('SELECT count(*) FROM Profile')
+  Future<int?> countProfiles();
+
   @Query('DELETE FROM Profile')
   Future<void> deleteAllProfiles();
 

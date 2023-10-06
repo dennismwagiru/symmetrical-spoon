@@ -43,9 +43,12 @@ class AppDatabase {
     return _database.userDao.updateSingle(user);
   }
 
-  void savePlayerProfile({required Profile profile}) {
+  Future<void> savePlayerProfile({required Profile profile}) async {
+    print('Profile: ${profile}');
     _database.profileDao.deleteAllProfiles();
     _database.profileDao.insertSingle(profile);
+    final p = await _database.profileDao.countProfiles();
+    print('Saved: ${p}');
   }
 
   Future<Profile?> getPlayerProfile() {

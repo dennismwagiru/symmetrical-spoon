@@ -1,6 +1,6 @@
 class NetworkConstants {
-  static const String _baseUrl = 'https://tun-tigi.com/public';
-  // static const String _baseUrl = 'https://uat.tun-tigi.com/public';
+  // static const String _baseUrl = 'https://tun-tigi.com/public';
+  static const String _baseUrl = 'https://uat.tun-tigi.com/public';
 
   static const String _baseApi = '$_baseUrl/api/v1';
 
@@ -16,6 +16,7 @@ class NetworkConstants {
   static const String stkPush       = '$_baseApi/mpesa/stk/push';
   static const String b2c           = '$_baseApi/mpesa/b2cRequest';
   static const String gamezones     = '$_baseApi/general/gamezones';
+  static const String games     = '$_baseApi/player/games';
   static const String challenges     = '$_baseApi/player/challenges';
   static const String replytochallenge     = '$_baseApi/player/replytochallenge';
   static const String uploadprofpic = '$_baseApi/player/uploadprofpic';
